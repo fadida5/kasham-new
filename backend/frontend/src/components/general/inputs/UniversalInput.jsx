@@ -18,16 +18,29 @@ import {
 	Label,
 	Col,
 } from "reactstrap";
+import AddComment from "../Toggle/AddComment";
 
-export const TextInput = (props) => {
+export const UniversalInput = (props) => {
 	function handleChange(evt) {
 		const val = evt.target.value;
-		// console.log(value);
+		// console.log(val);
 		// console.log(evt.target.name);
 		// setTipulData({ ...tipuldata, [evt.target.name]: value });
 		// console.log(tipuldata);
 		props.handleCallBack({ label: evt.target.name, value: val });
 	}
+	function handleChange2(evt) {
+		const val = evt.target.value;
+		// setIsopen(!isopen);
+		console.log(val);
+		console.log(evt.target.name);
+		props.handleCallBack3({
+			name: evt.target.name,
+			value: val,
+		});
+	}
+
+	const detailVal = props.name + "detail";
 
 	return (
 		<>
@@ -40,13 +53,7 @@ export const TextInput = (props) => {
 					>
 						{props.header}
 					</Col>
-				) : (
-					<Col
-						xs={12}
-						md={3}
-						style={{ textAlign: "right" }}
-					></Col>
-				)}
+				) : null}
 			</Row>
 			{!props.disableCol ? (
 				<Row>
@@ -60,13 +67,14 @@ export const TextInput = (props) => {
 						</div>
 						<FormGroup dir="rtl">
 							<Input
-								type="text"
+								type={props.type}
 								bsSize="lg"
 								name={props.name}
-								value={props.value}
+								// value={props.value}
 								onChange={handleChange}
 							/>
 						</FormGroup>
+						{props.children}
 					</Col>
 				</Row>
 			) : (
@@ -77,15 +85,27 @@ export const TextInput = (props) => {
 					</div>
 					<FormGroup dir="rtl">
 						<Input
-							type="text"
+							type={props.type}
 							bsSize="lg"
 							name={props.name}
-							value={props.value}
+							// value={props.value}
 							onChange={handleChange}
 						/>
 					</FormGroup>
+					{props.children}
 				</Row>
 			)}
+
+			{props.hascomment ? (
+				<div className={props.styleName}>
+					<AddComment
+						btnName="הוסף הערות"
+						name={detailVal}
+						// value="details"
+						handleChange={handleChange2}
+					/>
+				</div>
+			) : null}
 		</>
 	);
 };

@@ -1,0 +1,25 @@
+.togglediv {
+	text-align: right;
+	padding-top: 10px;
+	margin-right: 2rem;
+}
+.closeButton {
+	margin-top: 0.5rem;
+	float: left;
+	height: 17%;
+	padding: 0px 5px;
+	/* margin: 0; */
+}
+.ActiveButton {
+	margin-right: 2rem;
+	text-align: right;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
+}
+.MainInput {
+	margin-bottom: 1rem;
+	margin-right: 2rem;
+	margin-left: 2rem;
+	padding: 0;
+	height: 100%;
+}

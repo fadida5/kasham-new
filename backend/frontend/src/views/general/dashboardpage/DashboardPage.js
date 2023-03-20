@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { useParams, Link, withRouter, Redirect } from "react-router-dom";
+import { generate } from "shortid";
 
 //* tipul packages
 import { tipulPackage } from "components/packages/tipul";
@@ -22,9 +23,10 @@ import axios from "axios";
 import { signin, authenticate, isAuthenticated } from "auth/index";
 import PropagateLoader from "react-spinners/PropagateLoader";
 // import Select from "../../../components/general/Select/AnimatedSelect";
-import { TextInput } from "components/general/inputs/TextInput";
+import { UniversalInput } from "components/general/inputs/UniversalInput";
 import { DateInput } from "components/general/inputs/DateInput";
-import { DoubleNumInputArryaAdder } from "components/general/inputs/DoubleNumInput-arryadder";
+import { ArrayAdder } from "components/general/inputs/ArrayAdder";
+import AddComment from "components/general/Toggle/AddComment";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -39,31 +41,55 @@ function DashboardPage({ match, theme }) {
 	const dispatch = useDispatch();
 	const reduxcardata = useSelector((state) => state.cardata.value);
 
+	//* state ----------------------------------------------
+
 	const [tipuldata, setTipulData] = useState(tipulPackage);
+	const [details, setDetails] = useState([]);
 
-	function callBack(inputData) {
-		// setChildData(chiData);
-		setTipulData({ ...tipuldata, [inputData.label]: inputData.value });
-		console.log(inputData);
-		console.log(tipuldata);
-		console.table(tipuldata);
-	}
+	//* consts --------------------------------
 
-	function callBack2(inputData2) {
-		// setChildData(chiData);
-		console.log(inputData2);
-		tipuldata.specialkeytwo = inputData2;
-	}
-
-	async function init() {
-		setIsdataloaded(true);
-	}
+	//* redux
 
 	const getReduxCardDataByUnitTypeAndUnitId = async () => {
 		if (reduxcardata.length == 0) {
 			await dispatch(getCarDataFunc(user));
 		}
 	};
+
+	//* fields --------------------------------
+	const job = {
+		id: "",
+		name: "",
+		teken: "",
+		matzva: "",
+	};
+
+	//* functions -----------------------------------------------
+
+	//* regular output {key : value}
+	function callBack(inputData) {
+		setTipulData({ ...tipuldata, [inputData.label]: inputData.value });
+		console.log(inputData);
+		console.log(tipuldata);
+		// console.table(tipuldata);
+	}
+	//* array output [{key : val, key2 : val2, ...}, ...]
+	function callBack2(inputData2) {
+		// setChildData(chiData);
+		console.log(inputData2);
+		tipuldata.specialkeytwo = inputData2;
+	}
+
+	function CallBack3(inputData3) {
+		console.log(inputData3);
+		console.log(details);
+		setDetails({ ...details, [inputData3.name]: inputData3.value });
+		setTipulData({ ...tipuldata, details: details });
+	}
+
+	async function init() {
+		setIsdataloaded(true);
+	}
 
 	useEffect(() => {
 		if (reduxcardata.length > 0) {
@@ -97,22 +123,31 @@ function DashboardPage({ match, theme }) {
 					md={3}
 					style={{ textAlign: "right" }}
 				>
-					<DoubleNumInputArryaAdder
-						name1="experts"
-						name2="expertsmax"
-						handleCallBack={callBack}
+					<ArrayAdder
+						name="בעלי תפקיד(קצינים,מנהלי עבודה,מחטפים)"
+						buttonName="הוסף בעל תפקיד"
 						handleCallBack2={callBack2}
+						field={{ ...job }}
+						inputArray={[
+							{ name: "מפקד", type: "text" },
+							{ name: "בדיקה", type: "text" },
+							{ name: "IAL", type: "text" },
+						]}
 					/>
-					<TextInput
+
+					<UniversalInput
+						type="text"
 						header="מפקד"
 						footer="שם המפקד"
 						name="commandername"
 						handleCallBack={callBack}
+						handleCallBack3={CallBack3}
+						hascomment={true}
 					/>
+
 					<DateInput
 						header="תאריך"
-						footer="											תאריך תחילת תפקיד
-"
+						footer="תאריך תחילת תפקיד"
 						name="timeinrole"
 						handleCallBack={callBack}
 						disableheader={true}
@@ -126,26 +161,15 @@ function DashboardPage({ match, theme }) {
 					xs={12}
 					md={3}
 				></Col>
-				<TextInput
+				<UniversalInput
+					type="text"
 					header="יחידה"
 					footer="שם היחידה"
 					name="unit"
 					handleCallBack={callBack}
+					handleCallBack3={CallBack3}
 					disableheader={true}
-				/>
-				<TextInput
-					header="יחידה"
-					footer="שם היחידה"
-					name="unit"
-					handleCallBack={callBack}
-					disableheader={true}
-				/>
-				<TextInput
-					header="יחידה"
-					footer="שם היחידה"
-					name="unit"
-					handleCallBack={callBack}
-					disableheader={true}
+					hascomment={true}
 				/>
 			</Row>
 		</div>
