@@ -23,11 +23,10 @@ import axios from "axios";
 import { signin, authenticate, isAuthenticated } from "auth/index";
 import PropagateLoader from "react-spinners/PropagateLoader";
 // import Select from "../../../components/general/Select/AnimatedSelect";
-import { UniversalInput } from "components/general/inputs/UniversalInput";
-import { DateInput } from "components/general/inputs/DateInput";
-import { ArrayAdder } from "components/general/inputs/ArrayAdder";
-import AddComment from "components/general/Toggle/AddComment";
-
+import { UniversalInput } from "components/general/inputs/FreeTextInputs/UniversalInput";
+import { DateInput } from "components/general/inputs/dateInput/DateInput";
+import { ArrayAdder } from "components/general/inputs/ArrayInputs/ArrayAdder";
+import AnimatedSelect from "components/general/Select/AnimatedSelect";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCarDataFunc } from "redux/features/cardata/cardataSlice";
@@ -79,7 +78,7 @@ function DashboardPage({ match, theme }) {
 		console.log(inputData2);
 		tipuldata.specialkeytwo = inputData2;
 	}
-
+	//* geting details as an object {name : value, name : value } (name = inputName + detail) --------------------------------
 	function CallBack3(inputData3) {
 		console.log(inputData3);
 		console.log(details);

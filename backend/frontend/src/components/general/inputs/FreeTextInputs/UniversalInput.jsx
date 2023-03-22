@@ -18,7 +18,7 @@ import {
 	Label,
 	Col,
 } from "reactstrap";
-import AddComment from "../Toggle/AddComment";
+import AddComment from "../../Toggle/AddComment";
 
 export const UniversalInput = (props) => {
 	function handleChange(evt) {
