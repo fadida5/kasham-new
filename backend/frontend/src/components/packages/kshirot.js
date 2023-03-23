@@ -1,4 +1,4 @@
-export const tipulPackage = {
+export const kshirotPackage = {
 	// פרטי מפקד
 	commandername: "", //שם מפקד
 	timeinrole: "", // זמן בתפקיד
