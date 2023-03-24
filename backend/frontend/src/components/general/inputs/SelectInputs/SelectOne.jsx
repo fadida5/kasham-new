@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Col } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { ThemeContext } from "contexts/ThemeContext";
@@ -124,47 +124,55 @@ export const SelectOne = (props) => {
 	return (
 		<ThemeContext.Consumer>
 			{({ changeTheme, theme }) => (
-				<Col>
-					{theme == "white-content" ? (
-						<Select
-							name={props.name}
-							isMulti={false}
-							// defaultValue={props.value}
-							options={options}
-							// value={props.value}
-							onChange={handleChange}
-							closeMenuOnSelect={true}
-							components={animatedComponents}
-							isDisabled={props.isDisabled}
-							placeholder={props.value != undefined ? props.value : "בחר"}
-						/>
-					) : (
-						<Select
-							name={props.name}
-							isMulti={false}
-							// defaultValue={props.value}
-							options={options}
-							// value={props.value}
-							onChange={handleChange}
-							closeMenuOnSelect={true}
-							components={animatedComponents}
-							isDisabled={props.isDisabled}
-							placeholder={props.value != undefined ? props.value : "בחר"}
-							theme={(theme) => ({
-								...theme,
-								colors: {
-									...theme.colors,
-									neutral0: "#27293d",
-									neutral5: "#1e1e2f",
-									primary25: "#1e1e2f",
-									primary50: "transparent",
-									neutral50: "white",
-									neutral80: "white",
-								},
-							})}
-						/>
-					)}
-				</Col>
+				<Row>
+					{props.header ? (
+						<p style={{ marginTop: "0px", marginRight: "10px" }}>
+							{props.header}
+						</p>
+					) : null}
+
+					<Col>
+						{theme == "white-content" ? (
+							<Select
+								name={props.name}
+								isMulti={false}
+								// defaultValue={props.value}
+								options={options}
+								// value={props.value}
+								onChange={handleChange}
+								closeMenuOnSelect={true}
+								components={animatedComponents}
+								isDisabled={props.isDisabled}
+								placeholder={props.value != undefined ? props.value : "בחר"}
+							/>
+						) : (
+							<Select
+								name={props.name}
+								isMulti={false}
+								// defaultValue={props.value}
+								options={options}
+								// value={props.value}
+								onChange={handleChange}
+								closeMenuOnSelect={true}
+								components={animatedComponents}
+								isDisabled={props.isDisabled}
+								placeholder={props.value != undefined ? props.value : "בחר"}
+								theme={(theme) => ({
+									...theme,
+									colors: {
+										...theme.colors,
+										neutral0: "#27293d",
+										neutral5: "#1e1e2f",
+										primary25: "#1e1e2f",
+										primary50: "transparent",
+										neutral50: "white",
+										neutral80: "white",
+									},
+								})}
+							/>
+						)}
+					</Col>
+				</Row>
 			)}
 		</ThemeContext.Consumer>
 	);

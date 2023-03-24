@@ -63,6 +63,7 @@ function DashboardTest({ match, theme }) {
 		name: "",
 		teken: "",
 		matzva: "",
+		select: "",
 	};
 
 	//* functions -----------------------------------------------
@@ -150,6 +151,11 @@ function DashboardTest({ match, theme }) {
 							{ name: "מפקד", type: "text" },
 							{ name: "בדיקה", type: "text" },
 							{ name: "IAL", type: "text" },
+							{ name: "list", type: "select" },
+						]}
+						freeOptions={[
+							{ name: "קיים", value: "קיים" },
+							{ name: "לא קיים", value: "לא קיים" },
 						]}
 					/>
 
@@ -160,8 +166,22 @@ function DashboardTest({ match, theme }) {
 						name="commandername"
 						handleCallBack={callBack}
 						handleCallBack3={CallBack3}
-						hascomment={true}
-					/>
+						// hascomment={true}
+						// chained={true}
+					>
+						{" "}
+						<UniversalInput
+							disableheader={true}
+							type="text"
+							header="מפקד"
+							footer="שם המפקד"
+							name="commandername"
+							handleCallBack={callBack}
+							handleCallBack3={CallBack3}
+							// hascomment={true}
+							chained={true}
+						/>
+					</UniversalInput>
 
 					<DateInput
 						header="תאריך"
@@ -181,7 +201,7 @@ function DashboardTest({ match, theme }) {
 						value={tipuldata.load ? tipuldata.load : undefined}
 						handleCallBack={callBack}
 					/>
-					{Array.isArray(pikods) ? (
+					{/* {Array.isArray(pikods) ? (
 						<SelectOne
 							name="a"
 							hasNull={true}
@@ -189,7 +209,7 @@ function DashboardTest({ match, theme }) {
 							// value={tipuldata.pikod ? tipuldata.pikod : undefined}
 							handleCallBack={callBack}
 						/>
-					) : null}
+					) : null} */}
 				</Col>
 				<Col
 					xs={12}

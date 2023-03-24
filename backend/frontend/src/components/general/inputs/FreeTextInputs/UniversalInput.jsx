@@ -44,68 +44,141 @@ export const UniversalInput = (props) => {
 
 	return (
 		<>
-			<Row>
-				{!props.disableheader ? (
-					<Col
-						xs={12}
-						md={3}
-						style={{ textAlign: "right" }}
-					>
-						{props.header}
-					</Col>
-				) : null}
-			</Row>
-			{!props.disableCol ? (
-				<Row>
-					<Col
-						xs={12}
-						md={6}
-					>
-						<div style={{ textAlign: "center", paddingTop: "10px" }}>
-							{" "}
-							{props.footer}
-						</div>
-						<FormGroup dir="rtl">
-							<Input
-								type={props.type}
-								bsSize="lg"
-								name={props.name}
-								// value={props.value}
-								onChange={handleChange}
-							/>
-						</FormGroup>
-						{props.children}
-					</Col>
-				</Row>
-			) : (
-				<Row className="mr-3 ml-3">
-					<div style={{ textAlign: "center", paddingTop: "10px" }}>
-						{" "}
-						{props.footer}
-					</div>
-					<FormGroup dir="rtl">
-						<Input
-							type={props.type}
-							bsSize="lg"
-							name={props.name}
-							// value={props.value}
-							onChange={handleChange}
-						/>
-					</FormGroup>
-					{props.children}
-				</Row>
-			)}
+			{props.chained ? (
+				<>
+					{!props.disableCol ? (
+						<Col
+							xs={props.smSize}
+							md={props.mdSize}
+						>
+							<div
+								style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
+							>
+								{" "}
+								{props.footer}
+							</div>
+							<FormGroup dir="rtl">
+								<Input
+									type={props.type}
+									bsSize="lg"
+									name={props.name}
+									value={props.value}
+									onChange={handleChange}
+									disabled={props.isDisabeld}
+								/>
+							</FormGroup>
+							{props.children}
+						</Col>
+					) : (
+						<>
+							<div
+								style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
+							>
+								{" "}
+								{props.footer}
+							</div>
+							<FormGroup dir="rtl">
+								<Input
+									type={props.type}
+									bsSize="lg"
+									name={props.name}
+									value={props.value}
+									onChange={handleChange}
+									disabled={props.isDisabeld}
+								/>
+							</FormGroup>
+							{props.children}
+						</>
+					)}
 
-			{props.hascomment ? (
-				<div className={props.styleName}>
-					<AddComment
-						btnName="הוסף הערות"
-						name={detailVal}
-						// value="details"
-						handleChange={handleChange2}
-					/>
-				</div>
-			) : null}
+					{props.hascomment ? (
+						<div className={props.styleName}>
+							<AddComment
+								btnName="הוסף הערות"
+								name={detailVal}
+								value={props.detailVal}
+								handleChange={handleChange2}
+							/>
+						</div>
+					) : null}
+				</>
+			) : (
+				<>
+					<Row>
+						{props.header ? (
+							<Col
+								xs={12}
+								md={3}
+								style={{
+									textAlign: "right",
+									paddingTop: "10px",
+									fontWeight: "bold",
+								}}
+							>
+								{props.header}
+							</Col>
+						) : null}
+					</Row>
+					{!props.disableCol ? (
+						<Row>
+							<Col
+								xs={props.smSize}
+								md={props.mdSize}
+							>
+								<div
+									style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
+								>
+									{" "}
+									{props.footer}
+								</div>
+								<FormGroup dir="rtl">
+									<Input
+										type={props.type}
+										bsSize="lg"
+										name={props.name}
+										value={props.value}
+										onChange={handleChange}
+										disabled={props.isDisabeld}
+									/>
+								</FormGroup>
+							</Col>
+
+							{props.children}
+						</Row>
+					) : (
+						<Row className="mr-3 ml-3">
+							<div
+								style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
+							>
+								{" "}
+								{props.footer}
+							</div>
+							<FormGroup dir="rtl">
+								<Input
+									type={props.type}
+									bsSize="lg"
+									name={props.name}
+									value={props.value}
+									onChange={handleChange}
+									disabled={props.isDisabeld}
+								/>
+							</FormGroup>
+							{props.children}
+						</Row>
+					)}
+
+					{props.hascomment ? (
+						<div className={props.styleName}>
+							<AddComment
+								btnName="הוסף הערות"
+								name={detailVal}
+								value={props.detailVal}
+								handleChange={handleChange2}
+							/>
+						</div>
+					) : null}
+				</>
+			)}
 		</>
 	);
 };

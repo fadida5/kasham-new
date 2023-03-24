@@ -1,0 +1,8 @@
+.Container {
+	padding-top: 80px;
+	direction: rtl;
+}
+
+.CardBody {
+	direction: rtl;
+}

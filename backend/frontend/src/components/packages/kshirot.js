@@ -87,6 +87,6 @@ export const kshirotPackage = {
 	details: {},
 	// רוח יחידה
 	mentality: "", // חוסן מנטלאי
-	specialkey: "",
-	specialkeytwo: "",
+	specialkey: [{}],
+	specialkeytwo: [{}],
 };

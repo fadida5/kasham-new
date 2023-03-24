@@ -53,6 +53,7 @@ import SidebarGeneral from "components/general/Sidebar/SidebarGeneral";
 import table from "assets/img/table.png";
 import table_white from "assets/img/table_white.png";
 import { signout } from "auth/index";
+import { toast } from "react-toastify";
 
 function Sidebar() {
 	const [color, setcolor] = useState("transparent");
@@ -71,11 +72,11 @@ function Sidebar() {
 		}
 	};
 
-	useEffect(() => {
-		if (Testuser.includes(user.personalnumber)) {
-			alert(`user ${user.name} ${user.lastname} has test permissions `);
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (Testuser.includes(user.personalnumber)) {
+	// 		toast.success(` ${user.name} ${user.lastname} has test permissions `);
+	// 	}
+	// }, []);
 
 	return (
 		<>

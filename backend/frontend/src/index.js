@@ -116,7 +116,7 @@ ReactDOM.render(
 								component={DashboardPage}
 							/>
 							<LoggedinRoute
-								path="/dashTest"
+								path="/test"
 								exact
 								component={dashTest}
 							/>
