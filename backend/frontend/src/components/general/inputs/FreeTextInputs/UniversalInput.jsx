@@ -65,6 +65,7 @@ export const UniversalInput = (props) => {
 									value={props.value}
 									onChange={handleChange}
 									disabled={props.isDisabeld}
+									{...props.costume}
 								/>
 							</FormGroup>
 							{props.children}
@@ -85,6 +86,7 @@ export const UniversalInput = (props) => {
 									value={props.value}
 									onChange={handleChange}
 									disabled={props.isDisabeld}
+									{...props.costume}
 								/>
 							</FormGroup>
 							{props.children}
@@ -139,6 +141,7 @@ export const UniversalInput = (props) => {
 										value={props.value}
 										onChange={handleChange}
 										disabled={props.isDisabeld}
+										{...props.costume}
 									/>
 								</FormGroup>
 							</Col>
@@ -161,6 +164,7 @@ export const UniversalInput = (props) => {
 									value={props.value}
 									onChange={handleChange}
 									disabled={props.isDisabeld}
+									{...props.costume}
 								/>
 							</FormGroup>
 							{props.children}

@@ -104,15 +104,19 @@ function KshirotPage(props) {
 
 	//* ArrayAdder
 
-	const arrAdd = (name, Bname, field, inputArray) => {
+	const arrAdd = (name, arrName, Bname, field, inputArray) => {
 		return {
 			name: name,
+			arrName: arrName,
 			buttonName: Bname,
 			handleCallBack2: callBack2,
 			field: { ...field },
 			inputArray: inputArray,
 		};
 	};
+
+	//* specialkeys searched values
+	const searchedVals = ["teken", "matzva"];
 
 	//* regular output {key : value}
 	function callBack(inputData) {
@@ -122,10 +126,11 @@ function KshirotPage(props) {
 		// console.table(tipuldata);
 	}
 	//* array output [{key : val, key2 : val2, ...}, ...]
-	function callBack2(inputData2) {
-		// setChildData(chiData);
-		console.log(inputData2);
-		kshirot.specialkeytwo = inputData2;
+	function callBack2(inputData2, arrName) {
+		console.log(arrName);
+		// console.log(inputData2);
+		kshirot[arrName] = inputData2;
+		ArrayCalcDIff(inputData2, arrName);
 	}
 	//* geting details as an object {name : value, name : value } (name = inputName + detail) --------------------------------
 	function CallBack3(inputData3) {
@@ -135,7 +140,20 @@ function KshirotPage(props) {
 		setKshirot({ ...kshirot, details: details });
 	}
 	//* calc from array to val in kshirot
-	function AraayCalcDIff(arr) {}
+	function ArrayCalcDIff(arr, name) {
+		let temp = [];
+		searchedVals.map((fl, index) => {
+			temp.push(arr.reduce((acc, cv) => Number(acc) + Number(cv[fl]), 0));
+			if (name === "specialkeytwo") {
+				setKshirot({ ...kshirot, kzinim: temp[0], kzinimmax: temp[1] });
+				// console.log(`the cal of ${fl} is ${temp[index]}`);
+			}
+			if (name === "specialkey") {
+				setKshirot({ ...kshirot, officers: temp[0], officersmax: temp[1] });
+				// console.log(`the cal of ${fl} is ${temp[index]}`);
+			}
+		});
+	}
 
 	//* useEffects ----------------------------------------------------------------
 	//* work-plan + basic workflow (should be minimized)
@@ -166,13 +184,6 @@ function KshirotPage(props) {
 		// console.log(k.indexOf("specialkey"));
 		// console.log(k.length);
 	}, []);
-
-	useEffect(() => {
-		let temp = 0;
-		if (kshirot.specialkeytwo.length > 0) {
-			kshirot.specialkeytwo.map((val, index) => {});
-		}
-	}, [kshirot.specialkeytwo]);
 
 	return (
 		<Container className={style.Container}>
@@ -258,20 +269,37 @@ function KshirotPage(props) {
 									כוח אדם
 								</div>
 								{/*//! {gdod.sadir == true ? null : ()} */}
-								<UniversalInput {...uni("number", "סימון מקצוע", "experts")}>
+								<UniversalInput
+									{...uni("number", "סימון מקצוע", "experts")}
+									costume={{ min: 0 }}
+								>
 									<UniversalInput
 										{...uni("number", "מצבה", "expertsmax")}
 										chained={true}
+										costume={{ min: 0 }}
 									/>
 								</UniversalInput>
 
 								<ArrayAdder
 									{...arrAdd(
 										"בעלי תפקיד(קצינים,מנהלי עבודה,מחטפים)",
+										"specialkeytwo",
 										"הוסף בעל תפקיד",
 										tafkid,
 										tafkidFields
 									)}
+									costume={(type) => {
+										switch (true) {
+											case type == "number":
+												return { min: 0 };
+												break;
+											default:
+												console
+													.error
+													// `this type: ${type} does have costume settings (just for you to know)`
+													();
+										}
+									}}
 								/>
 
 								<UniversalInput
@@ -279,7 +307,53 @@ function KshirotPage(props) {
 									header='סה"כ בעלי תפקיד'
 									isDisabeld={true}
 									value={kshirot.kzinim}
-								></UniversalInput>
+									hascomment={true}
+								>
+									<UniversalInput
+										{...uni("number", "מצבה", "kzinimmax")}
+										chained={true}
+										costume={{ min: 0 }}
+										isDisabeld={true}
+										value={kshirot.kzinimmax}
+									/>
+								</UniversalInput>
+								<ArrayAdder
+									{...arrAdd(
+										undefined,
+										"specialkey",
+										"הוסף בעל מקצוע",
+										job,
+										jobFields
+									)}
+									freeOptions={jobFields_options}
+									costume={(type) => {
+										switch (true) {
+											case type == "number":
+												return { min: 0 };
+												break;
+											default:
+												console
+													.error
+													// `this type: ${type} does have costume settings (just for you to know)`
+													();
+										}
+									}}
+								/>
+								<UniversalInput
+									{...uni("number", "תקינה", "officers")}
+									header='סה"כ בעלי מקצוע'
+									isDisabeld={true}
+									value={kshirot.officers}
+									hascomment={true}
+								>
+									<UniversalInput
+										{...uni("number", "מצבה", "officersmax")}
+										chained={true}
+										costume={{ min: 0 }}
+										isDisabeld={true}
+										value={kshirot.officersmax}
+									/>
+								</UniversalInput>
 							</Container>
 						</CardBody>
 					</Card>

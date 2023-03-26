@@ -33,6 +33,7 @@ export const ArrayAdder = (props) => {
 	const inputArray = props.inputArray;
 	let field = props.field;
 	const fieldAraay = Object.keys(field);
+	const arrName = props.arrName;
 
 	//* useeffects ----------------------------------------------------
 
@@ -43,7 +44,7 @@ export const ArrayAdder = (props) => {
 
 	useEffect(() => {
 		const newArayytwo = [...finalspecialkeytwo];
-		props.handleCallBack2(newArayytwo);
+		props.handleCallBack2(newArayytwo, arrName);
 	}, [finalspecialkeytwo]);
 
 	//* props checker
@@ -151,6 +152,7 @@ export const ArrayAdder = (props) => {
 																		value={input[fieldAraay[i + 1]]}
 																		type={item.type}
 																		placeholder={item.name}
+																		{...props.costume(item.type)}
 																	/>
 																</>
 															) : (
