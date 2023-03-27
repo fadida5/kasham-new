@@ -110,7 +110,7 @@ export const UniversalInput = (props) => {
 						{props.header ? (
 							<Col
 								xs={12}
-								md={3}
+								md={6}
 								style={{
 									textAlign: "right",
 									paddingTop: "10px",

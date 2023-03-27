@@ -22,7 +22,6 @@ export const kshirotPackage = {
 	match: "קיים", // התאמת כע לסוג הצלם
 	// חלפים
 	load: "קיים", // יכולת העמסה
-	loaddeatils: "",
 	stash: "בוצע", // הילום מלאי
 	hatak: "קיים", // חטכ
 	bakash: 0, // בקש
@@ -89,4 +88,5 @@ export const kshirotPackage = {
 	mentality: "", // חוסן מנטלאי
 	specialkey: [{}],
 	specialkeytwo: [{}],
+	IsRelevant: {},
 };

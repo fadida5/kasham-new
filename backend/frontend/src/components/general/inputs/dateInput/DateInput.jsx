@@ -1,3 +1,4 @@
+import AddComment from "components/general/Toggle/AddComment";
 import React, { useState, useEffect, useRef } from "react";
 import {
 	Button,
@@ -28,6 +29,18 @@ export const DateInput = (props) => {
 		// console.log(tipuldata);
 		props.handleCallBack({ label: evt.target.name, value: val });
 	}
+	function handleChange2(evt) {
+		const val = evt.target.value;
+		// setIsopen(!isopen);
+		console.log(val);
+		console.log(evt.target.name);
+		props.handleCallBack3({
+			name: evt.target.name,
+			value: val,
+		});
+	}
+
+	const detailVal = props.name + "detail";
 
 	return (
 		<>
@@ -36,10 +49,12 @@ export const DateInput = (props) => {
 					{!props.disableCol ? (
 						<>
 							<Col
-								xs={12}
-								md={6}
+								xs={props.smSize}
+								md={props.mdSize}
 							>
-								<div style={{ textAlign: "center", paddingTop: "10px" }}>
+								<div
+									style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
+								>
 									{" "}
 									{props.footer}
 								</div>
@@ -51,13 +66,16 @@ export const DateInput = (props) => {
 										value={props.value}
 										onChange={handleChange}
 										style={{ lineHeight: "inherit" }}
+										{...props.costume}
 									/>
 								</FormGroup>
 							</Col>
 						</>
 					) : (
 						<>
-							<div style={{ textAlign: "center", paddingTop: "10px" }}>
+							<div
+								style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
+							>
 								{" "}
 								{props.footer}
 							</div>
@@ -69,6 +87,7 @@ export const DateInput = (props) => {
 									value={props.value}
 									onChange={handleChange}
 									style={{ lineHeight: "inherit" }}
+									{...props.costume}
 								/>
 							</FormGroup>
 						</>
@@ -96,10 +115,12 @@ export const DateInput = (props) => {
 					{!props.disableCol ? (
 						<Row>
 							<Col
-								xs={12}
-								md={6}
+								xs={props.smSize}
+								md={props.mdSize}
 							>
-								<div style={{ textAlign: "center", paddingTop: "10px" }}>
+								<div
+									style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
+								>
 									{" "}
 									{props.footer}
 								</div>
@@ -111,13 +132,16 @@ export const DateInput = (props) => {
 										value={props.value}
 										onChange={handleChange}
 										style={{ lineHeight: "inherit" }}
+										{...props.costume}
 									/>
 								</FormGroup>
 							</Col>
 						</Row>
 					) : (
 						<Row className="mr-3 ml-3">
-							<div style={{ textAlign: "center", paddingTop: "10px" }}>
+							<div
+								style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
+							>
 								{" "}
 								{props.footer}
 							</div>
@@ -129,10 +153,21 @@ export const DateInput = (props) => {
 									value={props.value}
 									onChange={handleChange}
 									style={{ lineHeight: "inherit" }}
+									{...props.costume}
 								/>
 							</FormGroup>
 						</Row>
 					)}
+					{props.hascomment ? (
+						<div className={props.styleName}>
+							<AddComment
+								btnName="הוסף הערות"
+								name={detailVal}
+								value={props.detailVal}
+								handleChange={handleChange2}
+							/>
+						</div>
+					) : null}
 				</>
 			)}
 		</>

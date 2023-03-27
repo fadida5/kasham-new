@@ -152,7 +152,7 @@ export const ArrayAdder = (props) => {
 																		value={input[fieldAraay[i + 1]]}
 																		type={item.type}
 																		placeholder={item.name}
-																		{...props.costume(item.type)}
+																		{...props.costume(item.type, item.name)}
 																	/>
 																</>
 															) : (
@@ -162,15 +162,15 @@ export const ArrayAdder = (props) => {
 																	</p> */}
 																	<div
 																		style={{
-																			marginTop: "-5px",
+																			marginTop: "15px",
 																			marginRight: "2px",
 																			marginBottom: "10px",
 																		}}
 																	>
 																		<SelectOne
 																			header={item.name}
-																			name={item.name}
 																			isPart={true}
+																			name={item.name}
 																			hasNull={true}
 																			FreeOptions={props.freeOptions}
 																			value={

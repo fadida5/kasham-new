@@ -3,6 +3,7 @@ import { Col, Row } from "reactstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { ThemeContext } from "contexts/ThemeContext";
+import AddComment from "components/general/Toggle/AddComment";
 
 export const SelectOne = (props) => {
 	//* state ----------------------------------------------------------------
@@ -10,6 +11,8 @@ export const SelectOne = (props) => {
 	const [options, setOptions] = useState([]);
 
 	const animatedComponents = makeAnimated();
+
+	const detailVal = props.name + "detail";
 
 	//* functions ----------------------------------------------------------------
 	function optionsForUnits(unit) {
@@ -75,6 +78,16 @@ export const SelectOne = (props) => {
 		// console.log(tipuldata);
 		props.handleCallBack({ label: props.name, value: val });
 	}
+	function handleChange2(evt) {
+		const val = evt.target.value;
+		// setIsopen(!isopen);
+		console.log(val);
+		console.log(evt.target.name);
+		props.handleCallBack3({
+			name: evt.target.name,
+			value: val,
+		});
+	}
 
 	//* useEffect ----------------------------------------------------------------
 
@@ -125,16 +138,31 @@ export const SelectOne = (props) => {
 		<ThemeContext.Consumer>
 			{({ changeTheme, theme }) => (
 				<>
-				<Row>
-						{props.header && !props.isPart ? (
+					<Row>
+						{props.title ? (
 							<Col
 								xs={12}
 								md={3}
 								style={{
 									textAlign: "right",
 									paddingTop: "10px",
+									fontWeight: "bold",
+								}}
+							>
+								{props.title}
+							</Col>
+						) : null}
+					</Row>
+					<Row>
+						{props.header && !props.isPart ? (
+							<Col
+								xs={12}
+								md={6}
+								style={{
+									textAlign: "right",
+									paddingTop: "10px",
 									// fontWeight: "bold",
-									marginBottom: "5px"
+									marginBottom: "5px",
 								}}
 							>
 								{props.header}
@@ -142,59 +170,71 @@ export const SelectOne = (props) => {
 						) : null}
 					</Row>
 					{props.header && props.isPart ? (
-						<p style={{ marginTop: "5px", marginRight: "10px", textAlign: "right" }}>
+						<p style={{ marginTop: "-10px", textAlign: "right" }}>
 							{props.header}
 						</p>
 					) : null}
-				<Row>
-					<Col
-					style={{marginTop: "-5px", textAlign: "right" }}
->
-						{theme == "white-content" ? (
-							<Select
-								name={props.name}
-								isMulti={false}
-								// defaultValue={props.value}
-								options={options}
-								// value={props.value}
-								onChange={handleChange}
-								closeMenuOnSelect={true}
-								components={animatedComponents}
-								isDisabled={props.isDisabled}
-								placeholder={props.value != undefined ? props.value : "בחר"}
+					<Row>
+						<Col
+							style={{
+								marginTop: "-5px",
+								textAlign: "right",
+								marginBottom: "10px",
+							}}
+						>
+							{theme == "white-content" ? (
+								<Select
+									name={props.name}
+									isMulti={false}
+									// defaultValue={props.value}
+									options={options}
+									// value={props.value}
+									onChange={handleChange}
+									closeMenuOnSelect={true}
+									components={animatedComponents}
+									isDisabled={props.isDisabled}
+									placeholder={props.value != undefined ? props.value : "בחר"}
+								/>
+							) : (
+								<Select
+									name={props.name}
+									isMulti={false}
+									// defaultValue={props.value}
+									options={options}
+									// value={props.value}
+									onChange={handleChange}
+									closeMenuOnSelect={true}
+									components={animatedComponents}
+									isDisabled={props.isDisabled}
+									placeholder={props.value != undefined ? props.value : "בחר"}
+									theme={(theme) => ({
+										...theme,
+										colors: {
+											...theme.colors,
+											neutral0: "#27293d",
+											neutral5: "#1e1e2f",
+											primary25: "#1e1e2f",
+											primary50: "transparent",
+											neutral50: "white",
+											neutral80: "white",
+										},
+									})}
+								/>
+							)}
+						</Col>
+					</Row>
+					{props.hascomment ? (
+						<div className={props.styleName}>
+							<AddComment
+								btnName="הוסף הערות"
+								name={detailVal}
+								value={props.detailVal}
+								handleChange={handleChange2}
 							/>
-							
-						) : (
-							<Select
-								name={props.name}
-								isMulti={false}
-								// defaultValue={props.value}
-								options={options}
-								// value={props.value}
-								onChange={handleChange}
-								closeMenuOnSelect={true}
-								components={animatedComponents}
-								isDisabled={props.isDisabled}
-								placeholder={props.value != undefined ? props.value : "בחר"}
-								theme={(theme) => ({
-									...theme,
-									colors: {
-										...theme.colors,
-										neutral0: "#27293d",
-										neutral5: "#1e1e2f",
-										primary25: "#1e1e2f",
-										primary50: "transparent",
-										neutral50: "white",
-										neutral80: "white",
-									},
-								})}
-							/>
-						)}
-					</Col>
-				</Row>
+						</div>
+					) : null}
 				</>
 			)}
-		
 		</ThemeContext.Consumer>
 	);
 };
