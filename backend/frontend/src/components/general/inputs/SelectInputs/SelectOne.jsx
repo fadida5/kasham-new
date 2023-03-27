@@ -124,14 +124,32 @@ export const SelectOne = (props) => {
 	return (
 		<ThemeContext.Consumer>
 			{({ changeTheme, theme }) => (
+				<>
 				<Row>
-					{props.header ? (
-						<p style={{ marginTop: "0px", marginRight: "10px" }}>
+						{props.header && !props.isPart ? (
+							<Col
+								xs={12}
+								md={3}
+								style={{
+									textAlign: "right",
+									paddingTop: "10px",
+									// fontWeight: "bold",
+									marginBottom: "5px"
+								}}
+							>
+								{props.header}
+							</Col>
+						) : null}
+					</Row>
+					{props.header && props.isPart ? (
+						<p style={{ marginTop: "5px", marginRight: "10px", textAlign: "right" }}>
 							{props.header}
 						</p>
 					) : null}
-
-					<Col>
+				<Row>
+					<Col
+					style={{marginTop: "-5px", textAlign: "right" }}
+>
 						{theme == "white-content" ? (
 							<Select
 								name={props.name}
@@ -145,6 +163,7 @@ export const SelectOne = (props) => {
 								isDisabled={props.isDisabled}
 								placeholder={props.value != undefined ? props.value : "בחר"}
 							/>
+							
 						) : (
 							<Select
 								name={props.name}
@@ -173,7 +192,9 @@ export const SelectOne = (props) => {
 						)}
 					</Col>
 				</Row>
+				</>
 			)}
+		
 		</ThemeContext.Consumer>
 	);
 };

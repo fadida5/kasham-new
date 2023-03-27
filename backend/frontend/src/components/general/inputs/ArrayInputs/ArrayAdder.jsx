@@ -162,7 +162,7 @@ export const ArrayAdder = (props) => {
 																	</p> */}
 																	<div
 																		style={{
-																			marginTop: "15px",
+																			marginTop: "-5px",
 																			marginRight: "2px",
 																			marginBottom: "10px",
 																		}}
@@ -170,6 +170,7 @@ export const ArrayAdder = (props) => {
 																		<SelectOne
 																			header={item.name}
 																			name={item.name}
+																			isPart={true}
 																			hasNull={true}
 																			FreeOptions={props.freeOptions}
 																			value={

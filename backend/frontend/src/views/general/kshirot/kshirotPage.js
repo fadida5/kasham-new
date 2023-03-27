@@ -75,6 +75,10 @@ function KshirotPage(props) {
 		{ name: "מובהק", value: "מובהק" },
 		{ name: "מילואים", value: "מילואים" },
 	];
+	//* supply options for spare parts
+	const spareParts_exist_not = [{name: "קיים", value: "קיים"},{name: "לא קיים", value: "לא קיים"} ]
+	const spareParts_done = [{name: "בוצע", value: "בוצע"},{name: "לא בוצע", value: "לא בוצע"} ]
+	const spareParts_exist_not_partially  = [{name: "קיים", value: "קיים"},{name:"חלקי",value:"חלקי"},{name: "לא קיים", value: "לא קיים"} ]
 	//* pakage info
 	const info = [];
 
@@ -114,6 +118,18 @@ function KshirotPage(props) {
 			inputArray: inputArray,
 		};
 	};
+
+	//* selectOne free options
+
+	const selectOneFO = (name,hasNull,freeOptions,val,callBack) => {
+		return {
+			name: name,
+			hasNull: hasNull,
+			FreeOptions: freeOptions,
+			value: val? val : undefined ,
+			handleCallBack: callBack
+		}
+	}
 
 	//* specialkeys searched values
 	const searchedVals = ["teken", "matzva"];
@@ -272,6 +288,7 @@ function KshirotPage(props) {
 								<UniversalInput
 									{...uni("number", "סימון מקצוע", "experts")}
 									costume={{ min: 0 }}
+									header = {"גרעין מומחים"}
 								>
 									<UniversalInput
 										{...uni("number", "מצבה", "expertsmax")}
@@ -357,6 +374,41 @@ function KshirotPage(props) {
 							</Container>
 						</CardBody>
 					</Card>
+					<Card>
+					<CardBody className={style.CardBody}>
+							<Container>
+								<div
+									style={{
+										fontSize: "22px",
+										textAlign: "center",
+										paddingTop: "10px",
+										fontWeight: "bold",
+									}}
+								>
+									מלאי
+								</div>
+								<UniversalInput {...uni("number","תקן","teken")} 
+								header= {"אמצעי אחזקה"} 										
+								costume={{ min: 0 }}
+								hascomment = {true}
+								>
+								<UniversalInput {...uni("number","מצבה","tekenmax")} 
+								chained = {true} 
+								costume={{ min: 0 }}/>
+								</UniversalInput>
+								<UniversalInput {...uni("number","תקן","toolsbox")} 
+								header= {"ארגז כלים לכל בעל מקצוע"} 										
+								costume={{ min: 0 }}
+								hascomment = {true}
+								>
+								<UniversalInput {...uni("number","מצבה","toolsboxmax")} 
+								chained = {true} 
+								costume={{ min: 0 }}/>
+								</UniversalInput>
+								<SelectOne {...selectOneFO("match",false,spareParts_exist_not,kshirot.match,callBack)} header = 'התאמת כ"ע לסוג הצל"ם'/>
+								</Container>
+								</CardBody>
+								</Card>
 				</Col>
 			</Row>
 		</Container>
