@@ -22,7 +22,8 @@ import axios from 'axios';
 import history from 'history.js'
 import { toast } from "react-toastify";
 
-import logobazak2 from "assets/img/logobazak2.png";
+import logoKasham from "assets/img/kashamWideLogo.png";
+
 
 function Signin() {
   const [values, setValues] = useState({
@@ -126,7 +127,7 @@ function Signin() {
 
               <CardBody className="px-lg-5 py-lg-5">
                 <div className="text-center text-muted mb-4">
-                  <img src={logobazak2}></img>
+           <img src={logoKasham}></img>
                 </div>
                 <div className="text-center text-muted mb-4">
                   <small>התחברות</small>

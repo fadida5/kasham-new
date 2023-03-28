@@ -59,7 +59,7 @@ function KshirotPage(props) {
 	];
 	const job = {
 		id: "",
-		numbermikzoa: 0,
+		numbermikzoa: "",
 		name: "",
 		teken: 0,
 		matzva: 0,
@@ -67,8 +67,8 @@ function KshirotPage(props) {
 		professionalLevel: 0,
 	};
 	const jobFields = [
-		{ name: "מספר מקצוע", type: "number" },
-		{ name: "שם מקצוע", type: "string" },
+		{ name: "מספר מקצוע", type: "select" },
+		{ name: "שם מקצוע", type: "select" },
 		{ name: "תקן", type: "number" },
 		{ name: "מצבה", type: "number" },
 		{ name: "הערות", type: "select" },
@@ -79,6 +79,18 @@ function KshirotPage(props) {
 		{ name: "ראשוני", value: "ראשוני" },
 		{ name: "מובהק", value: "מובהק" },
 		{ name: "מילואים", value: "מילואים" },
+	];
+	const jobnName_options = [
+		{ name: "מכונאי", value: 1 },
+		{ name: "חשמלאי", value: 0 },
+	];
+	const jobNumber_options = [
+		{ name: "1", value: 1 },
+		{ name: "0", value: 0 },
+	];
+	const jobOperative_options = [
+		{ name: "כן", value: 1 },
+		{ name: "לא", value: 0 },
 	];
 	//* supply options for spare parts
 	const spareParts_exist_not = [
@@ -131,7 +143,36 @@ function KshirotPage(props) {
 
 	//* ArrayAdder
 
-	const arrAdd = (name, arrName, Bname, field, inputArray) => {
+	const arrAdd = (name, arrName, Bname, field, inputArray,Freeoptions) => {
+		const optionNames = Object.keys(field).slice(1)
+		const optionTypes = inputArray.map((obj)=> obj.type)
+		const TypeOfName = optionNames.filter((name,index)=> {
+			if (optionTypes[index] == "select") {
+				return name
+			}
+		})
+		// console.log(TypeOfName);
+		// console.log(optionNames);
+		// console.log(optionTypes);
+		let temp = {};
+
+		const getData= () => {Freeoptions.map((fl,index)=>{
+			// console.log(fl);
+			// console.log( {[TypeOfName[index]]:fl});
+			temp = {...temp,[TypeOfName[index]]:fl}
+		})}
+
+		let Op = {...temp};
+
+		 try {
+			getData();
+			 Op	= {...temp}
+		} catch (error) {
+			console.log(error);
+		} 
+		
+
+		// console.log({...Op});
 		return {
 			name: name,
 			arrName: arrName,
@@ -139,6 +180,7 @@ function KshirotPage(props) {
 			handleCallBack2: callBack2,
 			field: { ...field },
 			inputArray: inputArray,
+			freeOptions: {...Op}
 		};
 	};
 
@@ -384,9 +426,9 @@ function KshirotPage(props) {
 											"specialkey",
 											"הוסף בעל מקצוע",
 											job,
-											jobFields
+											jobFields,
+											[jobnName_options,jobNumber_options,jobFields_options]
 										)}
-										freeOptions={jobFields_options}
 										costume={(type, name) => {
 											// console.log(name);
 											switch (true) {
@@ -478,9 +520,9 @@ function KshirotPage(props) {
 										.slice(16, 19)
 										.map((fl, index) => {
 											const names = ["יכולת העמסה", "הילום המלאי", 'חט"כ'];
-											{
-												/* console.log(fl); */
-											}
+											
+												 console.log(fl);
+											
 											return (
 												<SelectOne
 													{...selectOneFO(
@@ -529,9 +571,9 @@ function KshirotPage(props) {
 												'התאמת ערכות חלפים לצל"ם',
 												"קטלוגים",
 											];
-											{
-												/* console.log(fl); */
-											}
+											
+												 console.log(fl);
+											
 											return (
 												<SelectOne
 													{...selectOneFO(

@@ -167,12 +167,14 @@ export const ArrayAdder = (props) => {
 																			marginBottom: "10px",
 																		}}
 																	>
+																	{/* {console.log(fieldAraay[i+1])}
+																	{console.log(props.freeOptions[fieldAraay[i+1]])} */}
 																		<SelectOne
 																			header={item.name}
 																			isPart={true}
 																			name={item.name}
 																			hasNull={true}
-																			FreeOptions={props.freeOptions}
+																			FreeOptions={props.freeOptions[fieldAraay[i+1]]}
 																			value={
 																				input[fieldAraay[i + 1]]
 																					? input[fieldAraay[i + 1]]
