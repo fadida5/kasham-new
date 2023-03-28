@@ -143,34 +143,35 @@ function KshirotPage(props) {
 
 	//* ArrayAdder
 
-	const arrAdd = (name, arrName, Bname, field, inputArray,Freeoptions) => {
-		const optionNames = Object.keys(field).slice(1)
-		const optionTypes = inputArray.map((obj)=> obj.type)
-		const TypeOfName = optionNames.filter((name,index)=> {
+	const arrAdd = (name, arrName, Bname, field, inputArray, Freeoptions) => {
+		const optionNames = Object.keys(field).slice(1);
+		const optionTypes = inputArray.map((obj) => obj.type);
+		const TypeOfName = optionNames.filter((name, index) => {
 			if (optionTypes[index] == "select") {
-				return name
+				return name;
 			}
-		})
+		});
 		// console.log(TypeOfName);
 		// console.log(optionNames);
 		// console.log(optionTypes);
 		let temp = {};
 
-		const getData= () => {Freeoptions.map((fl,index)=>{
-			// console.log(fl);
-			// console.log( {[TypeOfName[index]]:fl});
-			temp = {...temp,[TypeOfName[index]]:fl}
-		})}
+		const getData = () => {
+			Freeoptions.map((fl, index) => {
+				// console.log(fl);
+				// console.log( {[TypeOfName[index]]:fl});
+				temp = { ...temp, [TypeOfName[index]]: fl };
+			});
+		};
 
-		let Op = {...temp};
+		let Op = { ...temp };
 
-		 try {
+		try {
 			getData();
-			 Op	= {...temp}
+			Op = { ...temp };
 		} catch (error) {
 			console.log(error);
-		} 
-		
+		}
 
 		// console.log({...Op});
 		return {
@@ -180,7 +181,7 @@ function KshirotPage(props) {
 			handleCallBack2: callBack2,
 			field: { ...field },
 			inputArray: inputArray,
-			freeOptions: {...Op}
+			freeOptions: { ...Op },
 		};
 	};
 
@@ -427,7 +428,7 @@ function KshirotPage(props) {
 											"הוסף בעל מקצוע",
 											job,
 											jobFields,
-											[jobnName_options,jobNumber_options,jobFields_options]
+											[jobnName_options, jobNumber_options, jobFields_options]
 										)}
 										costume={(type, name) => {
 											// console.log(name);
@@ -520,9 +521,9 @@ function KshirotPage(props) {
 										.slice(16, 19)
 										.map((fl, index) => {
 											const names = ["יכולת העמסה", "הילום המלאי", 'חט"כ'];
-											
-												 console.log(fl);
-											
+
+											console.log(fl);
+
 											return (
 												<SelectOne
 													{...selectOneFO(
@@ -571,9 +572,9 @@ function KshirotPage(props) {
 												'התאמת ערכות חלפים לצל"ם',
 												"קטלוגים",
 											];
-											
-												 console.log(fl);
-											
+
+											console.log(fl);
+
 											return (
 												<SelectOne
 													{...selectOneFO(
