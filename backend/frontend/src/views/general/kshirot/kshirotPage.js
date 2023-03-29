@@ -171,7 +171,7 @@ function KshirotPage(props) {
 			getData();
 			Op = { ...temp };
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 		}
 
 		// console.log({...Op});
@@ -519,11 +519,16 @@ function KshirotPage(props) {
 										)}
 									/>
 									{Object.keys(kshirotPackage)
-										.slice(16, 19)
+										.slice(
+											Object.keys(kshirotPackage).indexOf("load"),
+											Object.keys(kshirotPackage).indexOf("hatak") + 1
+										)
 										.map((fl, index) => {
 											const names = ["יכולת העמסה", "הילום המלאי", 'חט"כ'];
 
-											console.log(fl);
+											{
+												/* console.log(fl); */
+											}
 
 											return (
 												<SelectOne
@@ -566,7 +571,10 @@ function KshirotPage(props) {
 										hascomment={true}
 									/>
 									{Object.keys(kshirotPackage)
-										.slice(23, 26)
+										.slice(
+											Object.keys(kshirotPackage).indexOf("matchmahin"),
+											Object.keys(kshirotPackage).indexOf("catalogs") + 1
+										)
 										.map((fl, index) => {
 											const names = [
 												'התאמת חלפים לצל"ם-רישום מכין',
@@ -574,7 +582,9 @@ function KshirotPage(props) {
 												"קטלוגים",
 											];
 
-											console.log(fl);
+											{
+												/* console.log(fl); */
+											}
 
 											return (
 												<SelectOne

@@ -46,12 +46,6 @@ const Minimize = (props) => {
 		<>
 			{isopen[label] ? (
 				<Button
-					// style={{
-					// 	marginLeft: "32%",
-					// 	marginTop: "1rem",
-					// 	marginBottom: "1rem",
-					// 	fontSize: "50px",
-					// }}
 					className={styles.ActiveButton}
 					onClick={() => setIsopen({ ...isopen, [label]: !isopen[label] })}
 				>
@@ -59,7 +53,6 @@ const Minimize = (props) => {
 				</Button>
 			) : (
 				<Button
-					// style={{ marginLeft: "34%", marginTop: "1rem", marginBottom: "1rem" }}
 					className={styles.closeButton}
 					onClick={() => setIsopen({ ...isopen, [label]: !isopen[label] })}
 				>
