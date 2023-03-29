@@ -70,6 +70,28 @@ export const ArrayAdder = (props) => {
 		// console.log(props.inputArray[0].name);
 	}, []);
 
+	useEffect(() => {
+		try {
+			const names = Object.keys(props.costumeSize);
+			names.map((name, index) => {
+				document.getElementsByName(name).forEach((element, index) => {
+					if (element.tagName == "DIV") {
+						element.className = props.costumeSize[name];
+					}
+				});
+			});
+		} catch (error) {
+			if (props.costumeSize) {
+				console.log(error);
+			} else {
+				console.log("there is no costume size prop");
+			}
+		}
+
+		// document.getElementById("מספר מקצוע").className = "col-12 col-md-6";
+		// console.log(a);
+	}, [finalspecialkeytwo.length]);
+
 	//* render ----------------------------------------------------------------
 
 	return (
@@ -130,6 +152,7 @@ export const ArrayAdder = (props) => {
 										? props.inputArray.map((item, i) => {
 												return (
 													<Col
+														name={item.name}
 														xs={12}
 														md={4}
 													>
@@ -167,14 +190,17 @@ export const ArrayAdder = (props) => {
 																			marginBottom: "10px",
 																		}}
 																	>
-																	{/* {console.log(fieldAraay[i+1])}
+																		{/* {console.log(fieldAraay[i+1])}
 																	{console.log(props.freeOptions[fieldAraay[i+1]])} */}
 																		<SelectOne
 																			header={item.name}
 																			isPart={true}
 																			name={item.name}
-																			hasNull={true}
-																			FreeOptions={props.freeOptions[fieldAraay[i+1]]}
+																			{...props.costume(item.type, item.name)}
+																			// hasNull={true}
+																			FreeOptions={
+																				props.freeOptions[fieldAraay[i + 1]]
+																			}
 																			value={
 																				input[fieldAraay[i + 1]]
 																					? input[fieldAraay[i + 1]]

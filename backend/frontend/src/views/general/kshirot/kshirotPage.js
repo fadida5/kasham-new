@@ -52,11 +52,13 @@ function KshirotPage(props) {
 		name: "",
 		teken: 0,
 		matzva: 0,
+		active: false,
 	};
 	const tafkidFields = [
 		{ name: "מפקד", type: "text" },
 		{ name: "תקן", type: "number" },
 		{ name: "מצבה", type: "number" },
+		{ name: "פעיל", type: "select" },
 	];
 	const job = {
 		id: "",
@@ -64,6 +66,7 @@ function KshirotPage(props) {
 		name: "",
 		teken: 0,
 		matzva: 0,
+		active: false,
 		tafkiddetails: "",
 		professionalLevel: 0,
 	};
@@ -72,7 +75,8 @@ function KshirotPage(props) {
 		{ name: "שם מקצוע", type: "select" },
 		{ name: "תקן", type: "number" },
 		{ name: "מצבה", type: "number" },
-		{ name: "הערות", type: "select" },
+		{ name: "פעיל", type: "select" },
+		{ name: "סוג", type: "select" },
 		{ name: "רמת מקצועיות", type: "number" },
 	];
 	const jobFields_options = [
@@ -89,9 +93,9 @@ function KshirotPage(props) {
 		{ name: "1", value: 1 },
 		{ name: "0", value: 0 },
 	];
-	const jobOperative_options = [
-		{ name: "כן", value: 1 },
-		{ name: "לא", value: 0 },
+	const Operative_options = [
+		{ name: "כן", value: true },
+		{ name: "לא", value: false },
 	];
 	//* supply options for spare parts
 	const spareParts_exist_not = [
@@ -236,8 +240,16 @@ function KshirotPage(props) {
 	//* calc from array to val in kshirot
 	function ArrayCalcDIff(arr, name) {
 		let temp = [];
+		// console.log(arr);
 		searchedVals.map((fl) => {
-			temp.push(arr.reduce((acc, cv) => Number(acc) + Number(cv[fl]), 0));
+			// console.log(fl);
+			temp.push(
+				arr.reduce(
+					//todo: fix cv.avtive to something that will check if all active and not just the last one
+					(acc, cv) => (cv.active ? Number(acc) + Number(cv[fl]) : null),
+					0
+				)
+			);
 			if (name === "specialkeytwo") {
 				setKshirot({ ...kshirot, kzinim: temp[0], kzinimmax: temp[1] });
 				// console.log(`the cal of ${fl} is ${temp[index]}`);
@@ -391,7 +403,8 @@ function KshirotPage(props) {
 											"specialkeytwo",
 											"הוסף בעל תפקיד",
 											tafkid,
-											tafkidFields
+											tafkidFields,
+											[Operative_options]
 										)}
 										costume={(type) => {
 											switch (true) {
@@ -429,8 +442,17 @@ function KshirotPage(props) {
 											"הוסף בעל מקצוע",
 											job,
 											jobFields,
-											[jobnName_options, jobNumber_options, jobFields_options]
+											[
+												jobNumber_options,
+												jobnName_options,
+												Operative_options,
+												jobFields_options,
+											]
 										)}
+										costumeSize={{
+											"מספר מקצוע": "col-12 col-md-6",
+											"שם מקצוע": "col-12 col-md-6",
+										}}
 										costume={(type, name) => {
 											// console.log(name);
 											switch (true) {
