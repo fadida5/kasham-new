@@ -26,7 +26,8 @@ export const kshirotPackage = {
 	// חלפים
 	load: "קיים", // יכולת העמסה
 	stash: "בוצע", // הילום מלאי
-	hatak: "קיים", // חטכ
+	hatak: 0, // חטכ
+	hatakmax: 0, // חטכ
 	bakash: 0, // בקש
 	bakashmax: 0,
 	bakashniod: "קיים",

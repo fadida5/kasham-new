@@ -4,6 +4,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { ThemeContext } from "contexts/ThemeContext";
 import AddComment from "components/general/Toggle/AddComment";
+import IsRelevant from "components/general/CollapseComponents/IsRelevant/IsRelevant";
 
 export const SelectOne = (props) => {
 	//* state ----------------------------------------------------------------
@@ -153,76 +154,166 @@ export const SelectOne = (props) => {
 							</Col>
 						) : null}
 					</Row>
-					<Row>
-						{props.header && !props.isPart ? (
-							<Col
-								xs={12}
-								md={6}
-								style={{
-									textAlign: "right",
-									paddingTop: "10px",
-									// fontWeight: "bold",
-									marginBottom: "5px",
-								}}
-							>
-								{props.header}
-							</Col>
-						) : null}
-					</Row>
-					{props.header && props.isPart ? (
-						<p style={{ marginTop: "-10px", textAlign: "right" }}>
-							{props.header}
-						</p>
-					) : null}
-					<Row>
-						<Col
-							style={{
-								marginTop: "-5px",
-								textAlign: "right",
-								marginBottom: "10px",
-							}}
+					{props.IsRelevant ? (
+						<IsRelevant
+							relevantField={{ [props.name]: true }}
+							handleCallBack={props.handleCallBack4}
 						>
-							{theme == "white-content" ? (
-								<Select
-									name={props.name}
-									isMulti={false}
-									// defaultValue={props.value}
-									options={options}
-									// value={props.value}
-									onChange={handleChange}
-									closeMenuOnSelect={true}
-									components={animatedComponents}
-									isDisabled={props.isDisabled}
-									placeholder={props.value != undefined ? props.value : "בחר"}
-								/>
-							) : (
-								<Select
-									name={props.name}
-									isMulti={false}
-									// defaultValue={props.value}
-									options={options}
-									// value={props.value}
-									onChange={handleChange}
-									closeMenuOnSelect={true}
-									components={animatedComponents}
-									isDisabled={props.isDisabled}
-									placeholder={props.value != undefined ? props.value : "בחר"}
-									theme={(theme) => ({
-										...theme,
-										colors: {
-											...theme.colors,
-											neutral0: "#27293d",
-											neutral5: "#1e1e2f",
-											primary25: "#1e1e2f",
-											primary50: "transparent",
-											neutral50: "white",
-											neutral80: "white",
-										},
-									})}
-								/>
-							)}
-						</Col>
-					</Row>
+							<Row>
+								{props.header && !props.isPart ? (
+									<Col
+										xs={12}
+										md={12}
+										style={{
+											textAlign: "right",
+											paddingTop: "10px",
+											// fontWeight: "bold",
+											marginBottom: "5px",
+										}}
+									>
+										{props.header}
+									</Col>
+								) : null}
+							</Row>
+							{props.header && props.isPart ? (
+								<p style={{ marginTop: "-10px", textAlign: "right" }}>
+									{props.header}
+								</p>
+							) : null}
+							<Row>
+								<Col
+									style={{
+										marginTop: "-5px",
+										textAlign: "right",
+										marginBottom: "10px",
+									}}
+								>
+									{theme == "white-content" ? (
+										<Select
+											name={props.name}
+											isMulti={false}
+											// defaultValue={props.value}
+											options={options}
+											// value={props.value}
+											onChange={handleChange}
+											closeMenuOnSelect={true}
+											components={animatedComponents}
+											isDisabled={props.isDisabled}
+											placeholder={
+												props.value != undefined ? props.value : "בחר"
+											}
+										/>
+									) : (
+										<Select
+											name={props.name}
+											isMulti={false}
+											// defaultValue={props.value}
+											options={options}
+											// value={props.value}
+											onChange={handleChange}
+											closeMenuOnSelect={true}
+											components={animatedComponents}
+											isDisabled={props.isDisabled}
+											placeholder={
+												props.value != undefined ? props.value : "בחר"
+											}
+											theme={(theme) => ({
+												...theme,
+												colors: {
+													...theme.colors,
+													neutral0: "#27293d",
+													neutral5: "#1e1e2f",
+													primary25: "#1e1e2f",
+													primary50: "transparent",
+													neutral50: "white",
+													neutral80: "white",
+												},
+											})}
+										/>
+									)}
+								</Col>
+							</Row>
+						</IsRelevant>
+					) : (
+						<>
+							<Row>
+								{props.header && !props.isPart ? (
+									<Col
+										xs={12}
+										md={6}
+										style={{
+											textAlign: "right",
+											paddingTop: "10px",
+											// fontWeight: "bold",
+											marginBottom: "5px",
+										}}
+									>
+										{props.header}
+									</Col>
+								) : null}
+							</Row>
+							{props.header && props.isPart ? (
+								<p style={{ marginTop: "-10px", textAlign: "right" }}>
+									{props.header}
+								</p>
+							) : null}
+
+							<Row>
+								<Col
+									style={{
+										marginTop: "-5px",
+										textAlign: "right",
+										marginBottom: "10px",
+									}}
+								>
+									{theme == "white-content" ? (
+										<Select
+											name={props.name}
+											isMulti={false}
+											// defaultValue={props.value}
+											options={options}
+											// value={props.value}
+											onChange={handleChange}
+											closeMenuOnSelect={true}
+											components={animatedComponents}
+											isDisabled={props.isDisabled}
+											placeholder={
+												props.value != undefined ? props.value : "בחר"
+											}
+										/>
+									) : (
+										<Select
+											name={props.name}
+											isMulti={false}
+											// defaultValue={props.value}
+											options={options}
+											// value={props.value}
+											onChange={handleChange}
+											closeMenuOnSelect={true}
+											components={animatedComponents}
+											isDisabled={props.isDisabled}
+											placeholder={
+												props.value != undefined ? props.value : "בחר"
+											}
+											theme={(theme) => ({
+												...theme,
+												colors: {
+													...theme.colors,
+													neutral0: "#27293d",
+													neutral5: "#1e1e2f",
+													primary25: "#1e1e2f",
+													primary50: "transparent",
+													neutral50: "white",
+													neutral80: "white",
+												},
+											})}
+										/>
+									)}
+								</Col>
+							</Row>
+						</>
+					)}
+
 					{props.hascomment ? (
 						<div className={props.styleName}>
 							<AddComment

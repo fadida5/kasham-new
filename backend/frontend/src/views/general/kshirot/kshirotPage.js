@@ -262,8 +262,8 @@ function KshirotPage(props) {
 				setKshirot({
 					...kshirot,
 					kzinim: tempActive[0],
-					kzinimmax: tempActive[1],
-					kzinimActivemax: temp[1],
+					kzinimmax: temp[1],
+					kzinimActivemax: tempActive[1],
 				});
 				// console.log(`the cal of ${fl} is ${temp[index]}`);
 			}
@@ -271,8 +271,8 @@ function KshirotPage(props) {
 				setKshirot({
 					...kshirot,
 					officers: tempActive[0],
-					officersmax: tempActive[1],
-					officersActivemax: temp[1],
+					officersmax: temp[1],
+					officersActivemax: tempActive[1],
 				});
 				// console.log(`the cal of ${fl} is ${temp[index]}`);
 			}
@@ -584,7 +584,7 @@ function KshirotPage(props) {
 											true
 										)}
 									/> */}
-									{dup(kshirotPackage, "lift", "hatak").map((fl, index) => {
+									{dup(kshirotPackage, "lift", "stash").map((fl, index) => {
 										const names = [
 											"אמצעי הרמה,חילוץ וגרירה",
 											'התאמת כ"ע לסוג הצל"ם',
@@ -599,11 +599,24 @@ function KshirotPage(props) {
 
 										return (
 											<>
-												{index > 2 ? (
-													<IsRelevant
-														relevantField={{ [fl]: true }}
-														handleCallBack={CallBack4}
-													>
+												{index >= 2 ? (
+													<>
+														{/* {index === 2 ? (
+															<Row>
+																<Col
+																	xs={12}
+																	md={3}
+																	style={{
+																		textAlign: "right",
+																		paddingTop: "10px",
+																		fontWeight: "bold",
+																	}}
+																>
+																	חלפים
+																</Col>
+															</Row>
+														) : null} */}
+
 														<SelectOne
 															{...selectOneFO(
 																fl,
@@ -620,8 +633,10 @@ function KshirotPage(props) {
 																true
 															)}
 															title={index === 2 ? "חלפים" : undefined}
+															IsRelevant={true}
+															handleCallBack4={CallBack4}
 														/>
-													</IsRelevant>
+													</>
 												) : (
 													<SelectOne
 														{...selectOneFO(
@@ -645,7 +660,22 @@ function KshirotPage(props) {
 										);
 									})}
 									<UniversalInput
+										{...uni("number", "תקן", "hatak")}
+										header='חט"כ'
+										costume={{ min: 0 }}
+										IsRelevant={true}
+										handleCallBack4={CallBack4}
+									>
+										<UniversalInput
+											{...uni("number", "מצבה", "hatakmax")}
+											chained={true}
+											costume={{ min: 0 }}
+										/>
+									</UniversalInput>
+									<UniversalInput
 										{...uni("number", "תקן", "bakash")}
+										IsRelevant={true}
+										handleCallBack4={CallBack4}
 										header='בק"ש'
 										costume={{ min: 0 }}
 									>
@@ -655,22 +685,23 @@ function KshirotPage(props) {
 											costume={{ min: 0 }}
 										/>
 									</UniversalInput>
-									<DateInput
-										{...date(
-											"תאריך רענון אחרון (תוקף 8 שנים)",
-											"lastrefreshdate",
-											12,
-											12
-										)}
-										hascomment={true}
-									/>
-									{dup(kshirotPackage, "matchmahin", "catalogs").map(
+									<IsRelevant
+										handleCallBack={CallBack4}
+										relevantField={{ lastrefreshdate: true }}
+									>
+										<DateInput
+											{...date(
+												"תאריך רענון אחרון (תוקף 8 שנים)",
+												"lastrefreshdate",
+												12,
+												12
+											)}
+											hascomment={true}
+										/>
+									</IsRelevant>
+									{dup(kshirotPackage, "matchswap", "catalogs").map(
 										(fl, index) => {
-											const names = [
-												'התאמת חלפים לצל"ם-רישום מכין',
-												'התאמת ערכות חלפים לצל"ם',
-												"קטלוגים",
-											];
+											const names = ['התאמת ערכות חלפים לצל"ם', "קטלוגים"];
 
 											{
 												/* console.log(fl); */
@@ -686,6 +717,8 @@ function KshirotPage(props) {
 														kshirot[fl],
 														true
 													)}
+													IsRelevant={true}
+													handleCallBack4={CallBack4}
 												/>
 											);
 										}

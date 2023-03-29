@@ -1,3 +1,4 @@
+import IsRelevant from "components/general/CollapseComponents/IsRelevant/IsRelevant";
 import React, { useState, useEffect, useRef } from "react";
 import {
 	Button,
@@ -121,7 +122,68 @@ export const UniversalInput = (props) => {
 							</Col>
 						) : null}
 					</Row>
-					{!props.disableCol ? (
+					{props.IsRelevant ? (
+						<IsRelevant
+							relevantField={{ [props.name]: true }}
+							handleCallBack={props.handleCallBack4}
+						>
+							{!props.disableCol ? (
+								<Row>
+									<Col
+										xs={props.smSize}
+										md={props.mdSize}
+									>
+										<div
+											style={{
+												textAlign: `${props.textLoc}`,
+												paddingTop: "10px",
+											}}
+										>
+											{" "}
+											{props.footer}
+										</div>
+										<FormGroup dir="rtl">
+											<Input
+												type={props.type}
+												bsSize="lg"
+												name={props.name}
+												value={props.value}
+												onChange={handleChange}
+												disabled={props.isDisabeld}
+												{...props.costume}
+											/>
+										</FormGroup>
+									</Col>
+
+									{props.children}
+								</Row>
+							) : (
+								<Row className="mr-3 ml-3">
+									<div
+										style={{
+											textAlign: `${props.textLoc}`,
+											paddingTop: "10px",
+										}}
+									>
+										{" "}
+										{props.footer}
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											type={props.type}
+											bsSize="lg"
+											name={props.name}
+											value={props.value}
+											onChange={handleChange}
+											disabled={props.isDisabeld}
+											{...props.costume}
+										/>
+									</FormGroup>
+									{props.children}
+								</Row>
+							)}
+						</IsRelevant>
+					) : !props.disableCol ? (
 						<Row>
 							<Col
 								xs={props.smSize}
