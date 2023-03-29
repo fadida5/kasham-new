@@ -45,20 +45,29 @@ const IsRelevant = (props) => {
 		<>
 			{isopen[label] ? (
 				<Button
-					style={{ marginLeft: "32%", marginTop: "1rem", marginBottom: "1rem" }}
+					style={{ float: "left", marginTop: "1.8rem", marginBottom: "1rem" }}
 					className="btn btn-danger"
 					onClick={() => setIsopen({ ...isopen, [label]: !isopen[label] })}
 				>
 					לא רלוונטי
 				</Button>
 			) : (
-				<Button
-					style={{ marginLeft: "34%", marginTop: "1rem", marginBottom: "1rem" }}
-					className="btn btn-primary"
-					onClick={() => setIsopen({ ...isopen, [label]: !isopen[label] })}
+				<Col
+					xs={12}
+					md={3}
 				>
-					רלוונטי
-				</Button>
+					<Button
+						style={{
+							float: "left",
+							marginTop: "1.8rem",
+							marginBottom: "1rem",
+						}}
+						className="btn btn-primary"
+						onClick={() => setIsopen({ ...isopen, [label]: !isopen[label] })}
+					>
+						רלוונטי
+					</Button>
+				</Col>
 			)}
 			<Collapse isOpen={isopen[label]}>{props.children}</Collapse>
 		</>

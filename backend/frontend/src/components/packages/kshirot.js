@@ -11,14 +11,17 @@ export const kshirotPackage = {
 	expertsmax: 0,
 	officers: 0, // בעלי מקצוע
 	officersmax: 0,
+	officersActivemax: 0,
 	kzinim: 0, //  קצינים
 	kzinimmax: 0,
+	kzinimActivemax: 0,
 
 	//אמצעי אחזקה
 	teken: 0, //תקן מול מצבה
 	tekenmax: 0,
 	toolsbox: 0, // ארגז כלים
 	toolsboxmax: 0,
+	lift: "קיים",
 	match: "קיים", // התאמת כע לסוג הצלם
 	// חלפים
 	load: "קיים", // יכולת העמסה
@@ -88,5 +91,5 @@ export const kshirotPackage = {
 	mentality: "", // חוסן מנטלאי
 	specialkey: [{}],
 	specialkeytwo: [{}],
-	IsRelevant: {},
+	IsRelevant: {}, //רלוונטי?
 };

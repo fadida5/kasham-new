@@ -239,26 +239,51 @@ function KshirotPage(props) {
 	//* helper functions --------------------------------
 	//* calc from array to val in kshirot
 	function ArrayCalcDIff(arr, name) {
+		let tempActive = [];
 		let temp = [];
 		// console.log(arr);
 		searchedVals.map((fl) => {
 			// console.log(fl);
+			tempActive.push(
+				arr.reduce(
+					//todo: fix cv.avtive to something that will check if all active and not just the last one
+					(acc, cv) => (cv.active ? Number(acc) + Number(cv[fl]) : null),
+					0
+				)
+			);
 			temp.push(
 				arr.reduce(
 					//todo: fix cv.avtive to something that will check if all active and not just the last one
-					(acc, cv) => (cv.active ? Number(acc) + Number(cv[fl]) : null)
+					(acc, cv) => Number(acc) + Number(cv[fl]),
+					0
 				)
 			);
 			if (name === "specialkeytwo") {
-				setKshirot({ ...kshirot, kzinim: temp[0], kzinimmax: temp[1] });
+				setKshirot({
+					...kshirot,
+					kzinim: tempActive[0],
+					kzinimmax: tempActive[1],
+					kzinimActivemax: temp[1],
+				});
 				// console.log(`the cal of ${fl} is ${temp[index]}`);
 			}
 			if (name === "specialkey") {
-				setKshirot({ ...kshirot, officers: temp[0], officersmax: temp[1] });
+				setKshirot({
+					...kshirot,
+					officers: tempActive[0],
+					officersmax: tempActive[1],
+					officersActivemax: temp[1],
+				});
 				// console.log(`the cal of ${fl} is ${temp[index]}`);
 			}
 		});
 	}
+	//* dupliction function by indexof
+	const dup = (Package, start, end) =>
+		Object.keys(Package).slice(
+			Object.keys(Package).indexOf(start),
+			Object.keys(Package).indexOf(end) + 1
+		);
 
 	//* useEffects ----------------------------------------------------------------
 	//* work-plan + basic workflow (should be minimized)
@@ -420,18 +445,25 @@ function KshirotPage(props) {
 									/>
 
 									<UniversalInput
-										{...uni("number", "תקינה", "kzinim")}
+										{...uni("number", "תקינה", "kzinim", 12, 4)}
 										header='סה"כ בעלי תפקיד'
 										isDisabeld={true}
 										value={kshirot.kzinim}
 										hascomment={true}
 									>
 										<UniversalInput
-											{...uni("number", "מצבה", "kzinimmax")}
+											{...uni("number", "מצבה", "kzinimmax", 12, 4)}
 											chained={true}
 											costume={{ min: 0 }}
 											isDisabeld={true}
 											value={kshirot.kzinimmax}
+										/>
+										<UniversalInput
+											{...uni("number", "מצבה פעילה", "kzinimActivemax", 12, 4)}
+											chained={true}
+											costume={{ min: 0 }}
+											isDisabeld={true}
+											value={kshirot.kzinimActivemax}
 										/>
 									</UniversalInput>
 									<ArrayAdder
@@ -470,18 +502,31 @@ function KshirotPage(props) {
 										}}
 									/>
 									<UniversalInput
-										{...uni("number", "תקינה", "officers")}
+										{...uni("number", "תקינה", "officers", 12, 4)}
 										header='סה"כ בעלי מקצוע'
 										isDisabeld={true}
 										value={kshirot.officers}
 										hascomment={true}
 									>
 										<UniversalInput
-											{...uni("number", "מצבה", "officersmax")}
+											{...uni("number", "מצבה", "officersmax", 12, 4)}
 											chained={true}
 											costume={{ min: 0 }}
 											isDisabeld={true}
 											value={kshirot.officersmax}
+										/>
+										<UniversalInput
+											{...uni(
+												"number",
+												"מצבה פעילה",
+												"officersActivemax",
+												12,
+												4
+											)}
+											chained={true}
+											costume={{ min: 0 }}
+											isDisabeld={true}
+											value={kshirot.officersActivemax}
 										/>
 									</UniversalInput>
 								</Minimize>
@@ -529,48 +574,76 @@ function KshirotPage(props) {
 											costume={{ min: 0 }}
 										/>
 									</UniversalInput>
-									<SelectOne
+									{/* <SelectOne
 										{...selectOneFO(
 											"match",
 											'התאמת כ"ע לסוג הצל"ם',
 											false,
-											spareParts_exist_not,
+											spareParts_exist_not_partially,
 											kshirot.match,
 											true
 										)}
-									/>
-									{Object.keys(kshirotPackage)
-										.slice(
-											Object.keys(kshirotPackage).indexOf("load"),
-											Object.keys(kshirotPackage).indexOf("hatak") + 1
-										)
-										.map((fl, index) => {
-											const names = ["יכולת העמסה", "הילום המלאי", 'חט"כ'];
+									/> */}
+									{dup(kshirotPackage, "lift", "hatak").map((fl, index) => {
+										const names = [
+											"אמצעי הרמה,חילוץ וגרירה",
+											'התאמת כ"ע לסוג הצל"ם',
+											"יכולת העמסה",
+											"הילום המלאי",
+											'חט"כ',
+										];
 
-											{
-												/* console.log(fl); */
-											}
+										{
+											/* console.log(fl); */
+										}
 
-											return (
-												<SelectOne
-													{...selectOneFO(
-														fl,
-														names[index],
-														false,
-														index === 0
-															? spareParts_exist_not_partially
-															: index === 1
-															? spareParts_done
-															: index === 2
-															? spareParts_exist_not
-															: null,
-														kshirot[fl],
-														true
-													)}
-													title={index === 0 ? "חלפים" : undefined}
-												/>
-											);
-										})}
+										return (
+											<>
+												{index > 2 ? (
+													<IsRelevant
+														relevantField={{ [fl]: true }}
+														handleCallBack={CallBack4}
+													>
+														<SelectOne
+															{...selectOneFO(
+																fl,
+																names[index],
+																false,
+																index >= 0 && index <= 2
+																	? spareParts_exist_not_partially
+																	: index === 3
+																	? spareParts_done
+																	: index === 4
+																	? spareParts_exist_not
+																	: null,
+																kshirot[fl],
+																true
+															)}
+															title={index === 2 ? "חלפים" : undefined}
+														/>
+													</IsRelevant>
+												) : (
+													<SelectOne
+														{...selectOneFO(
+															fl,
+															names[index],
+															false,
+															index >= 0 && index <= 2
+																? spareParts_exist_not_partially
+																: index === 3
+																? spareParts_done
+																: index === 4
+																? spareParts_exist_not
+																: null,
+															kshirot[fl],
+															true
+														)}
+														title={index === 2 ? "חלפים" : undefined}
+													/>
+												)}
+											</>
+										);
+									})}
 									<UniversalInput
 										{...uni("number", "תקן", "bakash")}
 										header='בק"ש'
@@ -591,12 +664,8 @@ function KshirotPage(props) {
 										)}
 										hascomment={true}
 									/>
-									{Object.keys(kshirotPackage)
-										.slice(
-											Object.keys(kshirotPackage).indexOf("matchmahin"),
-											Object.keys(kshirotPackage).indexOf("catalogs") + 1
-										)
-										.map((fl, index) => {
+									{dup(kshirotPackage, "matchmahin", "catalogs").map(
+										(fl, index) => {
 											const names = [
 												'התאמת חלפים לצל"ם-רישום מכין',
 												'התאמת ערכות חלפים לצל"ם',
@@ -619,7 +688,8 @@ function KshirotPage(props) {
 													)}
 												/>
 											);
-										})}
+										}
+									)}
 								</Minimize>
 							</Container>
 						</CardBody>
