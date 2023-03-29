@@ -246,8 +246,7 @@ function KshirotPage(props) {
 			temp.push(
 				arr.reduce(
 					//todo: fix cv.avtive to something that will check if all active and not just the last one
-					(acc, cv) => (cv.active ? Number(acc) + Number(cv[fl]) : null),
-					0
+					(acc, cv) => (cv.active ? Number(acc) + Number(cv[fl]) : null)
 				)
 			);
 			if (name === "specialkeytwo") {
