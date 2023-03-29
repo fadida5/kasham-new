@@ -32,7 +32,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCarDataFunc } from "redux/features/cardata/cardataSlice";
 import { SelectOne } from "components/general/inputs/SelectInputs/SelectOne";
 import style from "../kshirot/kshirotPage.module.css";
-import IsRelevant from "components/general/IsRelevant/IsRelevant";
+import IsRelevant from "components/general/CollapseComponents/IsRelevant/IsRelevant";
+import Minimize from "components/general/CollapseComponents/Minimize/Minimize";
 
 function KshirotPage(props) {
 	//* user
@@ -367,7 +368,7 @@ function KshirotPage(props) {
 								>
 									כוח אדם
 								</div>
-								<IsRelevant
+								<Minimize
 									relevantField={{ HR: true }}
 									handleCallBack={CallBack4}
 								>
@@ -462,7 +463,7 @@ function KshirotPage(props) {
 											value={kshirot.officersmax}
 										/>
 									</UniversalInput>
-								</IsRelevant>
+								</Minimize>
 							</Container>
 						</CardBody>
 					</Card>
@@ -479,7 +480,7 @@ function KshirotPage(props) {
 								>
 									מלאי
 								</div>
-								<IsRelevant
+								<Minimize
 									relevantField={{ Supply: true }}
 									handleCallBack={CallBack4}
 								>
@@ -588,7 +589,7 @@ function KshirotPage(props) {
 												/>
 											);
 										})}
-								</IsRelevant>
+								</Minimize>
 							</Container>
 						</CardBody>
 					</Card>
