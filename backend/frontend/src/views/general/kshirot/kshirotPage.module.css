@@ -6,3 +6,6 @@
 .CardBody {
 	direction: rtl;
 }
+.Comment {
+	margin-right: 0.8rem;
+}

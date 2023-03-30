@@ -12,6 +12,10 @@ export const kshirotPackage = {
 	officers: 0, // בעלי מקצוע
 	officersmax: 0,
 	officersActivemax: 0,
+	professionalSadir: 0,
+	professionalKeva: 0,
+	professionalReserved: 0,
+	professionals: 0,
 	kzinim: 0, //  קצינים
 	kzinimmax: 0,
 	kzinimActivemax: 0,
@@ -36,15 +40,26 @@ export const kshirotPackage = {
 	matchswap: "קיים", // התאמת ערכות חלפים לצלמ
 	catalogs: "קיים", // קטלוגים
 	// אמצעי ניוד
-	carpiter: 0, // נגמש פיטר
-	carpitermax: 0,
+	maflag: 0,
+	maflagMax: 0,
 	carhatap: 0, // נגמש חטפ
 	carhatapmax: 0,
-	mobilitytools: "קיים", // אמצעי ניוד מפלג טנא
-	carlahh: "קיים", // רכב לחח
-	katkal: "קיים", // כתקל/כיתת עורב/בקש/בימל צמה
+	carpiter: 0, // נגמש פיטר
+	carpitermax: 0,
+	classhatak: 0,
+	classhatakMax: 0,
+	classBakash_Namer: 0,
+	classBakash_NamerMax: 0,
+	katkal: 0,
+	katkalMax: 0,
+	classHathatHeavy: 0,
+	classHathatHeavyMax: 0,
+	classHathatlight: 0,
+	classHathatlightMax: 0,
 	rioarrow: 0, // ריאו חץ/עגור20
 	rioarrowmax: 0,
+	classNahot: 0,
+	classNahotMax: 0,
 	personalprotection: "קיים", // מיגון אישי
 	// שבצק
 	shiboz: 0, //התאמץ שיבוץ לקרבי
