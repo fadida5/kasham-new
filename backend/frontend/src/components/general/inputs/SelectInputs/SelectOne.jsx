@@ -143,7 +143,7 @@ export const SelectOne = (props) => {
 						{props.title ? (
 							<Col
 								xs={12}
-								md={3}
+								md={12}
 								style={{
 									textAlign: "right",
 									paddingTop: "10px",

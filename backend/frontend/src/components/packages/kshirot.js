@@ -68,10 +68,14 @@ export const kshirotPackage = {
 	driversmax: 0,
 	//פקודות מבצע
 	pkodotopara: "קיים", // פקודות אופרטיביות
-	tikshorat: 0, // אמצעי קשר/תקשורת
-	tikshoratmax: 0,
-	teneclass: 0,
-	teneclassmax: 0,
+	superiorApp_pkp: "קיים",
+	mefakedAPP_pkp: "קיים",
+	pkodotoAndExtra: "קיים", // נספחי אחזקה לפקודות אופרטיביות
+	superiorApp_pkpAE: "קיים",
+	mefakedAPP_pkpAE: "קיים",
+	pkodotoComp: "קיים", //  פקלי אחזקה משילימים
+	superiorApp_pkpCp: "קיים",
+	mefakedAPP_pkpCp: "קיים",
 
 	//פקלים
 	tiom: "קיים", // תיאום רמה ממונה

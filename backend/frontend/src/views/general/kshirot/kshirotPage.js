@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useReducer } from "react";
 
 import { useParams, Link, withRouter, Redirect } from "react-router-dom";
 
@@ -35,6 +35,7 @@ import { SelectOne } from "components/general/inputs/SelectInputs/SelectOne";
 import style from "../kshirot/kshirotPage.module.css";
 import IsRelevant from "components/general/CollapseComponents/IsRelevant/IsRelevant";
 import Minimize from "components/general/CollapseComponents/Minimize/Minimize";
+import { actions } from "react-table";
 
 function KshirotPage(props) {
 	//* user
@@ -46,6 +47,153 @@ function KshirotPage(props) {
 	const [details, setDetails] = useState([]);
 	//* isRelevant
 	const [isRelevant, setIsRelevant] = useState([]);
+	//* init helpers ----------------------------------------------------------------
+	const get_field = (pack, arr, val) => pack[arr].map((item) => item[val]);
+
+	//* useRducer ----------------------------------------------------------------
+
+	function reducer_Function(state, action) {
+		let arr = [];
+		let arrActive = [];
+		//* set matzva and matzvaActive
+		const diffActive = () => {
+			arr = get_field(kshirot, action.father, action.val);
+			arrActive = get_field(kshirot, action.father, "active");
+			arrActive.map((item, index) => {
+				if (!item) {
+					arr[index] = 0;
+				}
+			});
+			// console.log(arr);
+			return arr.reduce((acc, cv) => Number(acc) + Number(cv), 0);
+		};
+		//* set teken
+		const diff = () => {
+			arr = get_field(kshirot, action.father, action.val);
+			return arr.reduce((acc, cv) => Number(acc) + Number(cv), 0);
+		};
+
+		const average = (fl) => {
+			arr = kshirot[action.father]
+				.filter((obj) => obj.tafkiddetails === fl)
+				.map((item) => item.professionalLevel);
+			// console.log(arr);
+			return arr.reduce((acc, cv) => Number(acc) + Number(cv), 0) / arr.length;
+		};
+		console.log(action);
+		if (action.father === "specialkeytwo") {
+			switch (action.val) {
+				case "teken":
+					setKshirot({
+						...kshirot,
+						kzinim: diff(),
+					});
+					break;
+				case "matzva":
+					setKshirot({
+						...kshirot,
+						kzinimmax: diff(),
+						kzinimActivemax: diffActive(),
+					});
+					break;
+
+				default:
+					break;
+			}
+		} else if (action.father === "specialkey") {
+			switch (action.val) {
+				case "teken":
+					setKshirot({
+						...kshirot,
+						officers: diff(),
+					});
+					break;
+				case "matzva":
+					setKshirot({
+						...kshirot,
+						officersmax: diff(),
+						officersActivemax: diffActive(),
+					});
+					break;
+				case "tafkiddetails":
+					// console.log(get_field(kshirot, action.father, action.val));
+					let tafkidim = get_field(kshirot, action.father, action.val);
+					//TODO - fix the probel with מובהק
+					tafkidim.map((tafkid, index) => {
+						switch (tafkid) {
+							case "חובה":
+								setKshirot({
+									...kshirot,
+									professionalSadir: average("חובה"),
+									professionalKeva: average("ראשוני"),
+									professionals: average("מומחים"),
+									professionalReserved: average("מילואים"),
+								});
+								break;
+							case "ראשוני" || "מובהק":
+								setKshirot({
+									...kshirot,
+									professionalKeva:
+										average("ראשוני") && average("מובהק")
+											? (average("ראשוני") + average("מובהק")) / 2
+											: average("מובהק")
+											? average("מובהק")
+											: average("ראשוני")
+											? average("ראשוני")
+											: 0,
+									professionalSadir: average("חובה"),
+									professionals: average("מומחים"),
+									professionalReserved: average("מילואים"),
+								});
+								break;
+							case "מובהק" || "ראשוני":
+								setKshirot({
+									...kshirot,
+									professionalKeva:
+										average("ראשוני") && average("מובהק")
+											? (average("ראשוני") + average("מובהק")) / 2
+											: average("מובהק")
+											? average("מובהק")
+											: average("ראשוני")
+											? average("ראשוני")
+											: 0,
+									professionalSadir: average("חובה"),
+								});
+								break;
+
+							case "מילואים":
+								setKshirot({
+									...kshirot,
+									professionalReserved: average("מילואים"),
+									professionalSadir: average("חובה"),
+									professionalKeva: average("ראשוני"),
+									professionals: average("מומחים"),
+								});
+								break;
+							case "מומחים":
+								setKshirot({
+									...kshirot,
+									professionals: average("מומחים"),
+									professionalReserved: average("מילואים"),
+									professionalSadir: average("חובה"),
+									professionalKeva: average("ראשוני"),
+								});
+								break;
+
+							default:
+								arr = [];
+								break;
+						}
+					});
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
+
+	const [, dispatch] = useReducer(reducer_Function, 0);
 
 	//* fields ----------------------------------------------------------------
 	const tafkid = {
@@ -221,68 +369,38 @@ function KshirotPage(props) {
 	//* array output [{key : val, key2 : val2, ...}, ...]
 	function callBack2(inputData2, arrName) {
 		// console.log(arrName);
-		// console.log(inputData2);
+		console.table(inputData2);
 		kshirot[arrName] = inputData2;
-		ArrayCalcDIff(inputData2, arrName);
+		if (inputData2.length > 0) {
+			// console.log(dup(inputData2[0], "teken", "matzva"));
+			dup(inputData2[0], "teken", "matzva").map((key) => {
+				dispatch({ val: key, father: arrName });
+			});
+			// console.log(dup(inputData2[0], "tafkiddetails", "tafkiddetails"));
+			dispatch({
+				val: dup(inputData2[0], "tafkiddetails", "tafkiddetails")[0],
+				father: arrName,
+			});
+		}
+		// ArrayCalcDIff(inputData2, arrName);
 	}
 	//* geting details as an object {name : value, name : value } (name = inputName + detail)
 	function CallBack3(inputData3) {
-		console.log(inputData3);
-		console.log(details);
+		// console.log(inputData3);
+		// console.log(details);
 		setDetails({ ...details, [inputData3.name]: inputData3.value });
 		setKshirot({ ...kshirot, details: details });
 	}
 	//* geting Relevant as an object {name : value, name : value } (name = cardname)
 	function CallBack4(inputData4) {
-		console.log(inputData4);
-		console.log(isRelevant);
+		// console.log(inputData4);
+		// console.log(isRelevant);
 		setIsRelevant({ ...isRelevant, [inputData4.label]: inputData4.value });
 		setKshirot({ ...kshirot, IsRelevant: isRelevant });
 	}
 
 	//* helper functions --------------------------------
-	//* calc from array to val in kshirot
-	function ArrayCalcDIff(arr, name) {
-		let tempActive = [];
-		let temp = [];
-		// console.log(arr);
-		//todo: might use- usereducer to fix this bug, also to make a normalized function for this
-		searchedVals.map((fl) => {
-			// console.log(fl);
-			tempActive.push(
-				arr.reduce(
-					//todo: fix cv.avtive to something that will check if all active and not just the last one
-					(acc, cv) => (cv.active ? Number(acc) + Number(cv[fl]) : null),
-					0
-				)
-			);
-			temp.push(
-				arr.reduce(
-					//todo: fix cv.avtive to something that will check if all active and not just the last one
-					(acc, cv) => Number(acc) + Number(cv[fl]),
-					0
-				)
-			);
-			if (name === "specialkeytwo") {
-				setKshirot({
-					...kshirot,
-					kzinim: tempActive[0],
-					kzinimmax: temp[1],
-					kzinimActivemax: tempActive[1],
-				});
-				// console.log(`the cal of ${fl} is ${temp[index]}`);
-			}
-			if (name === "specialkey") {
-				setKshirot({
-					...kshirot,
-					officers: tempActive[0],
-					officersmax: temp[1],
-					officersActivemax: tempActive[1],
-				});
-				// console.log(`the cal of ${fl} is ${temp[index]}`);
-			}
-		});
-	}
+
 	//* dupliction function by indexof
 	const dup = (Package, start, end) =>
 		Object.keys(Package).slice(
@@ -503,7 +621,6 @@ function KshirotPage(props) {
 											}
 										}}
 									/>
-									{/*//TODO - set the currect values to all of those inputs, (check useReducer) */}
 									<UniversalInput
 										{...uni("number", "תקינה", "officers", 12, 4)}
 										header='סה"כ בעלי מקצוע'
@@ -840,7 +957,7 @@ function KshirotPage(props) {
 													}
 													return (
 														<>
-															<h3
+															<h4
 																style={{
 																	textAlign: "center",
 																	paddingTop: "10px",
@@ -851,7 +968,7 @@ function KshirotPage(props) {
 																}}
 															>
 																{title}
-															</h3>
+															</h4>
 															<UniversalInput
 																{...uni("number", "תקן", ffl)}
 																hascomment={true}
@@ -879,6 +996,141 @@ function KshirotPage(props) {
 											}
 										}
 									)}
+								</Minimize>
+							</Container>
+						</CardBody>
+					</Card>
+				</Col>
+				<Col
+					xs={12}
+					md={6}
+				>
+					<Card>
+						<CardBody>
+							<Container>
+								<div
+									style={{
+										fontSize: "22px",
+										textAlign: "center",
+										paddingTop: "10px",
+										fontWeight: "bold",
+									}}
+								>
+									אופרטיבי{" "}
+								</div>
+								<Minimize relevantField={{ opertive: true }}>
+									<h4
+										style={{
+											textAlign: "center",
+											paddingTop: "10px",
+											fontWeight: "bold",
+											marginBottom: "5px",
+											marginTop: "10px",
+											// textDecoration: "underline",
+										}}
+									>
+										שבצ"ק
+									</h4>
+									<UniversalInput
+										{...uni("number", "תקן", "shiboz")}
+										header="התאמת שיבוץ קרבי"
+										costume={{ min: 0 }}
+										IsRelevant={true}
+										handleCallBack4={CallBack4}
+									>
+										<UniversalInput
+											{...uni("number", "מצבה", "shibozmax")}
+											chained={true}
+											costume={{ min: 0 }}
+										/>
+									</UniversalInput>
+									<UniversalInput
+										{...uni("number", "תקן", "drivers")}
+										header="נהגים לכל פלטפורמת ניוד"
+										costume={{ min: 0 }}
+										IsRelevant={true}
+										handleCallBack4={CallBack4}
+									>
+										<UniversalInput
+											{...uni("number", "מצבה", "driversmax")}
+											chained={true}
+											costume={{ min: 0 }}
+										/>
+									</UniversalInput>
+									{dup(kshirotPackage, "pkodotopara", "mefakedAPP_pkpCp").map(
+										(fl, index) => {
+											{
+												/* console.log(fl); */
+											}
+											let names = [
+												"המצאות פקודות",
+												"תיאום רמת ממונה",
+												"אישור מפקד",
+												"המצאות פקודות ונספחים",
+												"תיאום רמת ממונה",
+												"אישור מפקד",
+												"המצאות פקודות",
+												"תיאום רמת ממונה",
+												"אישור מפקד",
+											];
+											let header = undefined;
+											let title = "";
+
+											switch (index) {
+												case 0:
+													title = "פקודת מבצע";
+													break;
+												case 3:
+													title = "נספחי אחזקה לפקודות אופרטביות";
+													break;
+												case 6:
+													title = 'פקל"י אחזקה משלימים';
+													break;
+
+												default:
+													title = "";
+											}
+											return (
+												<SelectOne
+													{...selectOneFO(
+														fl,
+														names[index],
+														false,
+														spareParts_exist_not,
+														kshirot[fl],
+														true
+													)}
+													title={title}
+													hascomment={true}
+												/>
+											);
+										}
+									)}
+									<h4
+										style={{
+											textAlign: "center",
+											paddingTop: "10px",
+											fontWeight: "bold",
+											marginBottom: "5px",
+											marginTop: "10px",
+											// textDecoration: "underline",
+										}}
+									>
+										מערכות שו"ב ממוחשבות{" "}
+									</h4>
+									{/* <UniversalInput
+										{...uni("number", "תקן", "shiboz")}
+										header='מצאי עמדות שו"ב תקינות'
+										costume={{ min: 0 }}
+										IsRelevant={true}
+										handleCallBack4={CallBack4}
+									>
+										<UniversalInput
+											{...uni("number", "מצבה", "shibozmax")}
+											chained={true}
+											costume={{ min: 0 }}
+										/>
+									</UniversalInput> */}
 								</Minimize>
 							</Container>
 						</CardBody>
