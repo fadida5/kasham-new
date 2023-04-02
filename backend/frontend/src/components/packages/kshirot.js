@@ -78,9 +78,9 @@ export const kshirotPackage = {
 	mefakedAPP_pkpCp: "קיים",
 
 	//פקלים
-	tiom: "קיים", // תיאום רמה ממונה
-	commanderconf: "קיים", // אישור מפקד
-	pkodotmashlimot: "קיים", // פקודות משלימות
+	// tiom: "קיים", // תיאום רמה ממונה
+	// commanderconf: "קיים", // אישור מפקד
+	// pkodotmashlimot: "קיים", // פקודות משלימות
 	//מערכות שוב ממוחשבות
 	tkinot: 0, // מצאי עמדות שוב תקינות
 	tkinotmax: 0,
@@ -92,6 +92,7 @@ export const kshirotPackage = {
 	//אימונים והכשרות
 	trainingamount: "", // אימון פלגת טנא- כמות
 	trainingquality: "", // אימון פלגת טנא- איכות
+	trainSycle: "בוצע",
 	// תרגילים
 	battaliondrillamount: "בוצע", // תרגיל גדוד כמות
 	battaliondrillquality: "", // תרגיל גדוד איכות
@@ -102,13 +103,17 @@ export const kshirotPackage = {
 	nokavimmax: 0,
 	tester: 0, // תעודות בוחן
 	testermax: 0,
-	amountmhalaf: 0, // גמות מוסמכי מחלף
+	amountmhalaf: 3, // גמות מוסמכי מחלף
 	amountmhalafmax: 0,
-	amounthanafa: 0, // כמות מוסמכי הנפה
+	amounthanafa: 2, // כמות מוסמכי הנפה
 	amounthanafamax: 0,
 	details: {},
 	// רוח יחידה
 	mentality: "", // חוסן מנטלאי
+	// tene
+	sumClass: 0,
+	sumClassKashir: 0,
+	sumClassNotKashir: 0,
 	specialkey: [{}],
 	specialkeytwo: [{}],
 	IsRelevant: {}, //רלוונטי?

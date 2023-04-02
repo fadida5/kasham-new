@@ -99,8 +99,12 @@ export const DateInput = (props) => {
 						{!props.disableheader ? (
 							<Col
 								xs={12}
-								md={3}
-								style={{ textAlign: "right" }}
+								md={12}
+								style={{
+									textAlign: "right",
+									paddingTop: "10px",
+									fontWeight: "bold",
+								}}
 							>
 								{props.header}
 							</Col>

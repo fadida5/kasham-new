@@ -38,14 +38,16 @@ const Minimize = (props) => {
 	// 	props.handleCallBack({ label: label, value: val });
 	// }
 
-	// useEffect(() => {
-	// 	handleChange();
-	// }, [isopen]);
+	useEffect(() => {
+		// handleChange();
+		// console.log(isopen);
+	}, [isopen]);
 
 	return (
-		<>
+		<div id={props.id}>
 			{isopen[label] ? (
 				<Button
+					id="close"
 					className={styles.ActiveButton}
 					onClick={() => setIsopen({ ...isopen, [label]: !isopen[label] })}
 				>
@@ -53,6 +55,7 @@ const Minimize = (props) => {
 				</Button>
 			) : (
 				<Button
+					id="open"
 					className={styles.closeButton}
 					onClick={() => setIsopen({ ...isopen, [label]: !isopen[label] })}
 				>
@@ -60,7 +63,7 @@ const Minimize = (props) => {
 				</Button>
 			)}
 			<Collapse isOpen={isopen[label]}>{props.children}</Collapse>
-		</>
+		</div>
 	);
 };
 export default Minimize;

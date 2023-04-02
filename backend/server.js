@@ -43,6 +43,8 @@ app.use("/api", hativaRoutes);
 app.use("/api", ogdaRoutes);
 app.use("/api", pikodRoutes);
 //general routes
+const KshirotRoute = require("./routes/kshirot/kshirot");
+app.use("/kshirot", KshirotRoute);
 
 if (process.env.NODE_ENV === "production") {
 	//set static folder
