@@ -58,10 +58,13 @@ function KshirotPage(props) {
 		);
 
 	//* useRducer ----------------------------------------------------------------
+	// todo save this on the state as an object and then in the end push the object to kshirot
+	let temp = {};
 
 	function reducer_Function(state, action) {
 		let arr = [];
 		let arrActive = [];
+		let arrFillter = [];
 		//* returns sum of array objects array with a "if active" condition
 		const diffActive = () => {
 			arr = get_field(kshirot, action.father, action.val);
@@ -77,6 +80,26 @@ function KshirotPage(props) {
 		//* returns sum of array objects array
 		const diff = () => {
 			arr = get_field(kshirot, action.father, action.val);
+			return arr.reduce((acc, cv) => Number(acc) + Number(cv), 0);
+		};
+		//* returns sum of array objects array
+		const diffType = (type, filter) => {
+			arr = get_field(kshirot, action.father, type);
+			arrFillter = get_field(kshirot, action.father, action.val);
+			// console.log(arrActive);
+			// console.log(filter);
+			arrFillter.map((item, index) => {
+				if (item != filter) {
+					arr[index] = 0;
+				}
+			});
+			arrActive = get_field(kshirot, action.father, "active");
+			arrActive.map((item, index) => {
+				if (!item) {
+					arr[index] = 0;
+				}
+			});
+			// console.log(arr);
 			return arr.reduce((acc, cv) => Number(acc) + Number(cv), 0);
 		};
 		//* returns an average of array objects array sum
@@ -97,48 +120,59 @@ function KshirotPage(props) {
 		};
 		// console.log(action);
 		if (action.father === "specialkeytwo") {
+			// console.log(action.val);
 			switch (action.val) {
 				case "teken":
-					setKshirot({
-						...kshirot,
-						kzinim: diff(),
-					});
+					// setKshirot({
+					// 	...kshirot,
+					// 	kzinim: diff(),
+					// });
+					// console.log("check");
+					temp.kzinim = diff();
 					break;
 				case "matzva":
-					setKshirot({
-						...kshirot,
-						kzinimmax: diff(),
-						kzinimActivemax: diffActive(),
-					});
+					// setKshirot({
+					// 	...kshirot,
+					// 	kzinimmax: diff(),
+					// 	kzinimActivemax: diffActive(),
+					// });
+					temp.kzinimmax = diff();
+					temp.kzinimActivemax = diffActive();
+
 					break;
 
-				case undefined:
+				case null:
 					console.log(`resetting all values to default for ${action.father}`);
 					let reVal = {};
 					dup(kshirot, "kzinim", "kzinimActivemax").map((fl) => {
 						reVal[fl] = kshirotPackage[fl];
 					});
 					// console.log(reVal);
-					setKshirot({ ...kshirot, ...reVal });
-					break;
+					Object.keys(reVal).map((key) => {
+						temp[key] = reVal[key];
+					});
 
+					break;
 				default:
 					break;
 			}
 		} else if (action.father === "specialkey") {
 			switch (action.val) {
 				case "teken":
-					setKshirot({
-						...kshirot,
-						officers: diff(),
-					});
+					// setKshirot({
+					// 	...kshirot,
+					// 	officers: diff(),
+					// });
+					temp.officers = diff();
 					break;
 				case "matzva":
-					setKshirot({
-						...kshirot,
-						officersmax: diff(),
-						officersActivemax: diffActive(),
-					});
+					// setKshirot({
+					// 	...kshirot,
+					// 	officersmax: diff(),
+					// 	officersActivemax: diffActive(),
+					// });
+					temp.officersmax = diff();
+					temp.officersActivemax = diffActive();
 					break;
 				case "tafkiddetails":
 					// console.log(get_field(kshirot, action.father, action.val));
@@ -146,62 +180,144 @@ function KshirotPage(props) {
 					tafkidim.map((tafkid, index) => {
 						switch (tafkid) {
 							case "חובה":
-								setKshirot({
-									...kshirot,
-									professionalSadir: average("חובה"),
-									professionalKeva: average("ראשוני"),
-									professionals: average("מומחים"),
-									professionalReserved: average("מילואים"),
-								});
+								// setKshirot({
+								// 	...kshirot,
+								// 	professionalSadir: average("חובה"),
+								// 	professionalKeva: average("ראשוני"),
+								// 	professionalReserved: average("מילואים") || average("מומחים"),
+								// 	professionals:
+								// 		diffType("matzva", "מילואים") +
+								// 		diffType("matzva", "מומחים"),
+								// });
+								temp.professionalSadir = average("חובה");
+								temp.professionalKeva = average("ראשוני");
+								temp.professionalReserved =
+									average("מילואים") || average("מומחים");
+								temp.professionals =
+									diffType("matzva", "מילואים") + diffType("matzva", "מומחים");
 								break;
 							case "ראשוני" || "מובהק":
-								setKshirot({
-									...kshirot,
-									professionalKeva: average("ראשוני", "מובהק")
-										? average("ראשוני", "מובהק")
-										: average("ראשוני")
-										? average("ראשוני")
-										: average("מובהק")
-										? average("מובהק")
-										: null,
-									professionalSadir: average("חובה"),
-									professionals: average("מומחים"),
-									professionalReserved: average("מילואים"),
-								});
+								// setKshirot({
+								// 	...kshirot,
+								// professionalKeva: average("ראשוני", "מובהק")
+								// 	? average("ראשוני", "מובהק")
+								// 	: average("ראשוני")
+								// 	? average("ראשוני")
+								// 	: average("מובהק")
+								// 	? average("מובהק")
+								// 	: null,
+								// 	professionalSadir: average("חובה"),
+								// 	professionalReserved: average("מילואים") || average("מומחים"),
+								// 	professionals:
+								// 		diffType("matzva", "מילואים") +
+								// 		diffType("matzva", "מומחים"),
+								// });
+								temp.professionalKeva = average("ראשוני", "מובהק")
+									? average("ראשוני", "מובהק")
+									: average("ראשוני")
+									? average("ראשוני")
+									: average("מובהק")
+									? average("מובהק")
+									: null;
+								temp.professionalSadir = average("חובה");
+								temp.professionalReserved =
+									average("מילואים") || average("מומחים");
+								temp.professionals =
+									diffType("matzva", "מילואים") + diffType("matzva", "מומחים");
 								break;
 							case "מובהק" || "ראשוני":
-								setKshirot({
-									...kshirot,
-									professionalKeva: average("ראשוני", "מובהק")
-										? average("ראשוני", "מובהק")
-										: average("ראשוני")
-										? average("ראשוני")
-										: average("מובהק")
-										? average("מובהק")
-										: null,
-									professionalSadir: average("חובה"),
-									professionals: average("מומחים"),
-									professionalReserved: average("מילואים"),
-								});
+								// setKshirot({
+								// 	...kshirot,
+								// professionalKeva: average("ראשוני", "מובהק")
+								// 	? average("ראשוני", "מובהק")
+								// 	: average("ראשוני")
+								// 	? average("ראשוני")
+								// 	: average("מובהק")
+								// 	? average("מובהק")
+								// 	: null,
+								// 	professionalSadir: average("חובה"),
+								// 	professionalReserved: average("מילואים") || average("מומחים"),
+								// 	professionals:
+								// 		diffType("matzva", "מילואים") +
+								// 		diffType("matzva", "מומחים"),
+								// });
+								temp.professionalKeva = average("ראשוני", "מובהק")
+									? average("ראשוני", "מובהק")
+									: average("ראשוני")
+									? average("ראשוני")
+									: average("מובהק")
+									? average("מובהק")
+									: null;
+								temp.professionalSadir = average("חובה");
+								temp.professionalReserved =
+									average("מילואים") || average("מומחים");
+								temp.professionals =
+									diffType("matzva", "מילואים") + diffType("matzva", "מומחים");
+
+								break;
+							case "מילואים" || "מומחים":
+								temp.professionalReserved = average("מילואים", "מומחים")
+									? average("מילואים", "מומחים")
+									: average("מילואים")
+									? average("מילואים")
+									: average("מומחים")
+									? average("מומחים")
+									: null;
+								temp.professionalSadir = average("חובה");
+								temp.professionalReserved =
+									average("מילואים") || average("מומחים");
+								temp.professionals =
+									diffType("matzva", "מילואים") + diffType("matzva", "מומחים");
+								// setKshirot({
+								// 	...kshirot,
+								// professionalReserved: average("מילואים", "מומחים")
+								// 	? average("מילואים", "מומחים")
+								// 	: average("מילואים")
+								// 	? average("מילואים")
+								// 	: average("מומחים")
+								// 	? average("מומחים")
+								// 	: null,
+								// 	professionalSadir: average("חובה"),
+								// 	professionalKeva: average("ראשוני"),
+								// 	professionals:
+								// 		diffType("matzva", "מילואים") +
+								// 		diffType("matzva", "מומחים"),
+								// });
+								// console.log(
+								// 	diffType("matzva", "מילואים") + diffType("matzva", "מומחים")
+								// );
+
+								break;
+							case "מומחים" || "מילואים":
+								temp.professionalReserved = average("מומחים", "מילואים")
+									? average("מומחים", "מילואים")
+									: average("מומחים")
+									? average("מומחים")
+									: average("מילואים")
+									? average("מילואים")
+									: null;
+								temp.professionalSadir = average("חובה");
+								temp.professionalReserved =
+									average("מילואים") || average("מומחים");
+								temp.professionals =
+									diffType("matzva", "מילואים") + diffType("matzva", "מומחים");
+								// setKshirot({
+								// 	...kshirot,
+								// professionalReserved: average("מומחים", "מילואים")
+								// 	? average("מומחים", "מילואים")
+								// 	: average("מומחים")
+								// 	? average("מומחים")
+								// 	: average("מילואים")
+								// 	? average("מילואים")
+								// 	: null,
+								// 	professionalSadir: average("חובה"),
+								// 	professionalKeva: average("ראשוני"),
+								// 	professionals:
+								// 		diffType("matzva", "מילואים") +
+								// 		diffType("matzva", "מומחים"),
+								// });
 								break;
 
-							case "מילואים":
-								setKshirot({
-									...kshirot,
-									professionalReserved: average("מילואים"),
-									professionalSadir: average("חובה"),
-									professionalKeva: average("ראשוני"),
-									professionals: average("מומחים"),
-								});
-								break;
-							case "מומחים":
-								setKshirot({
-									...kshirot,
-									professionals: average("מומחים"),
-									professionalReserved: average("מילואים"),
-									professionalSadir: average("חובה"),
-									professionalKeva: average("ראשוני"),
-								});
 								break;
 
 							default:
@@ -211,14 +327,17 @@ function KshirotPage(props) {
 					});
 					break;
 
-				case undefined:
+				case null:
 					console.log(`resetting all values to default for ${action.father}`);
 					let reVal = {};
 					dup(kshirot, "officers", "professionals").map((fl) => {
 						reVal[fl] = kshirotPackage[fl];
 					});
+					Object.keys(reVal).map((key) => {
+						temp[key] = reVal[key];
+					});
 					// console.log(reVal);
-					setKshirot({ ...kshirot, ...reVal });
+					// setKshirot({ ...kshirot, ...reVal });
 					break;
 
 				default:
@@ -227,6 +346,8 @@ function KshirotPage(props) {
 		} else {
 			console.log("no array");
 		}
+		console.log(temp);
+		setKshirot({ ...kshirot, ...temp });
 	}
 
 	const [, dispatch] = useReducer(reducer_Function, 0);
@@ -418,7 +539,7 @@ function KshirotPage(props) {
 				father: arrName,
 			});
 		} else {
-			dispatch({ father: arrName });
+			dispatch({ val: null, father: arrName });
 		}
 		// ArrayCalcDIff(inputData2, arrName);
 	}
@@ -487,7 +608,7 @@ function KshirotPage(props) {
 						break;
 				}
 			});
-			console.log(temp);
+			// console.log(temp);
 			if (temp.includes(false)) {
 				//todo make a table that converts all data to its name on the form
 				toast.error(`${empty} נשאר ריק`);
