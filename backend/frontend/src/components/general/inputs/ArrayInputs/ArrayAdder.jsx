@@ -63,6 +63,9 @@ export const ArrayAdder = (props) => {
 				console.log(fieldAraay.slice(1).length);
 				console.log(props.inputArray.length);
 				alert("you will not have enough input fields");
+			case typeof props.costume != "function":
+				alert("you must enter a function in costume");
+				break;
 
 			default:
 				break;
