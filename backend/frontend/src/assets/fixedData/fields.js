@@ -95,6 +95,6 @@ exports.oneToFive_Rate = [
 ];
 // //* pakage info
 
-exports.info = [];
-// //* specialkeys searched values
-exports.searchedVals = ["teken", "matzva"];
+// exports.info = [];
+// // //* specialkeys searched values
+// exports.searchedVals = ["teken", "matzva"];

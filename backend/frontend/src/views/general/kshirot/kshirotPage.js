@@ -39,6 +39,8 @@ import { TopTitle, h4Title } from "assets/fixedData/forcedStyle";
 import Minimize from "components/general/CollapseComponents/Minimize/Minimize";
 import { actions } from "react-table";
 import { toast } from "react-toastify";
+import { kshirotGrade } from "components/packages/kshirotGrades";
+import { params } from "../../../assets/fixedData/ksirotGradeParams";
 
 function KshirotPage(props) {
 	//* user
@@ -58,7 +60,6 @@ function KshirotPage(props) {
 	} = require("../../../assets/fixedData/initHelpers_functions");
 
 	//* useRducer ----------------------------------------------------------------
-	// todo save this on the state as an object and then in the end push the object to kshirot
 	let temp = {};
 
 	function reducer_Function(state, action) {
@@ -365,7 +366,6 @@ function KshirotPage(props) {
 		spareParts_done,
 		spareParts_exist_not,
 		spareParts_exist_not_partially,
-		info,
 		searchedVals,
 		trainperson,
 		trainpersonFields,
@@ -506,6 +506,7 @@ function KshirotPage(props) {
 	}
 
 	//*send ----------------------------------------------------------------
+	//TODO -  fix relevent
 
 	function send() {
 		const arr1 = dup(kshirotPackage, "commandername", "match");
@@ -516,19 +517,26 @@ function KshirotPage(props) {
 		necessary.push("mentality");
 		const pak = dup(kshirotPackage, "commandername", "specialkeytwo");
 		// console.log(pak);
-		// console.log(isRelevant);
+		console.log(isRelevant);
 		if (
-			Object.keys(isRelevant).includes(false) &&
+			Object.values(isRelevant).includes(false) &&
 			Object.keys(isRelevant).length > 0
 		) {
+			let kshirotRel = kshirot;
+			// console.log("check");
 			let isRkeys = Object.keys(isRelevant);
-			// console.log(isRkeys);
+			console.log(isRkeys);
 			const NotRelevant = isRkeys.filter((key) => isRelevant[key] === false);
 			// console.log(NotRelevant);
 			NotRelevant.map((nr) => {
 				console.log(nr);
+				// kshirotRel[nr] = undefined;
 				pak.pop(nr);
+				console.log(kshirotRel);
 			});
+			// console.log(
+			// 	kshirotGrade(kshirotRel, params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1))
+			// );
 			// console.log(pak);
 			//todo finish
 		} else {
@@ -558,9 +566,15 @@ function KshirotPage(props) {
 			// console.log(temp);
 			if (temp.includes(false)) {
 				//todo make a table that converts all data to its name on the form
+				// console.log(temp);
+				// console.log(empty);
+				console.log(
+					kshirotGrade(kshirot, params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1))
+				);
 				toast.error(`${empty} נשאר ריק`);
 				toast.info("אנא נסה שנית");
 			} else {
+				// kshirotGrade(kshirot,ksirotGradeParams)
 				console.log(pak);
 				axios
 					.post(`http://localhost:8000/kshirot/create`, kshirot)
@@ -582,6 +596,7 @@ function KshirotPage(props) {
 	//* useEffects ----------------------------------------------------------------
 	//* work-plan + basic workflow (should be minimized)
 	useEffect(() => {
+		let info = [];
 		let k = Object.keys(kshirotPackage);
 		let v = Object.values(kshirotPackage);
 		k.map((i, index) => {
@@ -622,7 +637,6 @@ function KshirotPage(props) {
 		//TODO -
 		/*//todo: 1) make each card its own component while this page will use the kshirot state (might move to usecontext).
 		//todo:	  2) check if all the card need to be relevent from the start if not use lazy loading (just for performance/fun ;) )
-		//todo:   3) make the fields in a different folder and import them, to prevent repeations 	
 		*/
 		<Container className={style.Container}>
 			<div
@@ -657,11 +671,17 @@ function KshirotPage(props) {
 									{...uni("text", "שם המפקד", "commandername")}
 									textLoc="center"
 								>
-									<DateInput
-										{...date("date", "תאריך תחילת תפקיד")}
+									<UniversalInput
+										{...uni("number", "זמן בתפקיד", "date")}
+										textLoc="center"
+										chained={true}
+										costume={{ min: 0 }}
+									/>
+									{/* <DateInput
+										{...date("תאריך תחילת תפקיד", "date")}
 										chained={true}
 										textLoc="center"
-									/>
+									/> */}
 								</UniversalInput>
 								<div
 									style={{
@@ -695,7 +715,7 @@ function KshirotPage(props) {
 					<Card>
 						<CardBody className={style.CardBody}>
 							<Container>
-								<div style={TopTitle}>כוח אדם</div>
+								<div style={TopTitle}> כוח אדם (25%)</div>
 								<Minimize relevantField={{ HR: true }}>
 									{/*//! {gdod.sadir == true ? null : ()} */}
 
@@ -858,7 +878,7 @@ function KshirotPage(props) {
 					<Card>
 						<CardBody className={style.CardBody}>
 							<Container>
-								<div style={TopTitle}>מלאי</div>
+								<div style={TopTitle}>מלאי (15%)</div>
 								<Minimize relevantField={{ Supply: true }}>
 									<UniversalInput
 										{...uni("number", "תקן", "teken")}
@@ -908,6 +928,7 @@ function KshirotPage(props) {
 										}
 
 										return (
+											//todo check if to add tkinot to lift
 											<>
 												{index >= 2 ? (
 													<>
@@ -1010,6 +1031,22 @@ function KshirotPage(props) {
 											styleName={style.Comment}
 										/>
 									</IsRelevant>
+
+									<UniversalInput
+										{...uni("number", "תקן", "halfimtzelem")}
+										IsRelevant={true}
+										handleCallBack4={CallBack4}
+										costume={{ min: 0 }}
+										header='מצאי ערכות חלפים לצל"ם'
+										styleName={style.Comment}
+										hascomment={true}
+									>
+										<UniversalInput
+											{...uni("number", "מצבה", "halfimtzelemmax")}
+											chained={true}
+											costume={{ min: 0 }}
+										/>
+									</UniversalInput>
 									{dup(kshirotPackage, "matchswap", "catalogs").map(
 										(fl, index) => {
 											const names = ['התאמת ערכות חלפים לצל"ם', "קטלוגים"];
@@ -1041,7 +1078,7 @@ function KshirotPage(props) {
 					<Card>
 						<CardBody>
 							<Container>
-								<div style={TopTitle}>ארגון ותשתיות</div>
+								<div style={TopTitle}>ארגון ותשתיות (15%)</div>
 								<Minimize relevantField={{ orgniztion: true }}>
 									{dup(kshirotPackage, "maflag", "classNahotMax").map(
 										(fl, index) => {
@@ -1206,7 +1243,7 @@ function KshirotPage(props) {
 												TRnispach: 'ביצוע נוה"ק סדור הכולל',
 												TRpkodotmasoa: 'נוה"ק ע"ג משואה',
 												TRtadrich: "ביצוע תדריך לקרב",
-												TRramatnispach: "ביצוע הערכת מצב",
+												TRpkodotahzaka: "ביצוע הערכת מצב",
 												TRramatnispach: "תהליך ביצוע נוהל קרב",
 												TRzlm: "תכנון מענה אחזקתי",
 												TRshimosbashob: 'צי"ד בנוה"ק - משואה',
@@ -1378,7 +1415,7 @@ function KshirotPage(props) {
 					<Card>
 						<CardBody>
 							<Container>
-								<div style={TopTitle}>אופרטיבי </div>
+								<div style={TopTitle}>אופרטיבי (20%)</div>
 								<Minimize relevantField={{ opertive: true }}>
 									<h4 style={h4Title}>שבצ"ק</h4>
 									<UniversalInput
@@ -1524,7 +1561,7 @@ function KshirotPage(props) {
 					<Card>
 						<CardBody>
 							<Container>
-								<div style={TopTitle}>אימנים והכשרות </div>
+								<div style={TopTitle}>אימונים והכשרות (15%)</div>
 								<Minimize relevantField={{ training: true }}>
 									<DateInput
 										{...date(
@@ -1672,7 +1709,7 @@ function KshirotPage(props) {
 					<Card>
 						<CardBody style={{ height: "420px" }}>
 							<Container>
-								<div style={TopTitle}>סיכום </div>
+								<div style={TopTitle}>סיכום (10%)</div>
 								<UniversalInput
 									{...uni(
 										"number",

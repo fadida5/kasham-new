@@ -37,6 +37,8 @@ export const kshirotPackage = {
 	bakashniod: "קיים",
 	lastrefreshdate: "עומד", // תאריך רענון אחרון
 	matchmahin: "קיים", // התאמת חלפים לצלם רישום מכין
+	halfimtzelem: 0,
+	halfimtzelemmax: 0,
 	matchswap: "קיים", // התאמת ערכות חלפים לצלמ
 	catalogs: "קיים", // קטלוגים
 	// אמצעי ניוד
@@ -60,7 +62,7 @@ export const kshirotPackage = {
 	rioarrowmax: 0,
 	classNahot: 0,
 	classNahotMax: 0,
-	personalprotection: "קיים", // מיגון אישי
+	// personalprotection: "קיים", // מיגון אישי
 	// שבצק
 	shiboz: 0, //התאמץ שיבוץ לקרבי
 	shibozmax: 0,
