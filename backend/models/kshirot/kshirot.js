@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
-
 const kshirotSchema = new mongoose.Schema({
 	// _id: { type: ObjectId },
+	grade: { type: Number },
 	// פרטי מפקד
 	commandername: { type: String }, //שם מפקד
 	timeinrole: { type: String }, // זמן בתפקיד
@@ -121,6 +121,94 @@ const kshirotSchema = new mongoose.Schema({
 	specialkey: { type: Object },
 	specialkeytwo: { type: Object },
 	IsRelevant: { type: Object }, //רלוונטי?
+
+	//  כללי
+	TRdetails: { type: String }, //פרטים כללים
+	TRgoals: { type: String }, // מטרות אימון
+	TRtraining: { type: Object }, //פרטי הסגל המתאמן
+
+	// מדדי סף לאימון
+	TRmaflag: { type: String }, // התייצבות מפלג קטא
+	TRkata: { type: String }, // התייצבות קטא
+	TRkitathalafim: { type: String }, // התייצבות  מפקד כיתת חלפים
+	TRkitatnaot: { type: String }, // התייצבות מפקד כיתת נאות
+	TRkitacala: { type: String }, // התייצבות  מפקד כיתה קלה
+	//יציאת כלי טנ"א לתרגיל
+	TRa: { type: String }, // 19 א
+	TRb: { type: String }, // 19 ב
+	TRd: { type: String }, //19 ד
+
+	//ביצוע נוהק סדור הכולל
+	TRnispach: { type: String }, // כיתבת נספח טנ"א
+	TRnohak: { type: String }, // הכנת תלקון נוהק
+	TRnihok: { type: String }, // הכנת תלקון ניהוק
+	TRazarim: { type: String }, // הכנת עזרים
+	//נוהק עג משואה
+	TRpkodotmasoa: { type: String }, //הזנת פקודות טנ"א במשואה
+	TRsadak: { type: String }, // הזנת סדכ כלים וכשירות
+
+	// ביצוע תדריך לקרב
+	TRtadrich: { type: String }, // ביצוע תדריך מפלג
+	//נוהל קרב
+	//ביצוע הערכת מצב
+	TRpkodotahzaka: { type: String }, // קבלת פקודות טנ"א
+	TRbkiot: { type: Number }, // רמת בקיאות בגזרת הליחמה
+	TRbkiotsadac: { type: Number }, // רמת בקיאות בסדכ
+
+	// תהליך ביצוע נוהל קרב
+	TRramatnispach: { type: Number }, //רמת כתיבת נספח טנ"א
+	TRtiom: { type: String }, // תיאום תוכנית הטנ"א
+	TRazarimquality: { type: Number }, //איכות הכנת עזרים
+	TRaishor: { type: String }, // אישור תוכניות
+	//תכנון מענה אחזקתי
+	TRzlm: { type: Number }, // רמת השליטה בנתוני צלם
+	TRshika: { type: Number }, // ביצוע חישובי שחיקה
+	TRbkiotmikom: { type: Number }, // הבקיאות במיקום כוחות שכנים
+	TRbkiotbgdod: { type: Number }, // הבקיאות ביעולות מערך הטנ"א בגדוד
+	//ציד בנוהק
+	TRshimosbashob: { type: String }, //שימוש במעקכת השוב
+	TRbkiotbashob: { type: Number }, // רמת בקיאות ושליטה במערכת שוב
+	//ניהול קרב
+	// מענה אחזקתי לרציפות הלחימה
+	TRramatshlita: { type: Number }, // רמת השליטה בכוחות קטנים
+	TRrazifot: { type: Number }, // רציפות במענה אחזקתי
+	TRramattiom: { type: Number }, // שליטה ותיאום בכוחות אגם והאזחקה
+
+	//בניית תמצ וביצוע הערכת מצב מתמשכת
+	TRshlitabmazav: { type: Number }, // שליטה בתמונת מצב
+	TRmidathatama: { type: Number }, // מידת התאמת מאמץ הטנ"א לתמונת מצב
+	TRnihol: { type: Number }, // ניהול עזרים
+	TRmidatkabala: { type: Number }, // מידת קבלה ומסירה של דוחות עיתיים
+	TRhafakat: { type: Number }, // הפקת משמעויות מהערכת מצב מתמשכת
+	// יחסי גומלין
+	TRehot: { type: Number }, // איכות יחסי הגומלין בתוך מערכי הטנ"א
+	TRehotplogot: { type: Number }, // איכות יחסי הגומלין עם הפלוגות
+	TRehotmfkada: { type: Number }, // איכות יחסי הגומלין עם מפקדת הגדוד
+	// ציד בניהוק
+	TRshimosbashob2: { type: String }, // שימוש במערכת השוב
+	TRbkiotbashob2: { type: Number }, // שימוש במערכת השוב במכלול
+	//סיכום
+	// למידה והפקת לקחים
+	TRlamida: { type: Number }, // רמת בניית עקומת למידה
+	TRsicombainaim: { type: Number }, // ביצוע סיכומי ביניים
+	TRrama: { type: Number }, // מבחני רמה למפקדים
+	TRsicomimon: { type: String }, // סיכום האימון בסיום האימון
+	TRimonhiloz: { type: Number }, // אימון משטח חילוץ
+	// לקחים עפ מרכבי בניין הכוח
+	TRlkhaimtene: { type: String }, // לקחים טנה
+	TRlkhaimamlah: { type: String }, // לקחים לאמצעי אמלח
+	TRlkhaimadam: { type: String }, // לקחים לכוח אדם
+	TRlkhaimlimon: { type: String }, // לקחים לאימונים והכשרות
+	TRlkhaimlirgon: { type: String }, // לקחים לארגון ותקינה
+	// נקודות לשיפור שימור
+	TRshipor: { type: String }, // הקודות לשיפור
+	TRshimor: { type: String }, // הקודות לשימור
+	// סיכום
+	TRsicomhonach: { type: String }, // סיכום חונך הטנ"א
+	TRsicomhmitaman: { type: String }, // סיכום המתאמן
+	TRnamehonach: { type: String }, // שם החונך
+	TRtafkidhonach: { type: String }, // תפקיד החונך
+	TRmasherhonach: { type: String }, // מאשר החונך
 });
 
 const kshirot = mongoose.model("Kshirot", kshirotSchema);

@@ -6,10 +6,15 @@
 // let OP = 0.2; //אאופרטיבי
 // let sum = 0.1; // סיכום
 
-const { dup } = require("../../assets/fixedData/initHelpers_functions");
+import { toast } from "react-toastify";
+
+const {
+	dup,
+	deepCheck,
+} = require("../../assets/fixedData/initHelpers_functions");
 // const kshirotPackage = require("../packages/kshirot");
 
-//helper functions
+//*helper functions
 
 function options_exist_not_partially(kshir, father, val, params) {
 	switch (kshir[val]) {
@@ -99,35 +104,82 @@ function options_oneToFive_Rate(kshir, father, val, params) {
 			break;
 	}
 }
-
-function Relevant(val, calc) {
-	switch (val) {
-		case undefined:
-			return null;
-			break;
-		case NaN:
-			return null;
-			break;
-		case "":
-			return null;
-			break;
-		case null:
-			return null;
-			break;
-
-		default:
-			return calc;
-			break;
-	}
-}
+//* defult vals
 let hrv = 0;
 let sgv = 0;
 let oiv = 0;
 let tntv = 0;
 let opv = 0;
 let sumv = 0;
-//TODO - fix relevent
-export function kshirotGrade(kshir, params) {
+
+//todo - add better error handling
+
+export function kshirotGrade(kshir, params, isTest) {
+	//! only if using without fix functions
+	const nullList = [];
+	//! force fix opartor
+	let opartor = 0.001;
+	//!
+	function Relevant(val, calc, paramVal) {
+		switch (val) {
+			case -1:
+				//! only if using without fix functions
+				nullList.push(paramVal);
+				//!
+				return null;
+				break;
+
+			default:
+				return calc;
+				break;
+		}
+	}
+	//* error handling indicator
+	let hasError = false;
+
+	//* send function
+	function send() {
+		if (hrv <= params.HR.Total && hrv >= 0) {
+			if (sgv <= params.Sg.Total && sgv >= 0) {
+				if (oiv <= params.OI.Total && oiv >= 0) {
+					if (opv <= params.OP.Total && opv >= 0) {
+						if (tntv <= params.TNT.Total && tntv >= 0) {
+							if (sumv <= params.sum.Total && sumv >= 0) {
+								return (
+									(
+										Number(hrv) +
+										Number(sgv) +
+										Number(oiv) +
+										Number(opv) +
+										Number(tntv) +
+										Number(sumv)
+									).toFixed(3) / opartor
+								);
+							} else {
+								console.log(sumv);
+								sumv = 0;
+							}
+						} else {
+							console.log(tntv);
+							tntv = 0;
+						}
+					} else {
+						console.log(opv);
+						opv = 0;
+					}
+				} else {
+					console.log(oiv);
+					oiv = 0;
+				}
+			} else {
+				console.log(sgv);
+				sgv = 0;
+			}
+		} else {
+			console.log(hrv);
+			hrv = 0;
+		}
+	}
 	// console.log(params.HR.Of);
 	// todo - test if base number is 0 if is 0 return error
 	const errorMessage = [];
@@ -171,24 +223,29 @@ export function kshirotGrade(kshir, params) {
 		const d = options_exist_not_partially(kshir, "Sg", "match", params);
 		const e = Relevant(
 			kshir["load"],
-			options_exist_not_partially(kshir, "Sg", "load", params)
+			options_exist_not_partially(kshir, "Sg", "load", params),
+			params.Sg.load
 		);
 		const f = Relevant(
 			kshir["stash"],
-			options_done(kshir, "Sg", "stash", params)
+			options_done(kshir, "Sg", "stash", params),
+			params.Sg.stash
 		);
 		const g = Relevant(
-			kshir["hatakmax"],
-			(kshir["hatakmax"] / kshir["hatak"]) * params.Sg.g
+			kshir["hatak"],
+			(kshir["hatakmax"] / kshir["hatak"]) * params.Sg.g,
+			params.Sg.g
 		);
 		const h = Relevant(
-			kshir["bakashmax"],
-			(kshir["bakashmax"] / kshir["bakash"]) * params.Sg.h
+			kshir["bakash"],
+			(kshir["bakashmax"] / kshir["bakash"]) * params.Sg.h,
+			params.Sg.h
 		);
 		const i = Relevant(kshir["lastrefreshdate"], params.Sg.i);
 		const j = Relevant(
-			kshir["halfimtzelemmax"],
-			(kshir["halfimtzelemmax"] / kshir["halfimtzelem"]) * params.Sg.j
+			kshir["halfimtzelem"],
+			(kshir["halfimtzelemmax"] / kshir["halfimtzelem"]) * params.Sg.j,
+			params.Sg.j
 		);
 		const k = Relevant(
 			kshir["matchswap"],
@@ -196,56 +253,61 @@ export function kshirotGrade(kshir, params) {
 		);
 		const l = Relevant(
 			kshir["catalogs"],
-			options_exist_not_partially(kshir, "Sg", "catalogs", params)
+			options_exist_not_partially(kshir, "Sg", "catalogs", params),
+			params.Sg.catalogs
 		);
 
-		temp = [a, b, c, d, e, f, g, h, i, j, k, l];
-		if (temp.includes(null)) {
-			let tempName = [
-				"a",
-				"b",
-				"c",
-				"d",
-				"e",
-				"f",
-				"g",
-				"h",
-				"i",
-				"j",
-				"k",
-				"l",
-			];
-			let tempNameActive = [];
-			temp.map((val, index) => {
-				if (val == null) {
-					fix = fix + params.Sg[tempName[index]];
-				}
-				if (val == undefined) {
-					alert(`${tempName[index]} is not a valid`);
-				} else {
-					active.push(val);
-					tempNameActive.push(tempName[index]);
-				}
-			});
-			const preFinal = active.reduce((acc, cv, index) => {
-				console.log(
-					`@ ${index} => ${acc} + ${cv} * ${
-						params.Sg[tempNameActive[index]] + fix / tempNameActive.length
-					} `
-				);
-				return (
-					Number(acc) +
-						Number(
-							(cv / params.Sg[tempNameActive[index]]) *
-								(params.Sg[tempNameActive[index]] + fix / tempNameActive.length)
-						),
-					0
-				);
-			});
-			sgv = preFinal * params.Sg.Total;
-		} else {
-			sgv = (a + b + c + d + e + f + g + h + i + j + k + l) * params.Sg.Total;
-		}
+		sgv = (a + b + c + d + e + f + g + h + i + j + k + l) * params.Sg.Total;
+
+		//? apply self fixing
+
+		// temp = [a, b, c, d, e, f, g, h, i, j, k, l];
+		// if (temp.includes(null)) {
+		// 	let tempName = [
+		// 		"a",
+		// 		"b",
+		// 		"c",
+		// 		"d",
+		// 		"e",
+		// 		"f",
+		// 		"g",
+		// 		"h",
+		// 		"i",
+		// 		"j",
+		// 		"k",
+		// 		"l",
+		// 	];
+		// 	let tempNameActive = [];
+		// 	temp.map((val, index) => {
+		// 		if (val == null) {
+		// 			fix = fix + params.Sg[tempName[index]];
+		// 		}
+		// 		if (val == undefined) {
+		// 			alert(`${tempName[index]} is not a valid`);
+		// 		} else {
+		// 			active.push(val);
+		// 			tempNameActive.push(tempName[index]);
+		// 		}
+		// 	});
+		// 	const preFinal = active.reduce((acc, cv, index) => {
+		// 		console.log(
+		// 			`@ ${index} => ${acc} + ${cv} * ${
+		// 				params.Sg[tempNameActive[index]] + fix / tempNameActive.length
+		// 			} `
+		// 		);
+		// 		return (
+		// 			Number(acc) +
+		// 				Number(
+		// 					(cv / params.Sg[tempNameActive[index]]) *
+		// 						(params.Sg[tempNameActive[index]] + fix / tempNameActive.length)
+		// 				),
+		// 			0
+		// 		);
+		// 	});
+		// 	sgv = preFinal * params.Sg.Total;
+		// } else {
+		// 	sgv = (a + b + c + d + e + f + g + h + i + j + k + l) * params.Sg.Total;
+		// }
 	};
 	const OI = async () => {
 		//* by field letter
@@ -253,75 +315,87 @@ export function kshirotGrade(kshir, params) {
 		const active = [];
 		const fix = 0;
 		const a = Relevant(
-			kshir["carhatapmax"],
-			(kshir["carhatapmax"] / kshir["carhatap"]) * params.OI.a
+			kshir["carhatap"],
+			(kshir["carhatapmax"] / kshir["carhatap"]) * params.OI.a,
+			params.OI.a
 		);
 		const b = Relevant(
-			kshir["carpitermax"],
-			(kshir["carpitermax"] / kshir["carpiter"]) * params.OI.b
+			kshir["carpiter"],
+			(kshir["carpitermax"] / kshir["carpiter"]) * params.OI.b,
+			params.OI.b
 		);
 		const c = Relevant(
-			kshir["classhatakMax"],
-			(kshir["classhatakMax"] / kshir["classhatak"]) * params.OI.c
+			kshir["classhatak"],
+			(kshir["classhatakMax"] / kshir["classhatak"]) * params.OI.c,
+			params.OI.c
 		);
 		const d = Relevant(
-			kshir["classBakash_NamerMax"],
-			(kshir["classBakash_NamerMax"] / kshir["classBakash_Namer"]) * params.OI.d
+			kshir["classBakash_Namer"],
+			(kshir["classBakash_NamerMax"] / kshir["classBakash_Namer"]) *
+				params.OI.d,
+			params.OI.d
 		);
 		const e = Relevant(
-			kshir["katkalMax"],
-			(kshir["katkalMax"] / kshir["katkal"]) * params.OI.e
+			kshir["katkal"],
+			(kshir["katkalMax"] / kshir["katkal"]) * params.OI.e,
+			params.OI.e
 		);
 		const f = Relevant(
-			kshir["classHathatHeavyMax"],
-			(kshir["classHathatHeavyMax"] / kshir["classHathatHeavy"]) * params.OI.f
+			kshir["classHathatHeavy"],
+			(kshir["classHathatHeavyMax"] / kshir["classHathatHeavy"]) * params.OI.f,
+			params.OI.f
 		);
 		const g = Relevant(
-			kshir["classHathatlightMax"],
-			(kshir["classHathatlightMax"] / kshir["classHathatlight"]) * params.OI.g
+			kshir["classHathatlight"],
+			(kshir["classHathatlightMax"] / kshir["classHathatlight"]) * params.OI.g,
+			params.OI.g
 		);
 		const h = Relevant(
-			kshir["rioarrowmax"],
+			kshir["rioarrow"],
 			(kshir["rioarrowmax"] / kshir["rioarrow"]) * params.OI.h
 		);
 		const i = Relevant(
-			kshir["classNahotMax"],
-			(kshir["classNahotMax"] / kshir["classNahot"]) * params.OI.i
+			kshir["classNahot"],
+			(kshir["classNahotMax"] / kshir["classNahot"]) * params.OI.i,
+			params.OI.i
 		);
-		temp = [a, b, c, d, e, f, g, h, i];
-		if (temp.includes(null)) {
-			let tempName = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
-			let tempNameActive = [];
-			temp.map((val, index) => {
-				if (val == null) {
-					fix = fix + params.OI[tempName[index]];
-				}
-				if (val == undefined) {
-					alert(`${tempName[index]} is not a valid`);
-				} else {
-					active.push(val);
-					tempNameActive.push(tempName[index]);
-				}
-			});
-			const preFinal = active.reduce((acc, cv, index) => {
-				console.log(
-					`@ ${index} => ${acc} + ${cv} * ${
-						params.OI[tempNameActive[index]] + fix / tempNameActive.length
-					} `
-				);
-				return (
-					Number(acc) +
-						Number(
-							(cv / params.OI[tempNameActive[index]]) *
-								(params.OI[tempNameActive[index]] + fix / tempNameActive.length)
-						),
-					0
-				);
-			});
-			oiv = preFinal * params.OI.Total;
-		} else {
-			oiv = (a + b + c + d + e + f + g + h + i) * params.OI.Total;
-		}
+		oiv = (a + b + c + d + e + f + g + h + i) * params.OI.Total;
+		//? apply self fixing
+
+		// temp = [a, b, c, d, e, f, g, h, i];
+		// if (temp.includes(null)) {
+		// 	let tempName = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+		// 	let tempNameActive = [];
+		// 	temp.map((val, index) => {
+		// 		if (val == null) {
+		// 			fix = fix + params.OI[tempName[index]];
+		// 		}
+		// 		if (val == undefined) {
+		// 			alert(`${tempName[index]} is not a valid`);
+		// 		} else {
+		// 			active.push(val);
+		// 			tempNameActive.push(tempName[index]);
+		// 		}
+		// 	});
+		// 	const preFinal = active.reduce((acc, cv, index) => {
+		// 		console.log(
+		// 			`@ ${index} => ${acc} + ${cv} * ${
+		// 				params.OI[tempNameActive[index]] + fix / tempNameActive.length
+		// 			} `
+		// 		);
+		// 		return (
+		// 			Number(acc) +
+		// 				Number(
+		// 					(cv / params.OI[tempNameActive[index]]) *
+		// 						(params.OI[tempNameActive[index]] + fix / tempNameActive.length)
+		// 				),
+		// 			0
+		// 		);
+		// 	});
+		// 	oiv = preFinal * params.OI.Total;
+		// } else {
+		// 	oiv = (a + b + c + d + e + f + g + h + i) * params.OI.Total;
+		// }
 	};
 	const OP = async () => {
 		let temp = [];
@@ -330,66 +404,77 @@ export function kshirotGrade(kshir, params) {
 		//* by field letter
 		const a = Relevant(
 			kshir["shibozmax"],
-			(kshir["shibozmax"] / kshir["shiboz"]) * params.OP.a
+			(kshir["shibozmax"] / kshir["shiboz"]) * params.OP.a,
+			params.OP.a
 		);
 		const b = Relevant(
 			kshir["drivers"],
-			(kshir["drivers"] / kshir["driversmax"]) * params.OP.b
+			(kshir["driversmax"] / kshir["drivers"]) * params.OP.b,
+			params.OP.b
 		);
 		const must = dup(kshir, "pkodotopara", "mefakedAPP_pkpCp")
 			.map((val) => options_exist_not(kshir, "OP", val, params))
 			.reduce((acc, cv) => Number(acc) + Number(cv), 0);
 
 		const c = Relevant(
-			kshir["tkinotmax"],
-			(kshir["tkinotmax"] / kshir["tkinot"]) * params.OP.c
+			kshir["tkinot"],
+			(kshir["tkinotmax"] / kshir["tkinot"]) * params.OP.c,
+			params.OP.c
 		);
 		const d = Relevant(
 			kshir["tikim"],
-			options_done(kshir, "OP", "tikim", params)
+			options_done(kshir, "OP", "tikim", params),
+			params.OP.tikim
 		);
 		const e = Relevant(
 			kshir["roleholdersmax"],
-			(kshir["roleholdersmax"] / kshir["roleholders"]) * params.OP.e
+			(kshir["roleholdersmax"] / kshir["roleholders"]) * params.OP.e,
+			params.OP.e
 		);
 		const f = Relevant(
 			kshir["boxcontent"],
-			options_exist_not_partially(kshir, "OP", "boxcontent", params)
+			options_exist_not_partially(kshir, "OP", "boxcontent", params),
+			params.OP.boxcontent
 		);
-		temp = [a, b, c, d, e, f];
-		if (temp.includes(null)) {
-			let tempName = ["a", "b", "c", "d", "e", "f"];
-			let tempNameActive = [];
-			temp.map((val, index) => {
-				if (val == null) {
-					fix = fix + params.OP[tempName[index]];
-				}
-				if (val == undefined) {
-					alert(`${tempName[index]} is not a valid`);
-				} else {
-					active.push(val);
-					tempNameActive.push(tempName[index]);
-				}
-			});
-			const preFinal = active.reduce((acc, cv, index) => {
-				console.log(
-					`@ ${index} => ${acc} + ${cv} * ${
-						params.OP[tempNameActive[index]] + fix / tempNameActive.length
-					} `
-				);
-				return (
-					Number(acc) +
-						Number(
-							(cv / params.OP[tempNameActive[index]]) *
-								(params.OP[tempNameActive[index]] + fix / tempNameActive.length)
-						),
-					0
-				);
-			});
-			opv = (preFinal + must) * params.OP.Total;
-		} else {
-			opv = (a + b + c + d + e + f + must) * params.OP.Total;
-		}
+
+		opv = (a + b + c + d + e + f + must) * params.OP.Total;
+
+		//? apply self fixing
+
+		// temp = [a, b, c, d, e, f];
+		// if (temp.includes(null)) {
+		// 	let tempName = ["a", "b", "c", "d", "e", "f"];
+		// 	let tempNameActive = [];
+		// 	temp.map((val, index) => {
+		// 		if (val == null) {
+		// 			fix = fix + params.OP[tempName[index]];
+		// 		}
+		// 		if (val == undefined) {
+		// 			alert(`${tempName[index]} is not a valid`);
+		// 		} else {
+		// 			active.push(val);
+		// 			tempNameActive.push(tempName[index]);
+		// 		}
+		// 	});
+		// 	const preFinal = active.reduce((acc, cv, index) => {
+		// 		console.log(
+		// 			`@ ${index} => ${acc} + ${cv} * ${
+		// 				params.OP[tempNameActive[index]] + fix / tempNameActive.length
+		// 			} `
+		// 		);
+		// 		return (
+		// 			Number(acc) +
+		// 				Number(
+		// 					(cv / params.OP[tempNameActive[index]]) *
+		// 						(params.OP[tempNameActive[index]] + fix / tempNameActive.length)
+		// 				),
+		// 			0
+		// 		);
+		// 	});
+		// 	opv = (preFinal + must) * params.OP.Total;
+		// } else {
+		// 	opv = (a + b + c + d + e + f + must) * params.OP.Total;
+		// }
 	};
 
 	const TNT = async () => {
@@ -418,74 +503,82 @@ export function kshirotGrade(kshir, params) {
 		};
 		must();
 		const a = Relevant(
-			kshir["korsmax"],
-			(kshir["korsmax"] / kshir["kors"]) * params.TNT.a
+			kshir["kors"],
+			(kshir["korsmax"] / kshir["kors"]) * params.TNT.a,
+			params.TNT.a
 		);
 		const b = Relevant(
 			kshir["nokavim"],
-			(kshir["nokavim"] / 100) * params.TNT.b
+			(kshir["nokavim"] / 100) * params.TNT.b,
+			params.TNT.e
 		);
 		const c = Relevant(
 			kshir["tester"],
-			(kshir["tester"] / kshir["testermax"]) * params.TNT.c
+			(kshir["testermax"] / kshir["tester"]) * params.TNT.c,
+			params.TNT.c
 		);
 		const d = Relevant(
-			kshir["amountmhalafmax"],
-			(kshir["amountmhalafmax"] / kshir["amountmhalaf"]) * params.TNT.d
+			kshir["amountmhalaf"],
+			(kshir["amountmhalafmax"] / kshir["amountmhalaf"]) * params.TNT.d,
+			params.TNT.d
 		);
 		const e = Relevant(
-			kshir["amounthanafamax"],
-			(kshir["amounthanafamax"] / kshir["amounthanafa"]) * params.TNT.e
+			kshir["amounthanafa"],
+			(kshir["amounthanafamax"] / kshir["amounthanafa"]) * params.TNT.e,
+			params.TNT.e
 		);
-		// console.log(mustval);
 
-		temp = [a, b, c, d, e];
-		if (temp.includes(null)) {
-			let tempName = ["a", "b", "c", "d", "e", "f"];
-			let tempNameActive = [];
-			temp.map((val, index) => {
-				if (val == null) {
-					fix = fix + params.TNT[tempName[index]];
-				}
-				if (val == undefined) {
-					alert(`${tempName[index]} is not a valid`);
-				} else {
-					active.push(val);
-					tempNameActive.push(tempName[index]);
-				}
-			});
-			const preFinal = active.reduce((acc, cv, index) => {
-				console.log(
-					`@ ${index} => ${acc} + ${cv} * ${
-						params.TNT[tempNameActive[index]] + fix / tempNameActive.length
-					} `
-				);
-				return (
-					Number(acc) +
-						Number(
-							(cv / params.TNT[tempNameActive[index]]) *
-								(params.TNT[tempNameActive[index]] +
-									fix / tempNameActive.length)
-						),
-					0
-				);
-			});
-			tntv = (preFinal + mustval) * params.TNT.Total;
-		} else {
-			tntv = (a + b + c + d + e + mustval) * params.TNT.Total;
-		}
+		tntv = (a + b + c + d + e + mustval) * params.TNT.Total;
+
+		//? apply self fixing
+		// temp = [a, b, c, d, e];
+		// if (temp.includes(null)) {
+		// 	let tempName = ["a", "b", "c", "d", "e", "f"];
+		// 	let tempNameActive = [];
+		// 	temp.map((val, index) => {
+		// 		if (val == null) {
+		// 			fix = fix + params.TNT[tempName[index]];
+		// 		}
+		// 		if (val == undefined) {
+		// 			alert(`${tempName[index]} is not a valid`);
+		// 		} else {
+		// 			active.push(val);
+		// 			tempNameActive.push(tempName[index]);
+		// 		}
+		// 	});
+		// 	const preFinal = active.reduce((acc, cv, index) => {
+		// 		console.log(
+		// 			`@ ${index} => ${acc} + ${cv} * ${
+		// 				params.TNT[tempNameActive[index]] + fix / tempNameActive.length
+		// 			} `
+		// 		);
+		// 		return (
+		// 			Number(acc) +
+		// 				Number(
+		// 					(cv / params.TNT[tempNameActive[index]]) *
+		// 						(params.TNT[tempNameActive[index]] +
+		// 							fix / tempNameActive.length)
+		// 				),
+		// 			0
+		// 		);
+		// 	});
+		// 	tntv = (preFinal + mustval) * params.TNT.Total;
+		// } else {
+		// 	tntv = (a + b + c + d + e + mustval) * params.TNT.Total;
+		// }
 	};
 	const sum = async () => {
 		// console.log(kshir["mentality"]);
 		// console.log(params.sum.Total);
 		const Sclass = Relevant(
-			kshir["sumClassKashir"],
-			(kshir["sumClassKashir"] / kshir["sumClass"]) * params.sum.Sclass
+			kshir["sumClass"],
+			(kshir["sumClassKashir"] / kshir["sumClass"]) * params.sum.Sclass,
+			params.sum.Sclass * params.sum.Total
 		);
 
 		const man = (kshir["mentality"] / 5) * params.sum.mentality;
 		// console.log(Sclass + "aaaa");
-		console.log(Sclass);
+		// console.log(Sclass);
 
 		if (Sclass == null || undefined) {
 			sumv = man * params.sum.Total;
@@ -493,69 +586,71 @@ export function kshirotGrade(kshir, params) {
 			sumv = (man + Sclass) * params.sum.Total;
 		}
 	};
-
+	//* calling calc functions
 	HR();
 	Sg();
 	OI();
 	OP();
 	TNT();
 	sum();
+	//* setting decimal to x.abc
 	hrv = hrv.toFixed(3);
 	sgv = sgv.toFixed(3);
 	oiv = oiv.toFixed(3);
 	opv = opv.toFixed(3);
 	tntv = tntv.toFixed(3);
 	sumv = sumv.toFixed(3);
-	console.log(hrv + "HR - 0.25 max");
-	console.log(sgv + "SG - 0.15 max");
-	console.log(oiv + "Oi - 0.15 max");
-	console.log(opv + "OP - 0.2 max");
-	console.log(tntv + "TNT - 0.15 max");
-	console.log(sumv + "sum - 0.1 max");
+	// console.log(hrv + "HR - 0.25 max");
+	// console.log(sgv + "SG - 0.15 max");
+	// console.log(oiv + "Oi - 0.15 max");
+	// console.log(opv + "OP - 0.2 max");
+	// console.log(tntv + "TNT - 0.15 max");
+	// console.log(sumv + "sum - 0.1 max");
+	//* checking if there are any invalid values
+	let unCheckedData = {
+		hrv: hrv,
+		sgv: sgv,
+		oiv: oiv,
+		opv: opv,
+		tntv: tntv,
+		sumv: sumv,
+	};
+	let CheckedData = deepCheck(unCheckedData);
 
-	if (hrv <= params.HR.Total && hrv >= 0) {
-		if (sgv <= params.Sg.Total && sgv >= 0) {
-			if (oiv <= params.OI.Total && oiv >= 0) {
-				if (opv <= params.OP.Total && opv >= 0) {
-					if (tntv <= params.TNT.Total && tntv >= 0) {
-						if (sumv <= params.sum.Total && sumv >= 0) {
-							return (
-								(
-									Number(hrv) +
-									Number(sgv) +
-									Number(oiv) +
-									Number(opv) +
-									Number(tntv) +
-									Number(sumv)
-								).toFixed(3) * 100
-							);
-						} else {
-							console.log(sumv);
-
-							alert("error in sum");
-						}
-					} else {
-						console.log(TNT);
-
-						alert("error in TNT");
-					}
-				} else {
-					console.log(OP);
-
-					alert("error in OP");
-				}
-			} else {
-				console.log(OI);
-
-				alert("error in OI");
-			}
-		} else {
-			console.log(Sg);
-
-			alert("error in Sg");
+	// console.log(a);
+	// console.log(a.err);
+	//* error handeling (need to be improved)
+	if (Array.isArray(CheckedData.err)) {
+		if (isTest) {
+			CheckedData.err.map((error) => {
+				toast.error(error);
+			});
 		}
-	} else {
-		console.log(HR);
-		alert("error in HR");
+
+		hasError = true;
 	}
+	//* setting the checked data to the correct enteries
+	hrv = CheckedData.hrv;
+	sgv = CheckedData.sgv;
+	oiv = CheckedData.oiv;
+	opv = CheckedData.opv;
+	tntv = CheckedData.tntv;
+	sumv = CheckedData.sumv;
+
+	// console.log(nullList);
+	// console.log(nullList.reduce((acc, v) => acc + v, 0));
+
+	if (nullList.length > 0) {
+		opartor = nullList.reduce((acc, v) => acc + v, 0) * 0.01;
+	}
+
+	// console.log(hrv + "HR - 0.25 max");
+	// console.log(sgv + "SG - 0.15 max");
+	// console.log(oiv + "Oi - 0.15 max");
+	// console.log(opv + "OP - 0.2 max");
+	// console.log(tntv + "TNT - 0.15 max");
+	// console.log(sumv + "sum - 0.1 max");
+
+	// console.log(send());
+	return { grade: send(), approved: hasError };
 }

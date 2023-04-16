@@ -41,7 +41,7 @@ import { actions } from "react-table";
 import { toast } from "react-toastify";
 import { kshirotGrade } from "components/packages/kshirotGrades";
 import { params } from "../../../assets/fixedData/ksirotGradeParams";
-
+//TODO - build a test for test-user
 function KshirotPage(props) {
 	//* user
 	const { user } = isAuthenticated();
@@ -124,19 +124,9 @@ function KshirotPage(props) {
 			// console.log(action.val);
 			switch (action.val) {
 				case "teken":
-					// setKshirot({
-					// 	...kshirot,
-					// 	kzinim: diff(),
-					// });
-					// console.log("check");
 					temp.kzinim = diff();
 					break;
 				case "matzva":
-					// setKshirot({
-					// 	...kshirot,
-					// 	kzinimmax: diff(),
-					// 	kzinimActivemax: diffActive(),
-					// });
 					temp.kzinimmax = diff();
 					temp.kzinimActivemax = diffActive();
 
@@ -160,18 +150,9 @@ function KshirotPage(props) {
 		} else if (action.father === "specialkey") {
 			switch (action.val) {
 				case "teken":
-					// setKshirot({
-					// 	...kshirot,
-					// 	officers: diff(),
-					// });
 					temp.officers = diff();
 					break;
 				case "matzva":
-					// setKshirot({
-					// 	...kshirot,
-					// 	officersmax: diff(),
-					// 	officersActivemax: diffActive(),
-					// });
 					temp.officersmax = diff();
 					temp.officersActivemax = diffActive();
 					break;
@@ -181,15 +162,6 @@ function KshirotPage(props) {
 					tafkidim.map((tafkid, index) => {
 						switch (tafkid) {
 							case "חובה":
-								// setKshirot({
-								// 	...kshirot,
-								// 	professionalSadir: average("חובה"),
-								// 	professionalKeva: average("ראשוני"),
-								// 	professionalReserved: average("מילואים") || average("מומחים"),
-								// 	professionals:
-								// 		diffType("matzva", "מילואים") +
-								// 		diffType("matzva", "מומחים"),
-								// });
 								temp.professionalSadir = average("חובה");
 								temp.professionalKeva = average("ראשוני");
 								temp.professionalReserved =
@@ -198,21 +170,6 @@ function KshirotPage(props) {
 									diffType("matzva", "מילואים") + diffType("matzva", "מומחים");
 								break;
 							case "ראשוני" || "מובהק":
-								// setKshirot({
-								// 	...kshirot,
-								// professionalKeva: average("ראשוני", "מובהק")
-								// 	? average("ראשוני", "מובהק")
-								// 	: average("ראשוני")
-								// 	? average("ראשוני")
-								// 	: average("מובהק")
-								// 	? average("מובהק")
-								// 	: null,
-								// 	professionalSadir: average("חובה"),
-								// 	professionalReserved: average("מילואים") || average("מומחים"),
-								// 	professionals:
-								// 		diffType("matzva", "מילואים") +
-								// 		diffType("matzva", "מומחים"),
-								// });
 								temp.professionalKeva = average("ראשוני", "מובהק")
 									? average("ראשוני", "מובהק")
 									: average("ראשוני")
@@ -227,21 +184,6 @@ function KshirotPage(props) {
 									diffType("matzva", "מילואים") + diffType("matzva", "מומחים");
 								break;
 							case "מובהק" || "ראשוני":
-								// setKshirot({
-								// 	...kshirot,
-								// professionalKeva: average("ראשוני", "מובהק")
-								// 	? average("ראשוני", "מובהק")
-								// 	: average("ראשוני")
-								// 	? average("ראשוני")
-								// 	: average("מובהק")
-								// 	? average("מובהק")
-								// 	: null,
-								// 	professionalSadir: average("חובה"),
-								// 	professionalReserved: average("מילואים") || average("מומחים"),
-								// 	professionals:
-								// 		diffType("matzva", "מילואים") +
-								// 		diffType("matzva", "מומחים"),
-								// });
 								temp.professionalKeva = average("ראשוני", "מובהק")
 									? average("ראשוני", "מובהק")
 									: average("ראשוני")
@@ -269,24 +211,6 @@ function KshirotPage(props) {
 									average("מילואים") || average("מומחים");
 								temp.professionals =
 									diffType("matzva", "מילואים") + diffType("matzva", "מומחים");
-								// setKshirot({
-								// 	...kshirot,
-								// professionalReserved: average("מילואים", "מומחים")
-								// 	? average("מילואים", "מומחים")
-								// 	: average("מילואים")
-								// 	? average("מילואים")
-								// 	: average("מומחים")
-								// 	? average("מומחים")
-								// 	: null,
-								// 	professionalSadir: average("חובה"),
-								// 	professionalKeva: average("ראשוני"),
-								// 	professionals:
-								// 		diffType("matzva", "מילואים") +
-								// 		diffType("matzva", "מומחים"),
-								// });
-								// console.log(
-								// 	diffType("matzva", "מילואים") + diffType("matzva", "מומחים")
-								// );
 
 								break;
 							case "מומחים" || "מילואים":
@@ -302,21 +226,6 @@ function KshirotPage(props) {
 									average("מילואים") || average("מומחים");
 								temp.professionals =
 									diffType("matzva", "מילואים") + diffType("matzva", "מומחים");
-								// setKshirot({
-								// 	...kshirot,
-								// professionalReserved: average("מומחים", "מילואים")
-								// 	? average("מומחים", "מילואים")
-								// 	: average("מומחים")
-								// 	? average("מומחים")
-								// 	: average("מילואים")
-								// 	? average("מילואים")
-								// 	: null,
-								// 	professionalSadir: average("חובה"),
-								// 	professionalKeva: average("ראשוני"),
-								// 	professionals:
-								// 		diffType("matzva", "מילואים") +
-								// 		diffType("matzva", "מומחים"),
-								// });
 								break;
 
 								break;
@@ -506,7 +415,6 @@ function KshirotPage(props) {
 	}
 
 	//*send ----------------------------------------------------------------
-	//TODO -  fix relevent
 
 	function send() {
 		const arr1 = dup(kshirotPackage, "commandername", "match");
@@ -517,28 +425,83 @@ function KshirotPage(props) {
 		necessary.push("mentality");
 		const pak = dup(kshirotPackage, "commandername", "specialkeytwo");
 		// console.log(pak);
-		console.log(isRelevant);
-		if (
-			Object.values(isRelevant).includes(false) &&
-			Object.keys(isRelevant).length > 0
-		) {
-			let kshirotRel = kshirot;
+		// console.log(isRelevant);
+		//* if there are not relevant items ----------------------------------------------------------------
+		if (Object.values(isRelevant).includes(false)) {
+			let kshirotRel = { ...kshirot };
 			// console.log("check");
 			let isRkeys = Object.keys(isRelevant);
-			console.log(isRkeys);
+			// console.log(isRkeys);
 			const NotRelevant = isRkeys.filter((key) => isRelevant[key] === false);
 			// console.log(NotRelevant);
 			NotRelevant.map((nr) => {
-				console.log(nr);
-				// kshirotRel[nr] = undefined;
+				// console.log(nr);
+				kshirotRel[nr] = -1;
 				pak.pop(nr);
-				console.log(kshirotRel);
+				// console.log(kshirotRel);
 			});
+			// console.log(NotRelevant);
 			// console.log(
-			// 	kshirotGrade(kshirotRel, params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1))
+			// 	kshirotGrade(kshirotRel, params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1), true)
+			// 		.grade
 			// );
 			// console.log(pak);
-			//todo finish
+			const temp = [];
+			const empty = [];
+			pak.map((val) => {
+				// console.log(val);
+				switch (kshirot[val]) {
+					case "":
+						temp.push(false);
+						empty.push(val);
+						break;
+					case undefined:
+						temp.push(false);
+						empty.push(val);
+						break;
+					case null:
+						temp.push(false);
+						empty.push(val);
+						break;
+
+					default:
+						temp.push(true);
+						break;
+				}
+			});
+			if (temp.includes(false)) {
+				//todo make a table that converts all data to its name on the form
+				// console.log(temp);
+				// console.log(empty);
+				// console.log(kshirot);
+				// console.log(
+				// 	kshirotGrade(kshirotRel, params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1))
+				// );
+				toast.error(`${empty} נשאר ריק`);
+				toast.info("אנא נסה שנית");
+			} else {
+				const grade = kshirotGrade(
+					kshirotRel,
+					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1)
+				).grade;
+				// kshirotGrade(kshirot,ksirotGradeParams)
+				console.log(pak);
+				kshirotRel.grade = grade;
+				axios
+					.post(`http://localhost:8000/kshirot/create`, kshirotRel)
+					.then((res) => {
+						// console.log(res);
+						console.groupCollapsed("Axios then");
+						console.log(res);
+						toast.success("דוח כשירות נשלח בהצלחה");
+					})
+					.catch((err) => {
+						console.log(err);
+						toast.error("שגיאה בשליחה");
+					});
+			}
+
+			//* if all items are relevent ----------------------------------------------------------------------------
 		} else {
 			const temp = [];
 			const empty = [];
@@ -568,14 +531,20 @@ function KshirotPage(props) {
 				//todo make a table that converts all data to its name on the form
 				// console.log(temp);
 				// console.log(empty);
-				console.log(
-					kshirotGrade(kshirot, params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1))
-				);
+				// console.log(kshirot);
+				// console.log(
+				// 	kshirotGrade(kshirot, params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1))
+				// );
 				toast.error(`${empty} נשאר ריק`);
 				toast.info("אנא נסה שנית");
 			} else {
+				const grade = kshirotGrade(
+					kshirot,
+					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1)
+				).grade;
 				// kshirotGrade(kshirot,ksirotGradeParams)
 				console.log(pak);
+				setKshirot({ ...kshirot, grade: grade });
 				axios
 					.post(`http://localhost:8000/kshirot/create`, kshirot)
 					.then((res) => {
