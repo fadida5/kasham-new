@@ -475,30 +475,46 @@ function KshirotPage(props) {
 				// console.log(empty);
 				// console.log(kshirot);
 				// console.log(
-				// 	kshirotGrade(kshirotRel, params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1))
+				// 	kshirotGrade(
+				// 		kshirotRel,
+				// 		params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
+				// 		true
+				// 	)
 				// );
 				toast.error(`${empty} נשאר ריק`);
 				toast.info("אנא נסה שנית");
 			} else {
 				const grade = kshirotGrade(
 					kshirotRel,
-					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1)
+					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
+					true
 				).grade;
+				const hasError = kshirotGrade(
+					kshirot,
+					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
+					true
+				).approved;
 				// kshirotGrade(kshirot,ksirotGradeParams)
 				console.log(pak);
-				kshirotRel.grade = grade;
-				axios
-					.post(`http://localhost:8000/kshirot/create`, kshirotRel)
-					.then((res) => {
-						// console.log(res);
-						console.groupCollapsed("Axios then");
-						console.log(res);
-						toast.success("דוח כשירות נשלח בהצלחה");
-					})
-					.catch((err) => {
-						console.log(err);
-						toast.error("שגיאה בשליחה");
-					});
+				if (hasError) {
+					toast.error("לא כל השדות מלאים כמו שצריך");
+				} else {
+					// kshirotGrade(kshirot,ksirotGradeParams)
+					console.log(pak);
+					kshirotRel.grade = grade;
+					axios
+						.post(`http://localhost:8000/kshirot/create`, kshirotRel)
+						.then((res) => {
+							// console.log(res);
+							console.groupCollapsed("Axios then");
+							console.log(res);
+							toast.success("דוח כשירות נשלח בהצלחה");
+						})
+						.catch((err) => {
+							console.log(err);
+							toast.error("שגיאה בשליחה");
+						});
+				}
 			}
 
 			//* if all items are relevent ----------------------------------------------------------------------------
@@ -533,30 +549,40 @@ function KshirotPage(props) {
 				// console.log(empty);
 				// console.log(kshirot);
 				// console.log(
-				// 	kshirotGrade(kshirot, params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1))
+				// 	kshirotGrade(kshirot, params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1), true)
 				// );
 				toast.error(`${empty} נשאר ריק`);
 				toast.info("אנא נסה שנית");
 			} else {
 				const grade = kshirotGrade(
 					kshirot,
-					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1)
+					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
+					true
 				).grade;
+				const hasError = kshirotGrade(
+					kshirot,
+					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
+					true
+				).approved;
 				// kshirotGrade(kshirot,ksirotGradeParams)
 				console.log(pak);
-				setKshirot({ ...kshirot, grade: grade });
-				axios
-					.post(`http://localhost:8000/kshirot/create`, kshirot)
-					.then((res) => {
-						// console.log(res);
-						console.groupCollapsed("Axios then");
-						console.log(res);
-						toast.success("דוח כשירות נשלח בהצלחה");
-					})
-					.catch((err) => {
-						console.log(err);
-						toast.error("שגיאה בשליחה");
-					});
+				if (hasError) {
+					toast.error("לא כל השדות מלאים כמו שצריך");
+				} else {
+					setKshirot({ ...kshirot, grade: grade });
+					axios
+						.post(`http://localhost:8000/kshirot/create`, kshirot)
+						.then((res) => {
+							// console.log(res);
+							console.groupCollapsed("Axios then");
+							console.log(res);
+							toast.success("דוח כשירות נשלח בהצלחה");
+						})
+						.catch((err) => {
+							console.log(err);
+							toast.error("שגיאה בשליחה");
+						});
+				}
 			}
 			// console.log(necessary);
 		}
@@ -570,10 +596,18 @@ function KshirotPage(props) {
 		let v = Object.values(kshirotPackage);
 		k.map((i, index) => {
 			let input = "";
-			if (typeof v[index] != "object") {
+			if (typeof v[index] == "number") {
 				input = "UniversalInput";
-			} else {
+			} else if (Array.isArray(v[index])) {
 				input = "ArrayAdder";
+			} else if (typeof v[index] == "string") {
+				if (v[index] == "") {
+					input = "UniversalInput";
+				} else {
+					input = "SelectOne";
+				}
+			} else if (typeof v[index] == "object") {
+				input = "specific => need a specific input format";
 			}
 			info.push({
 				// index: index,
@@ -606,6 +640,7 @@ function KshirotPage(props) {
 		//TODO -
 		/*//todo: 1) make each card its own component while this page will use the kshirot state (might move to usecontext).
 		//todo:	  2) check if all the card need to be relevent from the start if not use lazy loading (just for performance/fun ;) )
+		//todo:	  3) after doing 1 make handasa page (adaptive) 
 		*/
 		<Container className={style.Container}>
 			<div
