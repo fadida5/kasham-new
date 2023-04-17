@@ -1,15 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Col, Row } from "reactstrap";
-import Select from "react-select";
+// import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { ThemeContext } from "contexts/ThemeContext";
 import AddComment from "components/general/Toggle/AddComment";
 import IsRelevant from "components/general/CollapseComponents/IsRelevant/IsRelevant";
+import {
+	Grid,
+	Input,
+	Select,
+	InputLabel,
+	MenuItem,
+	FormControl,
+} from "@mui/material";
+import RTL from "components/general/ThemeWrapper/RtlWrapper";
+
+//TODO - grid
 
 export const SelectOne = (props) => {
 	//* state ----------------------------------------------------------------
 
 	const [options, setOptions] = useState([]);
+	const [style, setStyle] = useState({
+		marginRight: "0.5rem",
+		fontSize: "15px",
+	});
 
 	const animatedComponents = makeAnimated();
 
@@ -81,6 +96,7 @@ export const SelectOne = (props) => {
 	}
 	function handleChange2(evt) {
 		const val = evt.target.value;
+
 		// setIsopen(!isopen);
 		console.log(val);
 		console.log(evt.target.name);
@@ -88,6 +104,17 @@ export const SelectOne = (props) => {
 			name: evt.target.name,
 			value: val,
 		});
+	}
+
+	function close(evt) {
+		const val = Object(evt.target.attributes["data-value"]).value;
+		if (val != undefined) {
+			setStyle({
+				marginTop: "-0.7rem",
+				fontSize: "18px",
+				marginRight: "0.8rem",
+			});
+		}
 	}
 
 	//* useEffect ----------------------------------------------------------------
@@ -134,198 +161,274 @@ export const SelectOne = (props) => {
 				break;
 		}
 	}, [props.unit, props.FreeOptions]);
+	//! DOM style change
+	// useEffect(() => {
+	// 	let a = document.getElementsByClassName(props.name);
+	// 	for (let item of a) {
+	// 		// console.log(...item.style);
+	// 		// console.log(`${item} ==> ${item.attributes["data-shrink"]}`);
+	// 		console.log(item.attributes["data-shrink"].value);
+	// 		if (item.attributes["data-shrink"].value) {
+	// 			console.log(item);
+	// 			console.log(item.attributes["data-shrink"]);
+	// 			item.style.marginRight = "0rem";
+	// 			item.style.marginButtom = "1rem";
+	// 		} else {
+	// 			// console.log("shrinked");
+	// 			item.style.marginRight = "1rem";
+	// 		}
+	// 	}
+	// 	// console.log(a[0].attributes["data-shrink"].value);
+	// }, [props.value]);
 
 	return (
-		<ThemeContext.Consumer>
-			{({ changeTheme, theme }) => (
-				<>
-					<Row>
-						{props.title ? (
-							<Col
-								xs={12}
-								md={12}
-								style={{
-									textAlign: "right",
-									paddingTop: "10px",
-									fontWeight: "bold",
-								}}
+		<RTL>
+			<ThemeContext.Consumer>
+				{({ changeTheme, theme }) => (
+					<>
+						<Row>
+							{props.title ? (
+								<Col
+									xs={12}
+									md={12}
+									style={{
+										textAlign: "right",
+										paddingTop: "10px",
+										fontWeight: "bold",
+									}}
+								>
+									{props.title}
+								</Col>
+							) : null}
+						</Row>
+						{props.IsRelevant ? (
+							<IsRelevant
+								relevantField={{ [props.name]: true }}
+								handleCallBack={props.handleCallBack4}
 							>
-								{props.title}
-							</Col>
+								<FormControl
+									sx={{ m: 1, minWidth: 120 }}
+									size={props.size}
+									style={{ textAlign: "right" }}
+									fullWidth={true}
+								>
+									<Row>
+										<Col
+											style={{
+												marginTop: "-5px",
+												textAlign: "right",
+												marginBottom: "10px",
+											}}
+										>
+											{theme == "white-content" ? (
+												<>
+													<InputLabel
+														style={style}
+														id={props.name}
+													>
+														{props.header}
+													</InputLabel>
+													<Select
+														onClose={close}
+														fullWidth={true}
+														name={props.name}
+														multiple={false}
+														labelId="header"
+														label={props.name}
+														// defaultValue={props.value}
+														// value={props.value}
+														onChange={handleChange}
+														disabled={props.isDisabled}
+														// placeholder={
+														// 	props.value != undefined ? props.value : "בחר"
+														// }
+													>
+														{options.map((lab, index) => {
+															return (
+																<MenuItem
+																	style={{ textAlign: "right" }}
+																	value={options[index].value}
+																>
+																	{options[index].label}
+																</MenuItem>
+															);
+														})}
+													</Select>
+												</>
+											) : (
+												<>
+													<InputLabel
+														style={style}
+														id={props.name}
+													>
+														{props.header}
+													</InputLabel>
+													<Select
+														fullWidth={true}
+														name={props.name}
+														multiple={false}
+														onClose={close}
+														labelId="header"
+														label={props.name}
+														// defaultValue={props.value}
+														// value={props.value}
+														onChange={handleChange}
+														disabled={props.isDisabled}
+														// placeholder={
+														// 	props.value != undefined ? props.value : "בחר"
+														// }
+														theme={(theme) => ({
+															...theme,
+															colors: {
+																...theme.colors,
+																neutral0: "#27293d",
+																neutral5: "#1e1e2f",
+																primary25: "#1e1e2f",
+																primary50: "transparent",
+																neutral50: "white",
+																neutral80: "white",
+															},
+														})}
+													>
+														{options.map((lab, index) => {
+															return (
+																<MenuItem
+																	style={{ textAlign: "right" }}
+																	value={options[index].value}
+																>
+																	{options[index].label}
+																</MenuItem>
+															);
+														})}
+													</Select>
+												</>
+											)}
+										</Col>
+									</Row>
+								</FormControl>
+							</IsRelevant>
+						) : (
+							<>
+								<FormControl
+									sx={{ m: 1, minWidth: "auto" }}
+									fullWidth={true}
+									size={props.size}
+									style={{ textAlign: "right" }}
+								>
+									<Row>
+										<Col
+											style={{
+												marginTop: "20px",
+												textAlign: "right",
+												marginBottom: "10px",
+											}}
+										>
+											{theme == "white-content" ? (
+												<>
+													<InputLabel
+														// className={props.name}
+														style={style}
+													>
+														{props.header}
+														{""}
+													</InputLabel>
+													<Select
+														fullWidth={true}
+														name={props.name}
+														multiple={false}
+														labelId="header"
+														label={props.name}
+														// defaultValue={props.value}
+														// value={props.value}
+														// value={val ? val : undefined}
+														onChange={handleChange}
+														// onOpen={close}
+														onClose={close}
+														disabled={props.isDisabled}
+														// placeholder={
+														// 	props.value != undefined ? props.value : "בחר"
+														// }
+													>
+														{options.map((lab, index) => {
+															return (
+																<MenuItem
+																	style={{ textAlign: "right" }}
+																	value={options[index].value}
+																>
+																	{options[index].label}
+																</MenuItem>
+															);
+														})}
+													</Select>
+												</>
+											) : (
+												<>
+													<InputLabel
+														style={style}
+														id={props.name}
+													>
+														{props.header}
+														{""}
+													</InputLabel>
+													<Select
+														fullWidth={true}
+														name={props.name}
+														multiple={false}
+														labelId="header"
+														label={props.name}
+														onClose={close}
+														// defaultValue={props.value}
+														// value={props.value}
+														onChange={handleChange}
+														disabled={props.isDisabled}
+														// placeholder={
+														// 	props.value != undefined ? props.value : "בחר"
+														// }
+														theme={(theme) => ({
+															...theme,
+															colors: {
+																...theme.colors,
+																neutral0: "#27293d",
+																neutral5: "#1e1e2f",
+																primary25: "#1e1e2f",
+																primary50: "transparent",
+																neutral50: "white",
+																neutral80: "white",
+															},
+														})}
+													>
+														{options.map((lab, index) => {
+															return (
+																<MenuItem
+																	style={{ textAlign: "right" }}
+																	value={options[index].value}
+																>
+																	{options[index].label}
+																</MenuItem>
+															);
+														})}
+													</Select>
+												</>
+											)}
+										</Col>
+									</Row>
+								</FormControl>
+							</>
+						)}
+
+						{props.hascomment ? (
+							<div className={props.styleName}>
+								<AddComment
+									btnName="הוסף הערות"
+									name={detailVal}
+									value={props.detailVal}
+									handleChange={handleChange2}
+								/>
+							</div>
 						) : null}
-					</Row>
-					{props.IsRelevant ? (
-						<IsRelevant
-							relevantField={{ [props.name]: true }}
-							handleCallBack={props.handleCallBack4}
-						>
-							<Row>
-								{props.header && !props.isPart ? (
-									<Col
-										xs={12}
-										md={12}
-										style={{
-											textAlign: "right",
-											paddingTop: "10px",
-											// fontWeight: "bold",
-											marginBottom: "5px",
-										}}
-									>
-										{props.header}
-									</Col>
-								) : null}
-							</Row>
-							{props.header && props.isPart ? (
-								<p style={{ marginTop: "-10px", textAlign: "right" }}>
-									{props.header}
-								</p>
-							) : null}
-							<Row>
-								<Col
-									style={{
-										marginTop: "-5px",
-										textAlign: "right",
-										marginBottom: "10px",
-									}}
-								>
-									{theme == "white-content" ? (
-										<Select
-											name={props.name}
-											isMulti={false}
-											// defaultValue={props.value}
-											options={options}
-											// value={props.value}
-											onChange={handleChange}
-											closeMenuOnSelect={true}
-											components={animatedComponents}
-											isDisabled={props.isDisabled}
-											placeholder={
-												props.value != undefined ? props.value : "בחר"
-											}
-										/>
-									) : (
-										<Select
-											name={props.name}
-											isMulti={false}
-											// defaultValue={props.value}
-											options={options}
-											// value={props.value}
-											onChange={handleChange}
-											closeMenuOnSelect={true}
-											components={animatedComponents}
-											isDisabled={props.isDisabled}
-											placeholder={
-												props.value != undefined ? props.value : "בחר"
-											}
-											theme={(theme) => ({
-												...theme,
-												colors: {
-													...theme.colors,
-													neutral0: "#27293d",
-													neutral5: "#1e1e2f",
-													primary25: "#1e1e2f",
-													primary50: "transparent",
-													neutral50: "white",
-													neutral80: "white",
-												},
-											})}
-										/>
-									)}
-								</Col>
-							</Row>
-						</IsRelevant>
-					) : (
-						<>
-							<Row>
-								{props.header && !props.isPart ? (
-									<Col
-										xs={12}
-										md={12}
-										style={{
-											textAlign: "right",
-											paddingTop: "10px",
-											// fontWeight: "bold",
-											marginBottom: "5px",
-										}}
-									>
-										{props.header}
-									</Col>
-								) : null}
-							</Row>
-							{props.header && props.isPart ? (
-								<p style={{ marginTop: "-10px", textAlign: "right" }}>
-									{props.header}
-								</p>
-							) : null}
-
-							<Row>
-								<Col
-									style={{
-										marginTop: "-5px",
-										textAlign: "right",
-										marginBottom: "10px",
-									}}
-								>
-									{theme == "white-content" ? (
-										<Select
-											name={props.name}
-											isMulti={false}
-											// defaultValue={props.value}
-											options={options}
-											// value={props.value}
-											onChange={handleChange}
-											closeMenuOnSelect={true}
-											components={animatedComponents}
-											isDisabled={props.isDisabled}
-											placeholder={
-												props.value != undefined ? props.value : "בחר"
-											}
-										/>
-									) : (
-										<Select
-											name={props.name}
-											isMulti={false}
-											// defaultValue={props.value}
-											options={options}
-											// value={props.value}
-											onChange={handleChange}
-											closeMenuOnSelect={true}
-											components={animatedComponents}
-											isDisabled={props.isDisabled}
-											placeholder={
-												props.value != undefined ? props.value : "בחר"
-											}
-											theme={(theme) => ({
-												...theme,
-												colors: {
-													...theme.colors,
-													neutral0: "#27293d",
-													neutral5: "#1e1e2f",
-													primary25: "#1e1e2f",
-													primary50: "transparent",
-													neutral50: "white",
-													neutral80: "white",
-												},
-											})}
-										/>
-									)}
-								</Col>
-							</Row>
-						</>
-					)}
-
-					{props.hascomment ? (
-						<div className={props.styleName}>
-							<AddComment
-								btnName="הוסף הערות"
-								name={detailVal}
-								value={props.detailVal}
-								handleChange={handleChange2}
-							/>
-						</div>
-					) : null}
-				</>
-			)}
-		</ThemeContext.Consumer>
+					</>
+				)}
+			</ThemeContext.Consumer>
+		</RTL>
 	);
 };

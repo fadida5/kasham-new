@@ -5,6 +5,7 @@ exports.TopTitle = {
 	fontWeight: "bold",
 };
 exports.h4Title = {
+	fontSize: "20px",
 	textAlign: "center",
 	paddingTop: "10px",
 	fontWeight: "bold",

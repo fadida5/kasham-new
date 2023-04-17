@@ -7,9 +7,9 @@ import {
 	CardBody,
 	CardTitle,
 	Container,
-	FormGroup,
+	// FormControl,
 	Form,
-	Input,
+	// Input,
 	InputGroupAddon,
 	InputGroupText,
 	InputGroup,
@@ -19,6 +19,11 @@ import {
 	Label,
 	Col,
 } from "reactstrap";
+import { TextField, FormControl, Grid } from "@mui/material";
+
+//TODO - switch the input in TextField (including the header footer and so on)
+//todo grid
+
 import AddComment from "../../Toggle/AddComment";
 
 export const UniversalInput = (props) => {
@@ -58,17 +63,18 @@ export const UniversalInput = (props) => {
 								{" "}
 								{props.footer}
 							</div>
-							<FormGroup dir="rtl">
-								<Input
+							<FormControl dir="rtl">
+								<TextField
+									variant="standard"
 									type={props.type}
 									bsSize="lg"
 									name={props.name}
 									value={props.value}
 									onChange={handleChange}
 									disabled={props.isDisabeld}
-									{...props.costume}
+									slotProps={{ input: { ...props.costume } }}
 								/>
-							</FormGroup>
+							</FormControl>
 							{props.children}
 						</Col>
 					) : (
@@ -79,17 +85,18 @@ export const UniversalInput = (props) => {
 								{" "}
 								{props.footer}
 							</div>
-							<FormGroup dir="rtl">
-								<Input
+							<FormControl dir="rtl">
+								<TextField
+									variant="standard"
 									type={props.type}
 									bsSize="lg"
 									name={props.name}
 									value={props.value}
 									onChange={handleChange}
 									disabled={props.isDisabeld}
-									{...props.costume}
+									slotProps={{ input: { ...props.costume } }}
 								/>
-							</FormGroup>
+							</FormControl>
 							{props.children}
 						</>
 					)}
@@ -142,17 +149,18 @@ export const UniversalInput = (props) => {
 											{" "}
 											{props.footer}
 										</div>
-										<FormGroup dir="rtl">
-											<Input
+										<FormControl dir="rtl">
+											<TextField
+												variant="standard"
 												type={props.type}
 												bsSize="lg"
 												name={props.name}
 												value={props.value}
 												onChange={handleChange}
 												disabled={props.isDisabeld}
-												{...props.costume}
+												slotProps={{ input: { ...props.costume } }}
 											/>
-										</FormGroup>
+										</FormControl>
 									</Col>
 
 									{props.children}
@@ -168,17 +176,18 @@ export const UniversalInput = (props) => {
 										{" "}
 										{props.footer}
 									</div>
-									<FormGroup dir="rtl">
-										<Input
+									<FormControl dir="rtl">
+										<TextField
+											variant="standard"
 											type={props.type}
 											bsSize="lg"
 											name={props.name}
 											value={props.value}
 											onChange={handleChange}
 											disabled={props.isDisabeld}
-											{...props.costume}
+											slotProps={{ input: { ...props.costume } }}
 										/>
-									</FormGroup>
+									</FormControl>
 									{props.children}
 								</Row>
 							)}
@@ -195,17 +204,18 @@ export const UniversalInput = (props) => {
 									{" "}
 									{props.footer}
 								</div>
-								<FormGroup dir="rtl">
-									<Input
+								<FormControl dir="rtl">
+									<TextField
+										variant="standard"
 										type={props.type}
 										bsSize="lg"
 										name={props.name}
 										value={props.value}
 										onChange={handleChange}
 										disabled={props.isDisabeld}
-										{...props.costume}
+										slotProps={{ input: { ...props.costume } }}
 									/>
-								</FormGroup>
+								</FormControl>
 							</Col>
 
 							{props.children}
@@ -218,17 +228,18 @@ export const UniversalInput = (props) => {
 								{" "}
 								{props.footer}
 							</div>
-							<FormGroup dir="rtl">
-								<Input
+							<FormControl dir="rtl">
+								<TextField
+									variant="standard"
 									type={props.type}
 									bsSize="lg"
 									name={props.name}
 									value={props.value}
 									onChange={handleChange}
 									disabled={props.isDisabeld}
-									{...props.costume}
+									slotProps={{ input: { ...props.costume } }}
 								/>
-							</FormGroup>
+							</FormControl>
 							{props.children}
 						</Row>
 					)}

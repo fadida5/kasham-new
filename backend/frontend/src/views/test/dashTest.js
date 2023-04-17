@@ -19,6 +19,7 @@ import {
 	Col,
 	Collapse,
 } from "reactstrap";
+
 import axios from "axios";
 import { signin, authenticate, isAuthenticated } from "auth/index";
 import PropagateLoader from "react-spinners/PropagateLoader";
@@ -31,6 +32,14 @@ import AnimatedSelect from "components/general/Select/AnimatedSelect";
 import { useSelector, useDispatch } from "react-redux";
 import { getCarDataFunc } from "redux/features/cardata/cardataSlice";
 import { SelectOne } from "components/general/inputs/SelectInputs/SelectOne";
+import {
+	Grid,
+	Input,
+	Select,
+	InputLabel,
+	MenuItem,
+	FormControl,
+} from "@mui/material";
 
 function DashboardTest({ match, theme }) {
 	//user
@@ -46,9 +55,27 @@ function DashboardTest({ match, theme }) {
 	const [tipuldata, setTipulData] = useState(kshirotPackage);
 	const [details, setDetails] = useState([]);
 	const [pikods, setPikods] = useState([]);
+	const [options, setOptions] = useState([]);
 
 	//* consts --------------------------------
 
+	const {
+		tafkid,
+		tafkidFields,
+		job,
+		jobFields,
+		jobFields_options,
+		jobNumber_options,
+		jobnName_options,
+		Operative_options,
+		spareParts_done,
+		spareParts_exist_not,
+		spareParts_exist_not_partially,
+		searchedVals,
+		trainperson,
+		trainpersonFields,
+		oneToFive_Rate,
+	} = require("../../assets/fixedData/fields");
 	//* redux
 
 	const getReduxCardDataByUnitTypeAndUnitId = async () => {
@@ -58,13 +85,6 @@ function DashboardTest({ match, theme }) {
 	};
 
 	//* fields --------------------------------
-	const job = {
-		id: "",
-		name: "",
-		teken: "",
-		matzva: "",
-		select: "",
-	};
 
 	//* functions -----------------------------------------------
 
@@ -126,6 +146,42 @@ function DashboardTest({ match, theme }) {
 		loadPikods();
 	}, []);
 
+	const handleChange = (event) => {
+		console.log(event.target.name);
+		console.log(event.target.value);
+		setTipulData({ ...tipuldata, age: event.target.value });
+		console.log(tipuldata);
+	};
+	const hasNull = true;
+
+	function freeOptions(arr) {
+		const temp = [];
+		if (hasNull) {
+			if (arr.length != 0) {
+				temp.push({ value: "בחר", label: "בחר" });
+			} else {
+				alert("unit is empty");
+			}
+		}
+		arr.map((item, index) => {
+			let val = item.value;
+			let lab = item.name;
+			temp.push({ value: val, label: lab });
+		});
+		if (hasNull ? temp.length === arr.length + 1 : temp.length === arr.length) {
+			setOptions(temp);
+		} else {
+			console.log(temp.length);
+			console.log(arr.length);
+			alert("something went wrong");
+		}
+	}
+
+	useEffect(() => {
+		freeOptions(spareParts_done);
+		console.log(options);
+	}, []);
+
 	return !isdataloaded ? (
 		<div style={{ width: "50%", marginTop: "30%" }}>
 			<PropagateLoader
@@ -136,100 +192,57 @@ function DashboardTest({ match, theme }) {
 		</div>
 	) : (
 		<div>
-			<Row>
-				<Col
-					xs={12}
-					md={3}
-					style={{ textAlign: "right" }}
-				>
-					<ArrayAdder
-						name="בעלי תפקיד(קצינים,מנהלי עבודה,מחטפים)"
-						buttonName="הוסף בעל תפקיד"
-						handleCallBack2={callBack2}
-						field={{ ...job }}
-						inputArray={[
-							{ name: "מפקד", type: "text" },
-							{ name: "בדיקה", type: "text" },
-							{ name: "IAL", type: "text" },
-							{ name: "list", type: "select" },
-						]}
-						freeOptions={[
-							{ name: "קיים", value: "קיים" },
-							{ name: "לא קיים", value: "לא קיים" },
-						]}
-					/>
-
-					<UniversalInput
-						type="text"
-						header="מפקד"
-						footer="שם המפקד"
-						name="commandername"
-						handleCallBack={callBack}
-						handleCallBack3={CallBack3}
-						// hascomment={true}
-						// chained={true}
-					>
-						{" "}
-						<UniversalInput
-							disableheader={true}
-							type="text"
-							header="מפקד"
-							footer="שם המפקד"
-							name="commandername"
-							handleCallBack={callBack}
-							handleCallBack3={CallBack3}
-							// hascomment={true}
-							chained={true}
-						/>
-					</UniversalInput>
-
-					<DateInput
-						header="תאריך"
-						footer="תאריך תחילת תפקיד"
-						name="timeinrole"
-						handleCallBack={callBack}
-						disableheader={true}
-					/>
-
-					<SelectOne
-						name="load"
-						hasNull={true}
-						FreeOptions={[
-							{ name: "קיים", value: "קיים" },
-							{ name: "לא קיים", value: "לא קיים" },
-						]}
-						value={tipuldata.load ? tipuldata.load : undefined}
-						handleCallBack={callBack}
-					/>
-					{/* {Array.isArray(pikods) ? (
-						<SelectOne
-							name="a"
-							hasNull={true}
-							unit={pikods}
-							// value={tipuldata.pikod ? tipuldata.pikod : undefined}
-							handleCallBack={callBack}
-						/>
-					) : null} */}
-				</Col>
-				<Col
-					xs={12}
+			<Grid
+				container
+				rowSpacing={1}
+				columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+			>
+				<Grid
+					item
 					md={6}
-				></Col>
-				<Col
-					xs={12}
-					md={3}
-				></Col>
-				<UniversalInput
-					type="text"
-					header="יחידה"
-					footer="שם היחידה"
-					name="unit"
-					handleCallBack={callBack}
-					handleCallBack3={CallBack3}
-					disableheader={true}
-					hascomment={true}
-				/>
-			</Row>
+				>
+					<Input />
+				</Grid>
+				<Grid item>
+					<Input md={6} />
+				</Grid>
+				<Grid
+					item
+					md={6}
+				>
+					<Input />
+				</Grid>
+				<Grid item>
+					<Input md={6} />
+				</Grid>
+			</Grid>
+			<FormControl
+				sx={{ m: 1, minWidth: 120 }}
+				size="medium"
+			>
+				<InputLabel id="header">Age</InputLabel>
+				<Select
+					name="age"
+					labelId="header" // value={tipuldata.age}
+					label="Age"
+					value={tipuldata.age}
+					onChange={handleChange}
+				>
+					{options.map((lab, index) => {
+						return (
+							<MenuItem value={options[index].value}>
+								{options[index].label}
+							</MenuItem>
+						);
+					})}
+					{/* <MenuItem value="">
+						<em>None</em>
+					</MenuItem>
+					<MenuItem value={10}>Ten</MenuItem>
+					<MenuItem value={20}>Twenty</MenuItem>
+					<MenuItem value={30}>Thirty</MenuItem> */}
+				</Select>
+			</FormControl>
 		</div>
 	);
 }

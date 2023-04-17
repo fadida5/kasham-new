@@ -20,6 +20,7 @@ import {
 	Collapse,
 	CardColumns,
 } from "reactstrap";
+import { Typography } from "@mui/material";
 import axios from "axios";
 import { signin, authenticate, isAuthenticated } from "auth/index";
 import PropagateLoader from "react-spinners/PropagateLoader";
@@ -357,7 +358,16 @@ function KshirotPage(props) {
 
 	//* selectOne free options
 
-	const selectOneFO = (name, header, hasNull, freeOptions, val, hascomment) => {
+	const selectOneFO = (
+		name,
+		header,
+		hasNull,
+		freeOptions,
+		val,
+		hascomment,
+		size,
+		barWidth
+	) => {
 		return {
 			name: name,
 			header: header,
@@ -367,6 +377,8 @@ function KshirotPage(props) {
 			handleCallBack: callBack,
 			handleCallBack3: CallBack3,
 			hascomment: hascomment,
+			barWidth: barWidth ? barWidth : 120,
+			size: size ? size : "small",
 		};
 	};
 
@@ -1138,7 +1150,12 @@ function KshirotPage(props) {
 													}
 													return (
 														<>
-															<h4 style={h4Title}>{title}</h4>
+															<Typography
+																variant="h4"
+																style={h4Title}
+															>
+																{title}
+															</Typography>
 															<UniversalInput
 																{...uni("number", "תקן", ffl)}
 																hascomment={true}
