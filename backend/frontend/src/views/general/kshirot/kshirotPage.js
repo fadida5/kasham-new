@@ -747,6 +747,8 @@ function KshirotPage(props) {
 										costume={(type) => {
 											switch (true) {
 												case type == "number":
+													// console.log(type);
+
 													return { min: 0 };
 													break;
 												default:
@@ -754,6 +756,7 @@ function KshirotPage(props) {
 														.error
 														// `this type: ${type} does have costume settings (just for you to know)`
 														();
+													break;
 											}
 										}}
 									/>
@@ -863,7 +866,7 @@ function KshirotPage(props) {
 												4
 											)}
 											chained={true}
-											costume={{ min: 0, max: 10 }}
+											costume={{ min: 0 }}
 											isDisabeld={true}
 											value={kshirot.professionalKeva}
 										/>
@@ -876,17 +879,19 @@ function KshirotPage(props) {
 												4
 											)}
 											chained={true}
-											costume={{ min: 0, max: 10 }}
+											costume={{ min: 0 }}
 											isDisabeld={true}
 											value={kshirot.professionalReserved}
 										/>
 									</UniversalInput>
-									<UniversalInput
-										{...uni("number", `סה"כ כמות מומחים`, "professionals")}
-										isDisabeld={true}
-										costume={{ min: 0 }}
-										value={kshirot.professionals}
-									/>
+									<div style={{ marginRight: "-10px" }}>
+										<UniversalInput
+											{...uni("number", `סה"כ כמות מומחים`, "professionals")}
+											isDisabeld={true}
+											costume={{ min: 0 }}
+											value={kshirot.professionals}
+										/>
+									</div>
 								</Minimize>
 							</Container>
 						</CardBody>

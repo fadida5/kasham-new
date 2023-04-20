@@ -39,6 +39,8 @@ import {
 	InputLabel,
 	MenuItem,
 	FormControl,
+	TextField,
+	FormControlLabel,
 } from "@mui/material";
 
 function DashboardTest({ match, theme }) {
@@ -213,7 +215,15 @@ function DashboardTest({ match, theme }) {
 					<Input />
 				</Grid>
 				<Grid item>
-					<Input md={6} />
+					<FormControl dir="rtl">
+						<TextField
+							name="name"
+							value={tipuldata.name}
+							variant="standard"
+							type="Text"
+							helperText="aaaa"
+						/>
+					</FormControl>
 				</Grid>
 			</Grid>
 			<FormControl
@@ -235,6 +245,7 @@ function DashboardTest({ match, theme }) {
 							</MenuItem>
 						);
 					})}
+
 					{/* <MenuItem value="">
 						<em>None</em>
 					</MenuItem>
@@ -243,6 +254,14 @@ function DashboardTest({ match, theme }) {
 					<MenuItem value={30}>Thirty</MenuItem> */}
 				</Select>
 			</FormControl>
+			{/* <FormControlLabel
+				label="a"
+				control={<Input />}
+			/> */}
+			<div style={{ textAlign: "right" }}>
+				<InputLabel id="label">aaa</InputLabel>
+				<TextField />
+			</div>
 		</div>
 	);
 }

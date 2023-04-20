@@ -16,6 +16,24 @@ exports.arrayObjectOptions_Checker = (options, key) => {
 	return temp;
 };
 
+exports.checkVal = (costume, val) => {
+	const min = costume.min;
+	const max = costume.max;
+
+	switch (true) {
+		case val <= min:
+			return min;
+			break;
+		case val >= max:
+			return max;
+			break;
+
+		default:
+			return val;
+			break;
+	}
+};
+
 exports.deepCheck = (obj, setDefault) => {
 	const errorArr = [];
 	let end = {};

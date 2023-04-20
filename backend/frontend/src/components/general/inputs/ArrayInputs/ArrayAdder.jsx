@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-	Button,
+	// Button,
 	Card,
 	CardHeader,
 	CardBody,
@@ -8,7 +8,7 @@ import {
 	Container,
 	FormGroup,
 	Form,
-	Input,
+	// Input,
 	InputGroupAddon,
 	InputGroupText,
 	InputGroup,
@@ -21,6 +21,17 @@ import {
 import { produce } from "immer";
 import { generate } from "shortid";
 import { SelectOne } from "../SelectInputs/SelectOne";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+	TextField,
+	FormControl,
+	Grid,
+	Button,
+	IconButton,
+	InputLabel,
+	Input,
+} from "@mui/material";
+import { checkVal } from "assets/fixedData/initHelpers_functions";
 
 export const ArrayAdder = (props) => {
 	//* states ----------------------------------------------------------------
@@ -87,7 +98,7 @@ export const ArrayAdder = (props) => {
 			if (props.costumeSize) {
 				console.log(error);
 			} else {
-				console.log("there is no costume size prop");
+				// console.log("there is no costume size prop");
 			}
 		}
 
@@ -113,8 +124,13 @@ export const ArrayAdder = (props) => {
 				{finalspecialkeytwo.length == 0 ? (
 					<>
 						<Button
-							style={{ float: "right" }}
-							type="button"
+							color="secondary"
+							variant="contained"
+							style={{
+								float: "right",
+								borderRadius: "20px",
+								marginTop: "0.5rem",
+							}}
 							onClick={() => {
 								setFinalSpecialKeytwo((currentSpec) => [
 									...currentSpec,
@@ -136,8 +152,15 @@ export const ArrayAdder = (props) => {
 								{index == 0 ? (
 									<Row>
 										<Button
-											style={{ float: "right" }}
-											type="button"
+											color="secondary"
+											variant="contained"
+											style={{
+												float: "right",
+												borderRadius: "20px",
+												marginRight: "1rem",
+												marginTop: "0.5rem",
+												marginBottom: "0.5rem",
+											}}
 											onClick={() => {
 												setFinalSpecialKeytwo((currentSpec) => [
 													...currentSpec,
@@ -161,10 +184,18 @@ export const ArrayAdder = (props) => {
 													>
 														<div>
 															{item.type != "select" ? (
-																<>
-																	<p style={{ margin: "0px", float: "right" }}>
+																<div style={{ textAlign: "right" }}>
+																	<InputLabel
+																		style={{
+																			textAlign: `right`,
+																			margin: "0px",
+																			// paddingTop: "5px",
+																			fontSize: "15px",
+																		}}
+																	>
+																		{" "}
 																		{item.name}
-																	</p>
+																	</InputLabel>
 																	<Input
 																		onChange={(e) => {
 																			const name = e.target.value;
@@ -175,12 +206,27 @@ export const ArrayAdder = (props) => {
 																				})
 																			);
 																		}}
-																		value={input[fieldAraay[i + 1]]}
+																		variant="standard"
+																		// value={input[fieldAraay[i + 1]]}
+																		value={
+																			props.costume(item.type, item.name) ==
+																			undefined
+																				? input[fieldAraay[i + 1]]
+																				: checkVal(
+																						props.costume(item.type, item.name),
+																						input[fieldAraay[i + 1]]
+																				  )
+																		}
 																		type={item.type}
 																		placeholder={item.name}
-																		{...props.costume(item.type, item.name)}
+																		fullWidth={true}
+																		slotProps={{
+																			input: {
+																				...props.costume(item.type, item.name),
+																			},
+																		}}
 																	/>
-																</>
+																</div>
 															) : (
 																<>
 																	{/* <p style={{ margin: "-8px", float: "right" }}>
@@ -188,8 +234,8 @@ export const ArrayAdder = (props) => {
 																	</p> */}
 																	<div
 																		style={{
-																			marginTop: "15px",
-																			marginRight: "2px",
+																			marginTop: "-10px",
+																			marginRight: "-5px",
 																			marginBottom: "10px",
 																		}}
 																	>
@@ -198,6 +244,7 @@ export const ArrayAdder = (props) => {
 																		<SelectOne
 																			header={item.name}
 																			isPart={true}
+																			size="small"
 																			name={item.name}
 																			{...props.costume(item.type, item.name)}
 																			// hasNull={true}
@@ -229,16 +276,15 @@ export const ArrayAdder = (props) => {
 										: null}
 								</Row>
 
-								<Button
-									type="button"
+								<IconButton
 									onClick={() => {
 										setFinalSpecialKeytwo((currentSpec) =>
 											currentSpec.filter((x) => x.id !== input.id)
 										);
 									}}
 								>
-									x
-								</Button>
+									<DeleteIcon />
+								</IconButton>
 							</div>
 						);
 					})

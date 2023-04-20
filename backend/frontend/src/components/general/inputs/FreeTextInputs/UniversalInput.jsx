@@ -1,4 +1,5 @@
 import IsRelevant from "components/general/CollapseComponents/IsRelevant/IsRelevant";
+import style from "./UniversalInput.module.css";
 import React, { useState, useEffect, useRef } from "react";
 import {
 	Button,
@@ -19,14 +20,15 @@ import {
 	Label,
 	Col,
 } from "reactstrap";
-import { TextField, FormControl, Grid } from "@mui/material";
+import { Input, FormControl, Grid, InputLabel } from "@mui/material";
 
-//TODO - switch the input in TextField (including the header footer and so on)
+//TODO - switch the input in Input (including the header footer and so on)
 //todo grid
 
 import AddComment from "../../Toggle/AddComment";
 
 export const UniversalInput = (props) => {
+	//* functions ----------------------------------------------------------------
 	function handleChange(evt) {
 		const val = evt.target.value;
 		// console.log(val);
@@ -64,7 +66,8 @@ export const UniversalInput = (props) => {
 								{props.footer}
 							</div>
 							<FormControl dir="rtl">
-								<TextField
+								<Input
+									fullWidth={true}
 									variant="standard"
 									type={props.type}
 									bsSize="lg"
@@ -86,7 +89,8 @@ export const UniversalInput = (props) => {
 								{props.footer}
 							</div>
 							<FormControl dir="rtl">
-								<TextField
+								<Input
+									fullWidth={true}
 									variant="standard"
 									type={props.type}
 									bsSize="lg"
@@ -121,7 +125,7 @@ export const UniversalInput = (props) => {
 								md={12}
 								style={{
 									textAlign: "right",
-									paddingTop: "10px",
+									paddingTop: "1px",
 									fontWeight: "bold",
 								}}
 							>
@@ -140,17 +144,18 @@ export const UniversalInput = (props) => {
 										xs={props.smSize}
 										md={props.mdSize}
 									>
-										<div
-											style={{
-												textAlign: `${props.textLoc}`,
-												paddingTop: "10px",
-											}}
-										>
-											{" "}
-											{props.footer}
-										</div>
-										<FormControl dir="rtl">
-											<TextField
+										<div>
+											<InputLabel
+												className={style.MuiInputLabel}
+												style={{
+													textAlign: `${props.textLoc}`,
+													paddingTop: "10px",
+												}}
+											>
+												{" "}
+												{props.footer}
+											</InputLabel>
+											<Input
 												variant="standard"
 												type={props.type}
 												bsSize="lg"
@@ -160,24 +165,27 @@ export const UniversalInput = (props) => {
 												disabled={props.isDisabeld}
 												slotProps={{ input: { ...props.costume } }}
 											/>
-										</FormControl>
+										</div>
 									</Col>
 
 									{props.children}
 								</Row>
 							) : (
 								<Row className="mr-3 ml-3">
-									<div
-										style={{
-											textAlign: `${props.textLoc}`,
-											paddingTop: "10px",
-										}}
-									>
-										{" "}
-										{props.footer}
-									</div>
-									<FormControl dir="rtl">
-										<TextField
+									<div>
+										<InputLabel
+											className={style.MuiInputLabel}
+											style={{
+												textAlign: `${props.textLoc}`,
+												paddingTop: "10px",
+												fontSize: "15px",
+											}}
+										>
+											{" "}
+											{props.footer}
+										</InputLabel>
+										<Input
+											fullWidth={true}
 											variant="standard"
 											type={props.type}
 											bsSize="lg"
@@ -187,7 +195,7 @@ export const UniversalInput = (props) => {
 											disabled={props.isDisabeld}
 											slotProps={{ input: { ...props.costume } }}
 										/>
-									</FormControl>
+									</div>
 									{props.children}
 								</Row>
 							)}
@@ -198,14 +206,20 @@ export const UniversalInput = (props) => {
 								xs={props.smSize}
 								md={props.mdSize}
 							>
-								<div
-									style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
-								>
-									{" "}
-									{props.footer}
-								</div>
-								<FormControl dir="rtl">
-									<TextField
+								<div style={{ textAlign: "right" }}>
+									<InputLabel
+										className={style.MuiInputLabel}
+										style={{
+											textAlign: `${props.textLoc}`,
+											paddingTop: "5px",
+											fontSize: "15px",
+										}}
+									>
+										{" "}
+										{props.footer}
+									</InputLabel>
+									<Input
+										fullWidth={true}
 										variant="standard"
 										type={props.type}
 										bsSize="lg"
@@ -215,21 +229,27 @@ export const UniversalInput = (props) => {
 										disabled={props.isDisabeld}
 										slotProps={{ input: { ...props.costume } }}
 									/>
-								</FormControl>
+								</div>{" "}
 							</Col>
 
 							{props.children}
 						</Row>
 					) : (
 						<Row className="mr-3 ml-3">
-							<div
-								style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
-							>
-								{" "}
-								{props.footer}
-							</div>
-							<FormControl dir="rtl">
-								<TextField
+							<div style={{ textAlign: "right" }}>
+								<InputLabel
+									className={style.MuiInputLabel}
+									style={{
+										textAlign: `${props.textLoc}`,
+										paddingTop: "5px",
+										fontSize: "15px",
+									}}
+								>
+									{" "}
+									{props.footer}
+								</InputLabel>
+								<Input
+									fullWidth={true}
 									variant="standard"
 									type={props.type}
 									bsSize="lg"
@@ -239,7 +259,7 @@ export const UniversalInput = (props) => {
 									disabled={props.isDisabeld}
 									slotProps={{ input: { ...props.costume } }}
 								/>
-							</FormControl>
+							</div>{" "}
 							{props.children}
 						</Row>
 					)}
