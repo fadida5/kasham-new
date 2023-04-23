@@ -8,7 +8,7 @@ const LoggedinRoute = ({ props, component: Component, ...rest }) => (
     <Route
         {...rest}
         render={props =>
-            isAuthenticated() && (isAuthenticated().user.validated === true) && ((props.match.params.unitid == undefined) || (HierarchyCheck(props.match.params.unitid, props.match.params.unittype))) ? (
+            isAuthenticated()  && ((props.match.params.unitid == undefined) || (HierarchyCheck(props.match.params.unitid, props.match.params.unittype))) ? (
                 <LoggedinLayout component={Component} />
             ) : (
                 <Redirect to={{

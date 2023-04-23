@@ -296,6 +296,7 @@ function KshirotPage(props) {
 			smSize: smSize ? smSize : 12,
 			mdSize: mdSize ? mdSize : 6,
 			textLoc: "right",
+			isDisabeld: user.validated? false : true
 		};
 	};
 	//* date
@@ -309,6 +310,8 @@ function KshirotPage(props) {
 			smSize: smSize ? smSize : 12,
 			mdSize: mdSize ? mdSize : 6,
 			textLoc: "right",
+			isDisabeld: user.validated? false : true
+
 		};
 	};
 
@@ -353,6 +356,8 @@ function KshirotPage(props) {
 			field: { ...field },
 			inputArray: inputArray,
 			freeOptions: { ...Op },
+			isDisabeld: user.validated? false : true
+
 		};
 	};
 
@@ -379,6 +384,8 @@ function KshirotPage(props) {
 			hascomment: hascomment,
 			barWidth: barWidth ? barWidth : 120,
 			size: size ? size : "small",
+			isDisabeld: user.validated? false : true
+
 		};
 	};
 
@@ -635,6 +642,7 @@ function KshirotPage(props) {
 		 * look at log info
 		 */
 		console.table(info);
+		console.log(user);
 		// console.log(k.indexOf("specialkey"));
 		// console.log(k.length);
 		// send();
@@ -680,8 +688,8 @@ function KshirotPage(props) {
 					xs={12}
 					md={6}
 				>
-					<Card>
-						<CardBody className={style.CardBody}>
+					<Card >
+						<CardBody  className={style.CardBody}>
 							<Container>
 								<UniversalInput
 									{...uni("text", "שם המפקד", "commandername")}

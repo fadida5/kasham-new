@@ -112,6 +112,7 @@ export const UniversalInput = (props) => {
 								name={detailVal}
 								value={props.detailVal}
 								handleChange={handleChange2}
+								isDisabeld={props.isDisabeld}
 							/>
 						</div>
 					) : null}
@@ -271,6 +272,7 @@ export const UniversalInput = (props) => {
 								name={detailVal}
 								value={props.detailVal}
 								handleChange={handleChange2}
+								isDisabeld={props.isDisabeld}
 							/>
 						</div>
 					) : null}

@@ -67,6 +67,8 @@ export const DateInput = (props) => {
 										onChange={handleChange}
 										style={{ lineHeight: "inherit" }}
 										{...props.costume}
+										disabled={props.isDisabeld}
+
 									/>
 								</FormGroup>
 							</Col>
@@ -88,6 +90,8 @@ export const DateInput = (props) => {
 									onChange={handleChange}
 									style={{ lineHeight: "inherit" }}
 									{...props.costume}
+									disabled={props.isDisabeld}
+
 								/>
 							</FormGroup>
 						</>
@@ -137,6 +141,8 @@ export const DateInput = (props) => {
 										onChange={handleChange}
 										style={{ lineHeight: "inherit" }}
 										{...props.costume}
+										disabled={props.isDisabeld}
+
 									/>
 								</FormGroup>
 							</Col>
@@ -157,6 +163,7 @@ export const DateInput = (props) => {
 									value={props.value}
 									onChange={handleChange}
 									style={{ lineHeight: "inherit" }}
+									disabled={props.isDisabeld}
 									{...props.costume}
 								/>
 							</FormGroup>
@@ -169,6 +176,7 @@ export const DateInput = (props) => {
 								name={detailVal}
 								value={props.detailVal}
 								handleChange={handleChange2}
+								isDisabeld={props.isDisabeld}
 							/>
 						</div>
 					) : null}

@@ -41,6 +41,7 @@ const AddComment = (props) => {
 					color="primary"
 					id="toggler"
 					onClick={() => setIsopen(!isopen)}
+					disabled={props.isDisabeld}
 				>
 					{props.btnName}
 				</Button>

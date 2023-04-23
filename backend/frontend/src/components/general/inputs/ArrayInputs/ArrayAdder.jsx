@@ -124,6 +124,7 @@ export const ArrayAdder = (props) => {
 				{finalspecialkeytwo.length == 0 ? (
 					<>
 						<Button
+						disabled={props.isDisabeld}
 							color="secondary"
 							variant="contained"
 							style={{
