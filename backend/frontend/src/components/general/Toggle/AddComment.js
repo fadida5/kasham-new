@@ -21,7 +21,7 @@ import {
 	Col,
 } from "reactstrap";
 import styles from "../Toggle/AddComment.module.css";
-
+//TODO - switch to full mui component
 const AddComment = (props) => {
 	const [isopen, setIsopen] = useState(false);
 

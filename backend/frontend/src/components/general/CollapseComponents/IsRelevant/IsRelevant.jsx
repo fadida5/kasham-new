@@ -20,6 +20,7 @@ import {
 	Label,
 	Col,
 } from "reactstrap";
+//TODO - switch to full mui component
 
 const IsRelevant = (props) => {
 	const RelevantField = props.relevantField;
@@ -45,8 +46,9 @@ const IsRelevant = (props) => {
 		<>
 			{isopen[label] ? (
 				<Button
-					style={{ float: "left", marginTop: "1.8rem", marginBottom: "1rem" }}
-					className="btn btn-danger"
+					style={props.styleR}
+					// style={{ float: "left", marginTop: "1.8rem", marginBottom: "1rem" }}
+					className="btn btn-danger float-left"
 					onClick={() => setIsopen({ ...isopen, [label]: !isopen[label] })}
 				>
 					לא רלוונטי

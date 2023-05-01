@@ -1037,10 +1037,8 @@ function KshirotPage(props) {
 											costume={{ min: 0 }}
 										/>
 									</UniversalInput>
-									<IsRelevant
-										handleCallBack={CallBack4}
-										relevantField={{ lastrefreshdate: true }}
-									>
+
+									<div style={{ marginTop: "6px" }}>
 										<DateInput
 											{...date(
 												"תאריך רענון אחרון (תוקף 8 שנים)",
@@ -1049,9 +1047,11 @@ function KshirotPage(props) {
 												12
 											)}
 											hascomment={true}
+											IsRelevant={true}
+											handleCallBack4={CallBack4}
 											styleName={style.Comment}
 										/>
-									</IsRelevant>
+									</div>
 
 									<UniversalInput
 										{...uni("number", "תקן", "halfimtzelem")}
