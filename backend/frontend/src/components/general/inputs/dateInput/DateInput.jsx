@@ -75,6 +75,7 @@ export const DateInput = (props) => {
 												onChange={handleChange}
 												style={{ lineHeight: "inherit" }}
 												slotProps={{ input: { ...props.costume } }}
+												disabled={props.isDisabeld}
 											/>
 										</DemoItem>
 									</DemoContainer>
@@ -110,37 +111,65 @@ export const DateInput = (props) => {
 				<>
 					{props.IsRelevant ? (
 						<IsRelevant
+							styleR={{ marginTop: "10%" }}
 							relevantField={{ [props.name]: true }}
 							handleCallBack={props.handleCallBack4}
-							styleR={{ marginTop: "10%" }}
 						>
-							<Row>
-								{!props.disableheader ? (
-									<Col
-										xs={12}
-										md={12}
-										style={{
-											textAlign: "right",
-											paddingTop: "10px",
-											fontWeight: "bold",
-										}}
-									>
-										{props.header}
-									</Col>
-								) : (
-									<Col
-										xs={12}
-										md={3}
-										style={{ textAlign: "right" }}
-									></Col>
-								)}
-							</Row>
-							{!props.disableCol ? (
+							<>
 								<Row>
-									<Col
-										xs={props.smSize}
-										md={props.mdSize}
-									>
+									{!props.disableheader ? (
+										<Col
+											xs={12}
+											md={12}
+											style={{
+												textAlign: "right",
+												paddingTop: "10px",
+												fontWeight: "bold",
+											}}
+										>
+											{props.header}
+										</Col>
+									) : (
+										<Col
+											xs={12}
+											md={3}
+											style={{ textAlign: "right" }}
+										></Col>
+									)}
+								</Row>
+								{!props.disableCol ? (
+									<Row>
+										<Col
+											xs={props.smSize}
+											md={props.mdSize}
+										>
+											<div
+												style={{
+													textAlign: `${props.textLoc}`,
+													paddingTop: "10px",
+												}}
+											>
+												{" "}
+												{props.footer}
+											</div>
+											<LocalizationProvider dateAdapter={AdapterDayjs}>
+												<DemoContainer components={["DesktopDatePicker"]}>
+													<DemoItem>
+														<DesktopDatePicker
+															fullWidth={true}
+															name={props.name}
+															value={props.value}
+															onChange={handleChange}
+															style={{ lineHeight: "inherit" }}
+															slotProps={{ input: { ...props.costume } }}
+														/>
+													</DemoItem>
+												</DemoContainer>
+											</LocalizationProvider>
+										</Col>
+									</Row>
+								) : (
+									<Row className="mr-3 ml-3">
 										<div
 											style={{
 												textAlign: `${props.textLoc}`,
@@ -151,10 +180,7 @@ export const DateInput = (props) => {
 											{props.footer}
 										</div>
 										<LocalizationProvider dateAdapter={AdapterDayjs}>
-											<DemoContainer
-												sx={{ width: "200%" }}
-												components={["DesktopDatePicker"]}
-											>
+											<DemoContainer components={["DesktopDatePicker"]}>
 												<DemoItem>
 													<DesktopDatePicker
 														fullWidth={true}
@@ -163,52 +189,24 @@ export const DateInput = (props) => {
 														onChange={handleChange}
 														style={{ lineHeight: "inherit" }}
 														slotProps={{ input: { ...props.costume } }}
+														disabled={props.isDisabeld}
 													/>
 												</DemoItem>
 											</DemoContainer>
 										</LocalizationProvider>
-									</Col>
-								</Row>
-							) : (
-								<Row className="mr-3 ml-3">
-									<div
-										style={{
-											textAlign: `${props.textLoc}`,
-											paddingTop: "10px",
-										}}
-									>
-										{" "}
-										{props.footer}
+									</Row>
+								)}
+								{props.hascomment ? (
+									<div className={props.styleName}>
+										<AddComment
+											btnName="הוסף הערות"
+											name={detailVal}
+											value={props.detailVal}
+											handleChange={handleChange2}
+										/>
 									</div>
-									<LocalizationProvider dateAdapter={AdapterDayjs}>
-										<DemoContainer
-											sx={{ width: "200%" }}
-											components={["DesktopDatePicker"]}
-										>
-											<DemoItem>
-												<DesktopDatePicker
-													fullWidth={true}
-													name={props.name}
-													value={props.value}
-													onChange={handleChange}
-													style={{ lineHeight: "inherit" }}
-													slotProps={{ input: { ...props.costume } }}
-												/>
-											</DemoItem>
-										</DemoContainer>
-									</LocalizationProvider>
-								</Row>
-							)}
-							{props.hascomment ? (
-								<div className={props.styleName}>
-									<AddComment
-										btnName="הוסף הערות"
-										name={detailVal}
-										value={props.detailVal}
-										handleChange={handleChange2}
-									/>
-								</div>
-							) : null}
+								) : null}
+							</>
 						</IsRelevant>
 					) : (
 						<>
@@ -249,10 +247,7 @@ export const DateInput = (props) => {
 											{props.footer}
 										</div>
 										<LocalizationProvider dateAdapter={AdapterDayjs}>
-											<DemoContainer
-												sx={{ width: "200%" }}
-												components={["DesktopDatePicker"]}
-											>
+											<DemoContainer components={["DesktopDatePicker"]}>
 												<DemoItem>
 													<DesktopDatePicker
 														fullWidth={true}
@@ -279,10 +274,7 @@ export const DateInput = (props) => {
 										{props.footer}
 									</div>
 									<LocalizationProvider dateAdapter={AdapterDayjs}>
-										<DemoContainer
-											sx={{ width: "200%" }}
-											components={["DesktopDatePicker"]}
-										>
+										<DemoContainer components={["DesktopDatePicker"]}>
 											<DemoItem>
 												<DesktopDatePicker
 													fullWidth={true}
@@ -291,6 +283,7 @@ export const DateInput = (props) => {
 													onChange={handleChange}
 													style={{ lineHeight: "inherit" }}
 													slotProps={{ input: { ...props.costume } }}
+													disabled={props.isDisabeld}
 												/>
 											</DemoItem>
 										</DemoContainer>

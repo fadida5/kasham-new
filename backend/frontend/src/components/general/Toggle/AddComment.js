@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import {
-	Collapse,
+	// Collapse,
 	UncontrolledCollapse,
 	CardBody,
 	Card,
-	Button,
+	// Button,
 	CardHeader,
 	CardTitle,
 	Container,
 	FormGroup,
 	Form,
-	Input,
+	// Input,
 	InputGroupAddon,
 	InputGroupText,
 	InputGroup,
@@ -20,27 +20,46 @@ import {
 	Label,
 	Col,
 } from "reactstrap";
+import {
+	TextField,
+	FormControl,
+	Grid,
+	Button,
+	IconButton,
+	InputLabel,
+	Collapse,
+	Input,
+} from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
 import styles from "../Toggle/AddComment.module.css";
-//TODO - switch to full mui component
 const AddComment = (props) => {
 	const [isopen, setIsopen] = useState(false);
 
 	return (
 		<Row>
 			{isopen ? (
-				<Button
+				<IconButton
+					variant="contained"
 					className={styles.closeButton}
 					color="danger"
 					onClick={() => setIsopen(!isopen)}
 				>
-					X
-				</Button>
+					<CancelIcon />
+				</IconButton>
 			) : (
 				<Button
 					className={styles.ActiveButton}
+					size="small"
+					style={{
+						borderRadius: "20px",
+						marginTop: "7px",
+						marginBottom: "7px",
+					}}
+					variant="contained"
 					color="primary"
 					id="toggler"
 					onClick={() => setIsopen(!isopen)}
+					disabled={props.isDisabeld}
 				>
 					{props.btnName}
 				</Button>
@@ -48,13 +67,14 @@ const AddComment = (props) => {
 
 			<Collapse isOpen={isopen}>
 				<div className={styles.togglediv}>הערות</div>
-				<Input
+				<TextField
 					className={styles.MainInput}
-					type="textarea"
+					variant="standard"
 					bsSize="lg"
-					name={props.name}
+					label={props.name}
 					value={props.value}
 					onChange={props.handleChange}
+					multiline
 				/>
 			</Collapse>
 		</Row>

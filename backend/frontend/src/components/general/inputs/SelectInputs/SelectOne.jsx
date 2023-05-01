@@ -211,6 +211,7 @@ export const SelectOne = (props) => {
 									size={props.size}
 									style={{ textAlign: "right" }}
 									fullWidth={true}
+									disabled={props.isDisabeld}
 								>
 									<Row>
 										<Col
@@ -314,6 +315,7 @@ export const SelectOne = (props) => {
 									fullWidth={true}
 									size={props.size}
 									style={{ textAlign: "right" }}
+									disabled={props.isDisabeld}
 								>
 									<Row>
 										<Col
@@ -423,6 +425,7 @@ export const SelectOne = (props) => {
 									name={detailVal}
 									value={props.detailVal}
 									handleChange={handleChange2}
+									isDisabeld={props.isDisabeld}
 								/>
 							</div>
 						) : null}

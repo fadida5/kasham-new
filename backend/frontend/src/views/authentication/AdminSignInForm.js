@@ -61,7 +61,7 @@ function AdminSignInForm() {
   const redirectUser = () => {
     if (redirectToReferrer) {
       console.log(user);
-      if (user && user.validated == true) {
+      if (user) {
         if (user.role === "0") {
           history.push(`/dashboard/admin/0/magadal/0/false`);
         }
