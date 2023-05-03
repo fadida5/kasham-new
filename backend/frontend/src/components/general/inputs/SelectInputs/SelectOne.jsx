@@ -87,8 +87,8 @@ export const SelectOne = (props) => {
 
 	function handleChange(evt) {
 		// console.log(evt);
-		const val = evt.value;
-		// console.log(val);
+		const val = evt.target.value;
+		// console.log(evt.target);
 		// console.log(evt.target.name);
 		// setTipulData({ ...tipuldata, [evt.target.name]: value });
 		// console.log(tipuldata);
@@ -104,17 +104,6 @@ export const SelectOne = (props) => {
 			name: evt.target.name,
 			value: val,
 		});
-	}
-
-	function close(evt) {
-		const val = Object(evt.target.attributes["data-value"]).value;
-		if (val != undefined) {
-			setStyle({
-				marginTop: "-0.7rem",
-				fontSize: "18px",
-				marginRight: "0.8rem",
-			});
-		}
 	}
 
 	//* useEffect ----------------------------------------------------------------
@@ -230,7 +219,6 @@ export const SelectOne = (props) => {
 														{props.header}
 													</InputLabel>
 													<Select
-														onClose={close}
 														fullWidth={true}
 														name={props.name}
 														multiple={false}
@@ -268,7 +256,6 @@ export const SelectOne = (props) => {
 														fullWidth={true}
 														name={props.name}
 														multiple={false}
-														onClose={close}
 														labelId="header"
 														label={props.name}
 														// defaultValue={props.value}
@@ -345,7 +332,6 @@ export const SelectOne = (props) => {
 														// value={val ? val : undefined}
 														onChange={handleChange}
 														// onOpen={close}
-														onClose={close}
 														disabled={props.isDisabled}
 														// placeholder={
 														// 	props.value != undefined ? props.value : "בחר"
@@ -378,7 +364,6 @@ export const SelectOne = (props) => {
 														multiple={false}
 														labelId="header"
 														label={props.name}
-														onClose={close}
 														// defaultValue={props.value}
 														// value={props.value}
 														onChange={handleChange}

@@ -124,7 +124,7 @@ export const ArrayAdder = (props) => {
 				{finalspecialkeytwo.length == 0 ? (
 					<>
 						<Button
-						disabled={props.isDisabeld}
+							disabled={props.isDisabeld}
 							color="secondary"
 							variant="contained"
 							style={{
@@ -242,6 +242,7 @@ export const ArrayAdder = (props) => {
 																	>
 																		{/* {console.log(fieldAraay[i+1])}
 																	{console.log(props.freeOptions[fieldAraay[i+1]])} */}
+																		{/*//TODO - find a way to combine job namer and job name*/}
 																		<SelectOne
 																			header={item.name}
 																			isPart={true}
@@ -261,6 +262,7 @@ export const ArrayAdder = (props) => {
 																				const name = e.value;
 																				setFinalSpecialKeytwo((currentSpec) =>
 																					produce(currentSpec, (v) => {
+																						// console.log(e);
 																						v[index][fieldAraay[i + 1]] = name;
 																						v[index].id = generate();
 																					})

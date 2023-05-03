@@ -4,7 +4,7 @@ import {
 	UncontrolledCollapse,
 	CardBody,
 	Card,
-	Button,
+	// Button,
 	CardHeader,
 	CardTitle,
 	Container,
@@ -21,6 +21,8 @@ import {
 	Col,
 } from "reactstrap";
 //TODO - switch to full mui component
+
+import { Button } from "@mui/material";
 
 const IsRelevant = (props) => {
 	const RelevantField = props.relevantField;
@@ -47,8 +49,11 @@ const IsRelevant = (props) => {
 			{isopen[label] ? (
 				<Button
 					style={props.styleR}
+					variant="contained"
+					color="error"
+					size="small"
 					// style={{ float: "left", marginTop: "1.8rem", marginBottom: "1rem" }}
-					className="btn btn-danger float-left"
+					className=" float-left"
 					onClick={() => setIsopen({ ...isopen, [label]: !isopen[label] })}
 				>
 					לא רלוונטי
@@ -59,12 +64,10 @@ const IsRelevant = (props) => {
 					md={3}
 				>
 					<Button
-						style={{
-							float: "left",
-							marginTop: "1.8rem",
-							marginBottom: "1rem",
-						}}
-						className="btn btn-primary"
+						style={props.styleR}
+						variant="contained"
+						color="info"
+						size="small"
 						onClick={() => setIsopen({ ...isopen, [label]: !isopen[label] })}
 					>
 						רלוונטי

@@ -42,6 +42,7 @@ const AddComment = (props) => {
 					variant="contained"
 					className={styles.closeButton}
 					color="danger"
+					size="large"
 					onClick={() => setIsopen(!isopen)}
 				>
 					<CancelIcon />
@@ -65,16 +66,17 @@ const AddComment = (props) => {
 				</Button>
 			)}
 
-			<Collapse isOpen={isopen}>
+			<Collapse in={isopen}>
 				<div className={styles.togglediv}>הערות</div>
 				<TextField
 					className={styles.MainInput}
-					variant="standard"
 					bsSize="lg"
-					label={props.name}
+					// label={props.name}
+					name={props.name}
 					value={props.value}
 					onChange={props.handleChange}
 					multiline
+					rows={2}
 				/>
 			</Collapse>
 		</Row>

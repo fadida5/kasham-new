@@ -53,12 +53,49 @@ function KshirotPage(props) {
 	const [details, setDetails] = useState([]);
 	//* isRelevant
 	const [isRelevant, setIsRelevant] = useState([]);
+	//
+	const [Options, setOptions] = useState({});
+	const [revOptions, setrevOptions] = useState({});
 	//* init helpers ----------------------------------------------------------------
 	const {
 		get_field,
 		dup,
 		arrayObjectOptions_Checker,
 	} = require("../../../assets/fixedData/initHelpers_functions");
+
+	const getop = () => {
+		axios
+			.get("http://localhost:8000/fields/job/find")
+			.then(async (response) => {
+				const names = await response.data.names;
+				const jobs = await response.data.jobs;
+				let options = [];
+				let revop = [];
+
+				if (names.length !== jobs.length) {
+					alert(`Job => ${jobs.length} != names => ${names.length}`);
+					return "error";
+				} else if (names.length == jobs.length) {
+					options = names.map((n, index) => {
+						return { name: String(jobs[index]), value: n };
+					});
+					revop = names.map((n, index) => {
+						return { name: String(n), value: String(jobs[index]) };
+					});
+					console.log(options);
+					console.log(revop);
+					setOptions(options);
+					setrevOptions(revop);
+
+					if (options.length < jobs.length) {
+						alert(
+							`somethong went wrong with "options", options => ${options.length} != jobs => ${jobs.length}`
+						);
+					}
+				}
+				// return options;
+			});
+	};
 
 	//* useRducer ----------------------------------------------------------------
 	let temp = {};
@@ -270,8 +307,6 @@ function KshirotPage(props) {
 		job,
 		jobFields,
 		jobFields_options,
-		jobNumber_options,
-		jobnName_options,
 		Operative_options,
 		spareParts_done,
 		spareParts_exist_not,
@@ -640,6 +675,12 @@ function KshirotPage(props) {
 		// send();
 	}, []);
 
+	useEffect(() => {
+		getop();
+		// console.log(Options);
+		// console.log(revOptions);
+	}, []);
+
 	// try {
 	// 	let a = document.getElementById("tene").getElementsByTagName("button");
 
@@ -791,8 +832,8 @@ function KshirotPage(props) {
 											job,
 											jobFields,
 											[
-												jobNumber_options,
-												jobnName_options,
+												Options,
+												revOptions,
 												Operative_options,
 												jobFields_options,
 											]
@@ -810,6 +851,7 @@ function KshirotPage(props) {
 												case type == "number":
 													return { min: 0 };
 													break;
+
 												default:
 													console
 														.error
@@ -1684,10 +1726,9 @@ function KshirotPage(props) {
 																	costume={{ min: 0 }}
 																>
 																	<UniversalInput
-																		{...uni("number", "%אחוז", child[i])}
+																		{...uni("number", "אחוז%", child[i])}
 																		chained={true}
 																		costume={{
-																			min: 0,
 																			max: 100,
 																		}}
 																		id="precentage"
