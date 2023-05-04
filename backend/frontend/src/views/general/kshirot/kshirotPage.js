@@ -1,7 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef, useReducer } from "react";
 
-import { useParams, Link, withRouter, Redirect } from "react-router-dom";
+import {
+	useParams,
+	Link,
+	withRouter,
+	Redirect,
+	useLocation,
+} from "react-router-dom";
 
 //* tipul packages
 import { kshirotPackage } from "components/packages/kshirot";
@@ -97,6 +103,9 @@ function KshirotPage(props) {
 			});
 	};
 
+	const location = useLocation();
+	// const { gdod } = location.state;
+
 	//* useRducer ----------------------------------------------------------------
 	let temp = {};
 
@@ -171,7 +180,7 @@ function KshirotPage(props) {
 					break;
 
 				case null:
-					console.log(`resetting all values to default for ${action.father}`);
+					// console.log(`resetting all values to default for ${action.father}`);
 					let reVal = {};
 					dup(kshirot, "kzinim", "kzinimActivemax").map((fl) => {
 						reVal[fl] = kshirotPackage[fl];
@@ -276,7 +285,7 @@ function KshirotPage(props) {
 					break;
 
 				case null:
-					console.log(`resetting all values to default for ${action.father}`);
+					// console.log(`resetting all values to default for ${action.father}`);
 					let reVal = {};
 					dup(kshirot, "officers", "professionals").map((fl) => {
 						reVal[fl] = kshirotPackage[fl];
@@ -423,7 +432,7 @@ function KshirotPage(props) {
 	function callBack(inputData) {
 		setKshirot({ ...kshirot, [inputData.label]: inputData.value });
 		console.log(inputData);
-		console.log(kshirot);
+		// console.log(kshirot);
 		// console.table(tipuldata);
 	}
 	//* array output [{key : val, key2 : val2, ...}, ...]
@@ -612,7 +621,7 @@ function KshirotPage(props) {
 					true
 				).approved;
 				// kshirotGrade(kshirot,ksirotGradeParams)
-				console.log(pak);
+				// console.log(pak);
 				if (hasError) {
 					toast.error("לא כל השדות מלאים כמו שצריך");
 				} else {
@@ -677,6 +686,7 @@ function KshirotPage(props) {
 
 	useEffect(() => {
 		getop();
+		// console.log(location);
 		// console.log(Options);
 		// console.log(revOptions);
 	}, []);
@@ -1143,93 +1153,205 @@ function KshirotPage(props) {
 							<Container>
 								<div style={TopTitle}>ארגון ותשתיות (15%)</div>
 								<Minimize relevantField={{ orgniztion: true }}>
-									{dup(kshirotPackage, "maflag", "classNahotMax").map(
-										(fl, index) => {
-											let title = undefined;
-											let header = [
-												'אמצעי ניוד מלפ"ג טנ"א - משימתי (15א)',
-												'1. חט"פ/חט"ס 9 (עד 4)',
-												"1.כיתה קדמית (19,19א) - פיטר",
-												'2. כיתת חט"כ (19ז)',
-												`3.  כיתת בק"ש/חלפי אלק' נמר 19ו`,
-												`1.  כתק"ל (19ב)`,
-												`2. כיתת ח"ח כבד (19ה)`,
-												`3. כיתת ח"ח קל (19ד)`,
-												`4. כיתת הנפה (19ג) - ריאו חץ/עגור 20/מרום`,
-												`5. כיתה נאו"ת (גדוד סדיר)`,
-											];
+									{location /*ishandasa */
+										? dup(kshirotPackage, "maflag", "classNahotMax").map(
+												(fl, index) => {
+													let title = undefined;
+													let header = [
+														'אמצעי ניוד מלפ"ג טנ"א - משימתי (15א)',
+														'1. חט"פ/חט"ס 9 (עד 4)',
+														"1.כיתה קדמית (19,19א) - פיטר",
+														'2. כיתת חט"כ (19ז)',
+														`3.  כיתת בק"ש/חלפי אלק' נמר 19ו`,
+														`1.  כתק"ל (19ב)`,
+														`2. כיתת ח"ח כבד (19ה)`,
+														`3. כיתת ח"ח קל (19ד)`,
+														`4. כיתת הנפה (19ג) - ריאו חץ/עגור 20/מרום`,
+														`5. כיתה נאו"ת (גדוד סדיר)`,
+													];
 
-											let father = dup(
-												kshirotPackage,
-												"maflag",
-												"classNahotMax"
-											).filter((item, i) => i % 2 == 0);
-											let child = dup(
-												kshirotPackage,
-												"maflag",
-												"classNahotMax"
-											).filter((item, i) => i % 2 != 0);
+													let father = dup(
+														kshirotPackage,
+														"maflag",
+														"classNahotMax"
+													).filter((item, i) => i % 2 == 0);
+													let child = dup(
+														kshirotPackage,
+														"maflag",
+														"classNahotMax"
+													).filter((item, i) => i % 2 != 0);
 
-											if (
-												index ==
-												dup(kshirotPackage, "maflag", "classNahotMax").length /
-													2
-											) {
-												return father.map((ffl, i) => {
-													switch (true) {
-														case ffl == "maflag":
-															title = "אמצעי ניוד לקרב";
-															break;
-														case ffl == "carhatap":
-															title =
-																'פלגת טנ"א גדודית - אמצעי ניוד פלוגות לוחמות';
-															break;
-														case ffl == "carpiter":
-															title = 'מחלקת אחזקה רק"ם';
-															break;
-														case ffl == "katkal":
-															title = 'מחלקת רכב, נאו"ת וחלפים';
-															break;
+													if (
+														index ==
+														dup(kshirotPackage, "maflag", "classNahotMax")
+															.length /
+															2
+													) {
+														return father.map((ffl, i) => {
+															switch (true) {
+																case ffl == "maflag":
+																	title = "אמצעי ניוד לקרב";
+																	break;
+																case ffl == "carhatap":
+																	title =
+																		'פלגת טנ"א גדודית - אמצעי ניוד פלוגות לוחמות';
+																	break;
+																case ffl == "carpiter":
+																	title = 'מחלקת אחזקה רק"ם';
+																	break;
+																case ffl == "katkal":
+																	title = 'מחלקת רכב, נאו"ת וחלפים';
+																	break;
 
-														default:
-															title = undefined;
-															break;
+																default:
+																	title = undefined;
+																	break;
+															}
+															return (
+																<>
+																	<Typography
+																		variant="h4"
+																		style={h4Title}
+																	>
+																		{title}
+																	</Typography>
+																	<UniversalInput
+																		{...uni("number", "תקן", ffl)}
+																		hascomment={true}
+																		IsRelevant={true}
+																		handleCallBack4={CallBack4}
+																		styleName={style.Comment}
+																		header={header[i]}
+																		costume={{ min: 0 }}
+																	>
+																		<UniversalInput
+																			{...uni("number", "מצבה", child[i])}
+																			chained={true}
+																			costume={{
+																				min: 0,
+																			}}
+																		/>
+																	</UniversalInput>
+																</>
+															);
+														});
+													} else {
+														{
+															/* console.log(index); */
+														}
 													}
-													return (
-														<>
-															<Typography
-																variant="h4"
-																style={h4Title}
-															>
-																{title}
-															</Typography>
-															<UniversalInput
-																{...uni("number", "תקן", ffl)}
-																hascomment={true}
-																IsRelevant={true}
-																handleCallBack4={CallBack4}
-																styleName={style.Comment}
-																header={header[i]}
-																costume={{ min: 0 }}
-															>
-																<UniversalInput
-																	{...uni("number", "מצבה", child[i])}
-																	chained={true}
-																	costume={{
-																		min: 0,
-																	}}
-																/>
-															</UniversalInput>
-														</>
-													);
-												});
-											} else {
-												{
-													/* console.log(index); */
 												}
-											}
-										}
-									)}
+										  )
+										: dup(kshirotPackage, "maflag", "amtapmax")
+												.filter(
+													(item) =>
+														item != "classNahotMax" && item != "classNahot"
+												)
+												.map((fl, index) => {
+													{
+														/* console.log(fl); */
+													}
+													let title = undefined;
+													let header = [
+														'אמצעי ניוד מלפ"ג טנ"א - משימתי (15א)',
+														'1. חט"פ/חט"ס 9 (עד 4)',
+														"1.כיתה קדמית (19,19א) - פיטר",
+														'2. כיתת חט"כ (19ז)',
+														`3.  כיתת בק"ש/חלפי אלק' נמר 19ו`,
+														`1.  כתק"ל (19ב)`,
+														`2. כיתת ח"ח כבד (19ה)`,
+														`3. כיתת ח"ח קל (19ד)`,
+														`4. כיתת הנפה (19ג) - ריאו חץ/עגור 20/מרום`,
+														`1. כיתת צמ"ה קרבי`,
+														`2. כיתת צמ"ה`,
+														"3. כיתת אמצעים וחלפים",
+														'4. כיתת אמס"פ',
+													];
+
+													let father = dup(
+														kshirotPackage,
+														"maflag",
+														"amtapmax"
+													).filter(
+														(item, i) =>
+															i % 2 == 0 &&
+															item != "classNahotMax" &&
+															item != "classNahot"
+													);
+													let child = dup(
+														kshirotPackage,
+														"maflag",
+														"amtapmax"
+													).filter(
+														(item, i) =>
+															i % 2 != 0 &&
+															item != "classNahotMax" &&
+															item != "classNahot"
+													);
+
+													if (
+														index ==
+														dup(kshirotPackage, "maflag", "classNahotMax")
+															.length /
+															2
+													) {
+														return father.map((ffl, i) => {
+															switch (true) {
+																case ffl == "maflag":
+																	title = "אמצעי ניוד לקרב";
+																	break;
+																case ffl == "carhatap":
+																	title =
+																		'פלגת טנ"א גדודית - אמצעי ניוד פלוגות לוחמות';
+																	break;
+																case ffl == "carpiter":
+																	title = 'מחלקת אחזקה רק"ם';
+																	break;
+																case ffl == "katkal":
+																	title = 'מחלקת רכב, נאו"ת וחלפים';
+																	break;
+																case ffl == "battletsama":
+																	title = 'מחלקת טנ"א בפלוגת צמ"ה';
+																	break;
+
+																default:
+																	title = undefined;
+																	break;
+															}
+															return (
+																<>
+																	<Typography
+																		variant="h4"
+																		style={h4Title}
+																	>
+																		{title}
+																	</Typography>
+																	<UniversalInput
+																		{...uni("number", "תקן", ffl)}
+																		hascomment={true}
+																		IsRelevant={true}
+																		handleCallBack4={CallBack4}
+																		styleName={style.Comment}
+																		header={header[i]}
+																		costume={{ min: 0 }}
+																	>
+																		<UniversalInput
+																			{...uni("number", "מצבה", child[i])}
+																			chained={true}
+																			costume={{
+																				min: 0,
+																			}}
+																		/>
+																	</UniversalInput>
+																</>
+															);
+														});
+													} else {
+														{
+															/* console.log(index); */
+														}
+													}
+												})}
 								</Minimize>
 							</Container>
 						</CardBody>

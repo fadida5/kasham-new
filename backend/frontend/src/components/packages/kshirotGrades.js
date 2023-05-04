@@ -114,7 +114,7 @@ let sumv = 0;
 
 //todo - add better error handling
 
-export function kshirotGrade(kshir, params, isTest) {
+export function kshirotGrade(kshir, params, isTest, ishandasa) {
 	//! only if using without fix functions
 	const nullList = [];
 	//! force fix opartor
@@ -350,16 +350,41 @@ export function kshirotGrade(kshir, params, isTest) {
 			(kshir["classHathatlightMax"] / kshir["classHathatlight"]) * params.OI.g,
 			params.OI.g
 		);
-		const h = Relevant(
-			kshir["rioarrow"],
-			(kshir["rioarrowmax"] / kshir["rioarrow"]) * params.OI.h
-		);
-		const i = Relevant(
-			kshir["classNahot"],
-			(kshir["classNahotMax"] / kshir["classNahot"]) * params.OI.i,
-			params.OI.i
-		);
-		oiv = (a + b + c + d + e + f + g + h + i) * params.OI.Total;
+		if (ishandasa) {
+			const h = Relevant(
+				kshir["rioarrow"],
+				(kshir["rioarrowmax"] / kshir["rioarrow"]) * (params.OI.h - 0.05)
+			);
+			const j = Relevant(
+				kshir["battletsama"],
+				(kshir["battletsamamax"] / kshir["battletsama"]) * params.OI.j
+			);
+			const k = Relevant(
+				kshir["tsama"],
+				(kshir["tsamamax"] / kshir["tsama"]) * params.OI.k
+			);
+			const l = Relevant(
+				kshir["hhtsama"],
+				(kshir["hhtsamamax"] / kshir["hhtsama"]) * params.OI.l
+			);
+			const m = Relevant(
+				kshir["amtap"],
+				(kshir["amtapmax"] / kshir["amtap"]) * params.OI.m
+			);
+			oiv = (a + b + c + d + e + f + g + h + j + k + l + m) * params.OI.Total;
+		} else {
+			const h = Relevant(
+				kshir["rioarrow"],
+				(kshir["rioarrowmax"] / kshir["rioarrow"]) * params.OI.h
+			);
+			const i = Relevant(
+				kshir["classNahot"],
+				(kshir["classNahotMax"] / kshir["classNahot"]) * params.OI.i,
+				params.OI.i
+			);
+			oiv = (a + b + c + d + e + f + g + h + i) * params.OI.Total;
+		}
+
 		//? apply self fixing
 
 		// temp = [a, b, c, d, e, f, g, h, i];

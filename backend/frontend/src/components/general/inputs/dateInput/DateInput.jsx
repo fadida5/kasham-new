@@ -29,12 +29,14 @@ import IsRelevant from "components/general/CollapseComponents/IsRelevant/IsRelev
 
 export const DateInput = (props) => {
 	function handleChange(evt) {
-		const val = evt.target.value;
+		console.log(props.name);
+		// console.log(evt.$d);
+		const val = evt.$d;
 		// console.log(value);
 		// console.log(evt.target.name);
 		// setTipulData({ ...tipuldata, [evt.target.name]: value });
 		// console.log(tipuldata);
-		props.handleCallBack({ label: evt.target.name, value: val });
+		props.handleCallBack({ label: props.name, value: val });
 	}
 	function handleChange2(evt) {
 		const val = evt.target.value;

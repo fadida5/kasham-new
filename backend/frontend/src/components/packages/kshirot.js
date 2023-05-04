@@ -62,6 +62,17 @@ export const kshirotPackage = {
 	rioarrowmax: 0,
 	classNahot: 0,
 	classNahotMax: 0,
+	// handasa
+	//מחלקת טנ"א בפלוגת צמ"ה
+	battletsama: 0,
+	battletsamamax: 0,
+	tsama: 0,
+	tsamamax: 0,
+	hhtsama: 0,
+	hhtsamamax: 0,
+	amtap: 0,
+	amtapmax: 0,
+
 	// personalprotection: "קיים", // מיגון אישי
 	// שבצק
 	shiboz: 0, //התאמץ שיבוץ לקרבי

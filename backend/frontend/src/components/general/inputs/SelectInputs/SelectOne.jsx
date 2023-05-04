@@ -112,6 +112,7 @@ export const SelectOne = (props) => {
 		// console.log(theme);
 		// console.log(props.value);
 		// console.log(props.unit);
+
 		switch (true) {
 			//* unit ----------------------------------------------------------------
 			case Array.isArray(props.unit):
@@ -134,18 +135,22 @@ export const SelectOne = (props) => {
 				if (keys.includes("name") && keys.includes("value")) {
 					freeOptions(props.FreeOptions);
 				} else {
-					alert(
-						"the array need to be array of objetc with at least  value and name"
-					);
+					if (props.test) {
+						alert(
+							"the array need to be array of objetc with at least  value and name"
+						);
+					}
 				}
 
 				break;
 			default:
 				console.log(props.FreeOptions);
 				console.log(props.unit);
-				alert(
-					"please inherent an unit (pikod,gdud... or mkabaz magad ...) or a free set of options. \n both shoud be an array of objects ;)"
-				);
+				if (props.test) {
+					alert(
+						"please inherent an unit (pikod,gdud... or mkabaz magad ...) or a free set of options. \n both shoud be an array of objects ;)"
+					);
+				}
 
 				break;
 		}
@@ -225,7 +230,7 @@ export const SelectOne = (props) => {
 														labelId="header"
 														label={props.name}
 														// defaultValue={props.value}
-														// value={props.value}
+														// value={props.value ? props.value : undefined}
 														onChange={handleChange}
 														disabled={props.isDisabled}
 														// placeholder={
@@ -259,7 +264,7 @@ export const SelectOne = (props) => {
 														labelId="header"
 														label={props.name}
 														// defaultValue={props.value}
-														// value={props.value}
+														// value={props.value ? props.value : undefined}
 														onChange={handleChange}
 														disabled={props.isDisabled}
 														// placeholder={
@@ -328,7 +333,7 @@ export const SelectOne = (props) => {
 														labelId="header"
 														label={props.name}
 														// defaultValue={props.value}
-														// value={props.value}
+														// value={props.value ? props.value : undefined}
 														// value={val ? val : undefined}
 														onChange={handleChange}
 														// onOpen={close}
@@ -365,7 +370,7 @@ export const SelectOne = (props) => {
 														labelId="header"
 														label={props.name}
 														// defaultValue={props.value}
-														// value={props.value}
+														// value={props.value ? props.value : undefined}
 														onChange={handleChange}
 														disabled={props.isDisabled}
 														// placeholder={

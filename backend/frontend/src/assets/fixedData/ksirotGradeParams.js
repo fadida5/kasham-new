@@ -26,6 +26,10 @@ export function params(HRT, SgT, OIT, OPT, TNTT, sumT) {
 			g: 0.1,
 			h: 0.15,
 			i: 0.1,
+			j: 0.05,
+			K: 0.05,
+			l: 0.02,
+			m: 0.03,
 			Total: OIT,
 		},
 		OP: {

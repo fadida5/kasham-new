@@ -38,6 +38,76 @@ export const ArrayAdder = (props) => {
 	const [finalspecialkeytwo, setFinalSpecialKeytwo] = useState([]);
 	// const [tempFinalspecialkeytwo, setTempFinalSpecialKeytwo] = useState([]);
 	const [mainData, setMainData] = useState([]);
+	//* specfic use cases ----------------------------------------------------------------
+	//TODO - make it work better - maybe add extra function for value
+	function change(v, i, name, curr) {
+		const pack = props.freeOptions;
+		let temp = "";
+		let res = "";
+		console.log(v);
+		if (v == "בחר") {
+			console.log("aaaaa");
+			return curr;
+		} else {
+			switch (name) {
+				case "מספר מקצוע":
+					// console.log(v);
+					// temp = pack.name.filter((item) => item.name == v);
+					console.log(pack.name);
+					temp = pack.name.filter(
+						(item) => item.value == finalspecialkeytwo[i].name
+					);
+					console.log(temp);
+					try {
+						if (finalspecialkeytwo[i].name == "" || temp == []) {
+							return curr;
+						} else {
+							res = [{ name: temp[0].value, value: temp[0].name }];
+							console.log(res);
+
+							return res;
+						}
+					} catch (error) {
+						return curr;
+
+						// console.log(error);
+					}
+
+					break;
+				case "שם מקצוע":
+					// console.log(v);
+					// temp = pack.name.filter((item) => item.name == v);
+					console.log(pack.name);
+					temp = pack.numbermikzoa.filter(
+						(item) => item.value == finalspecialkeytwo[i].numbermikzoa
+					);
+					console.log(temp);
+					try {
+						if (finalspecialkeytwo[i].numbermikzoa == "" || temp == []) {
+							return curr;
+						} else {
+							res = [{ name: temp[0].value, value: temp[0].name }];
+							console.log(res);
+
+							return res;
+						}
+					} catch (error) {
+						return res;
+						// console.log(error);
+					}
+
+					break;
+
+				default:
+					return curr;
+
+					break;
+			}
+		}
+		// console.log(pack);
+		// console.log(finalspecialkeytwo[i]);
+		// console.log(props.freeOptions);
+	}
 
 	//* variables ----------------------------------------------------------------
 
@@ -249,10 +319,17 @@ export const ArrayAdder = (props) => {
 																			size="small"
 																			name={item.name}
 																			{...props.costume(item.type, item.name)}
-																			// hasNull={true}
+																			hasNull={true}
 																			FreeOptions={
-																				props.freeOptions[fieldAraay[i + 1]]
+																				change(
+																					input[fieldAraay[i + 1]],
+																					index,
+																					item.name,
+																					props.freeOptions[fieldAraay[i + 1]]
+																				)
+																				// props.freeOptions[fieldAraay[i + 1]]
 																			}
+																			val={finalspecialkeytwo}
 																			value={
 																				input[fieldAraay[i + 1]]
 																					? input[fieldAraay[i + 1]]
