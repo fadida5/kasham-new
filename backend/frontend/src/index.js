@@ -45,6 +45,7 @@ import AboutPage from "views/general/aboutpage/AboutPage";
 import StatisticsPage from "views/general/statisticspage/StatisticsPage";
 import dashTest from "views/test/dashTest";
 import kshirotPage from "views/general/kshirot/kshirotPage";
+import gnView from "views/general/genaralView/gnView";
 
 ReactDOM.render(
 	<>
@@ -125,6 +126,12 @@ ReactDOM.render(
 								exact
 								component={StatisticsPage}
 							/>
+							<LoggedinRoute
+								path="/useradmineditpage"
+								exact
+								component={gnView}
+							/>
+
 							{/*///////////////////////////////////////////LoggedIn Routes/////////////////////////////////////////////////*/}
 							<Redirect
 								from="/"

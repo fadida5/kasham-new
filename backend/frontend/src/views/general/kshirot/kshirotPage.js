@@ -82,8 +82,8 @@ function KshirotPage(props) {
 					revop = names.map((n, index) => {
 						return { name: String(n), value: String(jobs[index]) };
 					});
-					console.log(options);
-					console.log(revop);
+					// console.log(options);
+					// console.log(revop);
 					setOptions(options);
 					setrevOptions(revop);
 
