@@ -54,12 +54,11 @@ import table from "assets/img/table.png";
 import table_white from "assets/img/table_white.png";
 import { signout } from "auth/index";
 import { toast } from "react-toastify";
+import { Testuser } from "components/packages/tester";
 
 function Sidebar() {
 	const [color, setcolor] = useState("transparent");
 	const { user } = isAuthenticated();
-
-	const Testuser = ["s8768065"];
 
 	const clickSubmit = (event) => {
 		event.preventDefault();

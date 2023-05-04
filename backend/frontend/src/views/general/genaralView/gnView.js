@@ -12,15 +12,26 @@ import {
 	Card,
 	Typography,
 	CardHeader,
+	Button,
+	Icon,
 } from "@mui/material";
 import axios from "axios";
 import { CardBody } from "reactstrap";
 import PropagateLoader from "react-spinners/PropagateLoader";
+import { Dg } from "components/general/charts/Doughunt_pie";
+import Minimize from "components/general/CollapseComponents/Minimize/Minimize";
+import air from "../../../assets/img/unitsimg/avir.png";
+import water from "../../../assets/img/unitsimg/yam.png";
+import earth from "../../../assets/img/unitsimg/defaultTzahal.png";
+import fire from "../../../assets/img/unitsimg/mekatnar58.png";
+import { isAuthenticated } from "auth";
+import { Testuser } from "components/packages/tester";
 
 function Generalview(props) {
 	//* states ----------------------------------------------------------------
 	const [data, setData] = useState({});
 	const [loading, setLoading] = useState(true);
+	const { user } = isAuthenticated();
 
 	//* functions ----------------------------------------------------------------
 	const getpikod = () => {
@@ -29,6 +40,10 @@ function Generalview(props) {
 			// console.log(response.data);
 		});
 	};
+	//* mock data ----------------------------------------------------------------
+	const mklabs = ["Red", "Blue", "Yellow"];
+	const mklab = "mock";
+	const mkdata = [300, 50, 100];
 
 	useEffect(() => {
 		setLoading(true);
@@ -63,7 +78,20 @@ function Generalview(props) {
 						}}
 					>
 						<CardBody>
-							<Typography>כשירות מסגאות הטנ"א - תמונת מצב</Typography>
+							{Testuser.includes(user.personalnumber) ? (
+								<>
+									<Typography variant="h2">
+										כשירות מסגרות הטנ"א - תמונת מצב {""}
+										<img
+											src={fire}
+											height="150px"
+											width="150px"
+										/>{" "}
+									</Typography>
+								</>
+							) : (
+								<Typography>כשירות מסגאות הטנ"א - תמונת מצב</Typography>
+							)}
 						</CardBody>
 					</Card>
 					<Grid
@@ -81,10 +109,35 @@ function Generalview(props) {
 								key={index}
 							>
 								<Card>
-									<Typography style={{ textAlign: "right" }}>
-										{pk.name}
-									</Typography>
-									<CardBody></CardBody>
+									<div
+										style={{ textAlign: "right" }}
+										// dir="rtl"
+									>
+										<Button
+											// endIcon
+											variant="text"
+											style={{
+												marginRight: "3rem",
+												marginTop: "2%",
+											}}
+										>
+											{pk.name}
+										</Button>
+									</div>
+									<CardBody>
+										{/*//TODO - get real data change to progress bar */}
+										<Dg
+											labels={mklabs}
+											label={mklab}
+											data={mkdata}
+											dataArr={mkdata}
+										/>
+										<div style={{ textAlign: "center" }}>
+											<Minimize relevantField={{ [pk.name]: false }}>
+												<Typography>placeholder</Typography>
+											</Minimize>
+										</div>
+									</CardBody>
 								</Card>
 							</Grid>
 						))}
