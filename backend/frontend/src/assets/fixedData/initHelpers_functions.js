@@ -23,14 +23,11 @@ exports.checkVal = (costume, val) => {
 	switch (true) {
 		case val <= min:
 			return min;
-			break;
 		case val >= max:
 			return max;
-			break;
 
 		default:
 			return val;
-			break;
 	}
 };
 

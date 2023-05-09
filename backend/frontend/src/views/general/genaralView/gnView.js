@@ -14,6 +14,9 @@ import {
 	CardHeader,
 	Button,
 	Icon,
+	AppBar,
+	Toolbar,
+	IconButton,
 } from "@mui/material";
 import axios from "axios";
 import { CardBody } from "reactstrap";
@@ -26,24 +29,71 @@ import earth from "../../../assets/img/unitsimg/defaultTzahal.png";
 import fire from "../../../assets/img/unitsimg/mekatnar58.png";
 import { isAuthenticated } from "auth";
 import { Testuser } from "components/packages/tester";
+import ProgressProvider from "components/general/CircularProgressBarAnimation/ProgressProvider";
+import {
+	buildStyles,
+	CircularProgressbar,
+	CircularProgressbarWithChildren,
+} from "react-circular-progressbar";
+import { Mclock } from "components/general/charts/MainClock";
+import { loadOgdas } from "assets/unitFunctions/ogdas";
+import { loadHativas } from "assets/unitFunctions/hativas";
+import { loadGdods } from "assets/unitFunctions/gdods";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { GoBack } from "components/general/Buttons/GoBack";
 
 function Generalview(props) {
+	//* global ----------------------------------------------------------------
+	const { user } = isAuthenticated();
+
 	//* states ----------------------------------------------------------------
 	const [data, setData] = useState({});
 	const [loading, setLoading] = useState(true);
-	const { user } = isAuthenticated();
+	const [id, setId] = useState({});
 
-	//* functions ----------------------------------------------------------------
-	const getpikod = () => {
-		axios.get("http://localhost:8000/api/pikod").then((response) => {
-			setData({ ...data, pikods: response.data });
+	//* base functions ----------------------------------------------------------------
+	const getpikod = async () => {
+		await axios.get("http://localhost:8000/api/pikod").then((response) => {
+			setData({ ...data, units: response.data });
 			// console.log(response.data);
 		});
 	};
+
+	//* change function --------------------------------------------------------
+	async function handleChange(evt) {
+		console.log(data.units);
+		console.log(evt.target.name);
+		const L_id = evt.target.name;
+		// setId(L_id)
+		const operator = L_id.split("")[0];
+		console.log(operator);
+		switch (operator) {
+			case "P":
+				// console.log(await loadOgdas(L_id));
+				setData({ ...data, units: await loadOgdas(L_id) });
+				setId({ ...id, pikod: L_id });
+				// console.log(L_id);
+				break;
+
+			case "U":
+				// console.log(await loadHativas(L_id));
+				setData({ ...data, units: await loadHativas(L_id) });
+				setId({ ...id, ogda: L_id });
+
+				break;
+			case "H":
+				// console.log(await loadGdods(L_id));
+				setData({ ...data, units: await loadGdods(L_id) });
+				setId({ ...id, hativa: L_id });
+
+				break;
+
+			default:
+				console.log(id);
+				break;
+		}
+	}
 	//* mock data ----------------------------------------------------------------
-	const mklabs = ["Red", "Blue", "Yellow"];
-	const mklab = "mock";
-	const mkdata = [300, 50, 100];
 
 	useEffect(() => {
 		setLoading(true);
@@ -51,21 +101,17 @@ function Generalview(props) {
 	}, []);
 
 	useEffect(() => {
-		if (Array.isArray(data.pikods)) {
-			// console.log(data.pikods);
+		if (Array.isArray(data.units)) {
+			// console.log(data.units);
 			setLoading(false);
 		}
-	}, [data.pikods]);
+	}, [data.units]);
 
 	return (
 		<>
 			{loading ? (
 				<div style={{ width: "50%", marginTop: "30%" }}>
-					<PropagateLoader
-						color={"#ff4650"}
-						loading={true}
-						size={25}
-					/>
+					<PropagateLoader color={"#ff4650"} loading={true} size={25} />
 				</div>
 			) : (
 				<>
@@ -82,11 +128,7 @@ function Generalview(props) {
 								<>
 									<Typography variant="h2">
 										כשירות מסגרות הטנ"א - תמונת מצב {""}
-										<img
-											src={fire}
-											height="150px"
-											width="150px"
-										/>{" "}
+										<img src={fire} height="150px" width="150px" />{" "}
 									</Typography>
 								</>
 							) : (
@@ -94,20 +136,17 @@ function Generalview(props) {
 							)}
 						</CardBody>
 					</Card>
+					<div style={{ textAlign: "center", marginTop: "2%" }}>
+						{id.pikod? <GoBack text="חזור לפיקוד" />: null}
+					</div>
 					<Grid
 						container
 						spacing={{ xs: 2, md: 3 }}
 						columns={{ xs: 4, sm: 8, md: 12 }}
 						style={{ marginTop: "3%" }}
 					>
-						{data.pikods.map((pk, index) => (
-							<Grid
-								item
-								xs={2}
-								sm={4}
-								md={4}
-								key={index}
-							>
+						{data.units.map((ut, index) => (
+							<Grid item xs={2} sm={4} md={4} key={index}>
 								<Card>
 									<div
 										style={{ textAlign: "right" }}
@@ -115,26 +154,41 @@ function Generalview(props) {
 									>
 										<Button
 											// endIcon
+											name={ut._id}
 											variant="text"
 											style={{
 												marginRight: "3rem",
 												marginTop: "2%",
 											}}
+											onClick={handleChange}
 										>
-											{pk.name}
+											{ut.name}
 										</Button>
 									</div>
 									<CardBody>
 										{/*//TODO - get real data change to progress bar */}
-										<Dg
-											labels={mklabs}
-											label={mklab}
-											data={mkdata}
-											dataArr={mkdata}
-										/>
+										<div
+											style={{
+												height: "70%",
+												width: "50%",
+												textAlign: "center",
+												marginRight: "25%",
+												marginBottom: "5%",
+											}}
+										>
+											<Mclock
+												start={0}
+												end={100}
+												high={100}
+												medium={70}
+												high_color="green"
+												medium_color="yellow"
+												low_color="red"
+											/>
+										</div>
 										<div style={{ textAlign: "center" }}>
-											<Minimize relevantField={{ [pk.name]: false }}>
-												<Typography>placeholder</Typography>
+											<Minimize relevantField={{ [ut.name]: false }}>
+												{/* <Typography>placeholder</Typography> */}
 											</Minimize>
 										</div>
 									</CardBody>

@@ -275,8 +275,6 @@ function KshirotPage(props) {
 									diffType("matzva", "מילואים") + diffType("matzva", "מומחים");
 								break;
 
-								break;
-
 							default:
 								arr = [];
 								break;
@@ -646,6 +644,7 @@ function KshirotPage(props) {
 
 	//* useEffects ----------------------------------------------------------------
 	//* work-plan + basic workflow (should be minimized)
+
 	useEffect(() => {
 		let info = [];
 		let k = Object.keys(kshirotPackage);
@@ -727,10 +726,7 @@ function KshirotPage(props) {
 				הערכת כשירות טנא
 			</div>
 			<Row>
-				<Col
-					xs={12}
-					md={6}
-				>
+				<Col xs={12} md={6}>
 					<Card>
 						<CardBody className={style.CardBody}>
 							<Container>
@@ -801,7 +797,6 @@ function KshirotPage(props) {
 													// console.log(type);
 
 													return { min: 0 };
-													break;
 												default:
 													console
 														.error
@@ -857,10 +852,8 @@ function KshirotPage(props) {
 											switch (true) {
 												case name == "רמת מקצועיות" && type == "number":
 													return { max: 10, min: 0 };
-													break;
 												case type == "number":
 													return { min: 0 };
-													break;
 
 												default:
 													console
@@ -1209,10 +1202,7 @@ function KshirotPage(props) {
 															}
 															return (
 																<>
-																	<Typography
-																		variant="h4"
-																		style={h4Title}
-																	>
+																	<Typography variant="h4" style={h4Title}>
 																		{title}
 																	</Typography>
 																	<UniversalInput
@@ -1320,10 +1310,7 @@ function KshirotPage(props) {
 															}
 															return (
 																<>
-																	<Typography
-																		variant="h4"
-																		style={h4Title}
-																	>
+																	<Typography variant="h4" style={h4Title}>
 																		{title}
 																	</Typography>
 																	<UniversalInput
@@ -1385,7 +1372,6 @@ function KshirotPage(props) {
 											switch (true) {
 												case type == "number":
 													return { min: 0 };
-													break;
 												default:
 													console
 														.error
@@ -1482,10 +1468,7 @@ function KshirotPage(props) {
 						</CardBody>
 					</Card>
 				</Col>
-				<Col
-					xs={12}
-					md={6}
-				>
+				<Col xs={12} md={6}>
 					<Card>
 						<CardBody>
 							<Container>
