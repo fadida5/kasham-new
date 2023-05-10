@@ -46,35 +46,24 @@ import StatisticsPage from "views/general/statisticspage/StatisticsPage";
 import dashTest from "views/test/dashTest";
 import kshirotPage from "views/general/kshirot/kshirotPage";
 import gnView from "views/general/genaralView/gnView";
+import GdodPage from "views/general/gdodPage/GdodPage";
 
 ReactDOM.render(
 	<>
 		<Provider store={store}>
 			<ThemeContextWrapper>
-				<ToastContainer
-					rtl
-					autoClose={4000}
-					style={{ textAlign: "right" }}
-				/>
+				<ToastContainer rtl autoClose={4000} style={{ textAlign: "right" }} />
 				<BackgroundColorWrapper>
 					<Router history={history}>
 						<Switch>
 							{/*///////////////////////////////////////////UnLoggedIn Routes/////////////////////////////////////////////////*/}
-							<UnloggedinRoute
-								path="/signin"
-								exact
-								component={SignIn}
-							/>
+							<UnloggedinRoute path="/signin" exact component={SignIn} />
 							<UnloggedinRoute
 								path="/adminsignin"
 								exact
 								component={AdminSignIn}
 							/>
-							<UnloggedinRoute
-								path="/signup"
-								exact
-								component={SignUp}
-							/>
+							<UnloggedinRoute path="/signup" exact component={SignUp} />
 							<LoggedinRoute
 								path="/signupotherusers"
 								exact
@@ -83,28 +72,21 @@ ReactDOM.render(
 							{/*///////////////////////////////////////////UnLoggedIn Routes/////////////////////////////////////////////////*/}
 
 							{/*///////////////////////////////////////////Admin Routes/////////////////////////////////////////////////*/}
-							<AdminRoute
-								path="/manageusers"
-								exact
-								component={ManageUsers}
-							/>
-							<AdminRoute
-								path="/edituser/:userid"
-								exact
-								component={EditUser}
-							/>
+							<AdminRoute path="/manageusers" exact component={ManageUsers} />
+							<AdminRoute path="/edituser/:userid" exact component={EditUser} />
 							{/*///////////////////////////////////////////Admin Routes/////////////////////////////////////////////////*/}
 
 							{/*///////////////////////////////////////////LoggedIn Routes/////////////////////////////////////////////////*/}
+							<LoggedinRoute path="/about" exact component={AboutPage} />
 							<LoggedinRoute
-								path="/about"
-								exact
-								component={AboutPage}
-							/>
-							<LoggedinRoute
-								path="/kshirot"
+								path="/kshirot/:gdod"
 								exact
 								component={kshirotPage}
+							/>
+							<LoggedinRoute
+								path="/gdodpage/:gdod"
+								exact
+								component={GdodPage}
 							/>
 							<LoggedinRoute
 								path="/unittreepage/:unittype/:unitid"
@@ -116,27 +98,20 @@ ReactDOM.render(
 								exact
 								component={DashboardPage}
 							/>
-							<LoggedinRoute
-								path="/test"
-								exact
-								component={dashTest}
-							/>
+							<LoggedinRoute path="/test" exact component={dashTest} />
 							<LoggedinRoute
 								path="/statisticspage"
 								exact
 								component={StatisticsPage}
 							/>
 							<LoggedinRoute
-								path="/useradmineditpage"
+								path="/useradmineditpage/:unit"
 								exact
 								component={gnView}
 							/>
 
 							{/*///////////////////////////////////////////LoggedIn Routes/////////////////////////////////////////////////*/}
-							<Redirect
-								from="/"
-								to="/signin"
-							/>
+							<Redirect from="/" to="/signin" />
 						</Switch>
 					</Router>
 				</BackgroundColorWrapper>

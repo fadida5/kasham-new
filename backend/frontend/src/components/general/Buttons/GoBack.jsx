@@ -8,6 +8,7 @@ export function GoBack(props) {
 			value={props.value}
 			size="medium"
 			color="success"
+			onClick={props.onClick}
 			style={{ fontSize: "18px" }}
 			startIcon={
 				<ArrowRightIcon

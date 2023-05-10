@@ -17,7 +17,7 @@ import RTL from "components/general/ThemeWrapper/RtlWrapper";
 
 //TODO - grid
 
-export const SelectOne = (props) => {
+const SelectOne = (props) => {
 	//* state ----------------------------------------------------------------
 
 	const [options, setOptions] = useState([]);
@@ -217,10 +217,7 @@ export const SelectOne = (props) => {
 										>
 											{theme == "white-content" ? (
 												<>
-													<InputLabel
-														style={style}
-														id={props.name}
-													>
+													<InputLabel style={style} id={props.name}>
 														{props.header}
 													</InputLabel>
 													<Select
@@ -230,7 +227,7 @@ export const SelectOne = (props) => {
 														labelId="header"
 														label={props.name}
 														// defaultValue={props.value}
-														// value={props.value ? props.value : undefined}
+														value={props.val ? props.val : undefined}
 														onChange={handleChange}
 														disabled={props.isDisabled}
 														// placeholder={
@@ -251,10 +248,7 @@ export const SelectOne = (props) => {
 												</>
 											) : (
 												<>
-													<InputLabel
-														style={style}
-														id={props.name}
-													>
+													<InputLabel style={style} id={props.name}>
 														{props.header}
 													</InputLabel>
 													<Select
@@ -264,7 +258,7 @@ export const SelectOne = (props) => {
 														labelId="header"
 														label={props.name}
 														// defaultValue={props.value}
-														// value={props.value ? props.value : undefined}
+														value={props.val ? props.val : undefined}
 														onChange={handleChange}
 														disabled={props.isDisabled}
 														// placeholder={
@@ -333,8 +327,8 @@ export const SelectOne = (props) => {
 														labelId="header"
 														label={props.name}
 														// defaultValue={props.value}
-														// value={props.value ? props.value : undefined}
-														// value={val ? val : undefined}
+														// value={props.val ? props.val : undefined}
+														value={props.val ? props.val : undefined}
 														onChange={handleChange}
 														// onOpen={close}
 														disabled={props.isDisabled}
@@ -356,10 +350,7 @@ export const SelectOne = (props) => {
 												</>
 											) : (
 												<>
-													<InputLabel
-														style={style}
-														id={props.name}
-													>
+													<InputLabel style={style} id={props.name}>
 														{props.header}
 														{""}
 													</InputLabel>
@@ -370,7 +361,7 @@ export const SelectOne = (props) => {
 														labelId="header"
 														label={props.name}
 														// defaultValue={props.value}
-														// value={props.value ? props.value : undefined}
+														value={props.val ? props.val : undefined}
 														onChange={handleChange}
 														disabled={props.isDisabled}
 														// placeholder={
@@ -425,3 +416,5 @@ export const SelectOne = (props) => {
 		</RTL>
 	);
 };
+
+export default SelectOne;

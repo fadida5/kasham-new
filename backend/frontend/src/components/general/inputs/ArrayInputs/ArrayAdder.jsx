@@ -20,7 +20,7 @@ import {
 } from "reactstrap";
 import { produce } from "immer";
 import { generate } from "shortid";
-import { SelectOne } from "../SelectInputs/SelectOne";
+import SelectOne from "../SelectInputs/SelectOne";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
 	TextField,
@@ -33,7 +33,7 @@ import {
 } from "@mui/material";
 import { checkVal } from "assets/fixedData/initHelpers_functions";
 
-export const ArrayAdder = (props) => {
+const ArrayAdder = (props) => {
 	//* states ----------------------------------------------------------------
 	const [finalspecialkeytwo, setFinalSpecialKeytwo] = useState([]);
 	// const [tempFinalspecialkeytwo, setTempFinalSpecialKeytwo] = useState([]);
@@ -44,7 +44,7 @@ export const ArrayAdder = (props) => {
 		const pack = props.freeOptions;
 		let temp = "";
 		let res = "";
-		console.log(v);
+		// console.log(v);
 		if (v == "בחר") {
 			console.log("aaaaa");
 			return curr;
@@ -53,7 +53,7 @@ export const ArrayAdder = (props) => {
 				case "מספר מקצוע":
 					// console.log(v);
 					// temp = pack.name.filter((item) => item.name == v);
-					console.log(pack.name);
+					// console.log(pack.name);
 					temp = pack.name.filter(
 						(item) => item.value == finalspecialkeytwo[i].name
 					);
@@ -63,7 +63,7 @@ export const ArrayAdder = (props) => {
 							return curr;
 						} else {
 							res = [{ name: temp[0].value, value: temp[0].name }];
-							console.log(res);
+							// console.log(res);
 
 							return res;
 						}
@@ -73,7 +73,6 @@ export const ArrayAdder = (props) => {
 						// console.log(error);
 					}
 
-					break;
 				case "שם מקצוע":
 					// console.log(v);
 					// temp = pack.name.filter((item) => item.name == v);
@@ -96,12 +95,8 @@ export const ArrayAdder = (props) => {
 						// console.log(error);
 					}
 
-					break;
-
 				default:
 					return curr;
-
-					break;
 			}
 		}
 		// console.log(pack);
@@ -248,11 +243,7 @@ export const ArrayAdder = (props) => {
 									{props.inputArray
 										? props.inputArray.map((item, i) => {
 												return (
-													<Col
-														name={item.name}
-														xs={12}
-														md={4}
-													>
+													<Col name={item.name} xs={12} md={4}>
 														<div>
 															{item.type != "select" ? (
 																<div style={{ textAlign: "right" }}>
@@ -329,7 +320,7 @@ export const ArrayAdder = (props) => {
 																				)
 																				// props.freeOptions[fieldAraay[i + 1]]
 																			}
-																			val={finalspecialkeytwo}
+																			// val={finalspecialkeytwo}
 																			value={
 																				input[fieldAraay[i + 1]]
 																					? input[fieldAraay[i + 1]]
@@ -373,3 +364,4 @@ export const ArrayAdder = (props) => {
 		</>
 	);
 };
+export default ArrayAdder;

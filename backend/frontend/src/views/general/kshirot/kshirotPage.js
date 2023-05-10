@@ -1,5 +1,11 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useRef, useReducer } from "react";
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	useReducer,
+	Suspense,
+} from "react";
 
 import {
 	useParams,
@@ -33,12 +39,12 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 // import Select from "../../../components/general/Select/AnimatedSelect";
 import { UniversalInput } from "components/general/inputs/FreeTextInputs/UniversalInput";
 import { DateInput } from "components/general/inputs/dateInput/DateInput";
-import { ArrayAdder } from "components/general/inputs/ArrayInputs/ArrayAdder";
+// import ArrayAdder from "components/general/inputs/ArrayInputs/ArrayAdder";
 import AnimatedSelect from "components/general/Select/AnimatedSelect";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCarDataFunc } from "redux/features/cardata/cardataSlice";
-import { SelectOne } from "components/general/inputs/SelectInputs/SelectOne";
+import SelectOne from "components/general/inputs/SelectInputs/SelectOne";
 import IsRelevant from "components/general/CollapseComponents/IsRelevant/IsRelevant";
 //* styles
 import style from "../kshirot/kshirotPage.module.css";
@@ -48,6 +54,16 @@ import { actions } from "react-table";
 import { toast } from "react-toastify";
 import { kshirotGrade } from "components/packages/kshirotGrades";
 import { params } from "../../../assets/fixedData/ksirotGradeParams";
+import { lazy } from "react";
+const ArrayAdder = lazy(() =>
+	import("components/general/inputs/ArrayInputs/ArrayAdder")
+);
+const SelectOne1 = lazy(() =>
+	import("components/general/inputs/SelectInputs/SelectOne")
+);
+const Minimize1 = lazy(() =>
+	import("components/general/CollapseComponents/Minimize/Minimize")
+);
 //TODO - build a test for test-user
 function KshirotPage(props) {
 	//* user
@@ -62,6 +78,9 @@ function KshirotPage(props) {
 	//
 	const [Options, setOptions] = useState({});
 	const [revOptions, setrevOptions] = useState({});
+	//* gdod
+	const [gdod, setGdod] = useState({});
+
 	//* init helpers ----------------------------------------------------------------
 	const {
 		get_field,
@@ -100,6 +119,14 @@ function KshirotPage(props) {
 					}
 				}
 				// return options;
+			});
+	};
+	const getGdod = async (_id) => {
+		await axios
+			.get(`http://localhost:8000/api/gdod/${_id}`)
+			.then((response) => {
+				// console.log(response.data);
+				setGdod({ ...response.data });
 			});
 	};
 
@@ -436,7 +463,7 @@ function KshirotPage(props) {
 	//* array output [{key : val, key2 : val2, ...}, ...]
 	function callBack2(inputData2, arrName) {
 		// console.log(arrName);
-		console.table(inputData2);
+		// console.table(inputData2);
 		kshirot[arrName] = inputData2;
 		if (inputData2.length > 0) {
 			// console.log(dup(inputData2[0], "teken", "matzva"));
@@ -543,19 +570,20 @@ function KshirotPage(props) {
 					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
 					true
 				).grade;
-				const hasError = kshirotGrade(
-					kshirot,
-					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
-					true
-				).approved;
+				// const hasError = kshirotGrade(
+				// 	kshirot,
+				// 	params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
+				// 	true
+				// ).approved;
 				// kshirotGrade(kshirot,ksirotGradeParams)
-				console.log(pak);
-				if (hasError) {
-					toast.error("לא כל השדות מלאים כמו שצריך");
+				// console.log(pak);
+				if (false) {
 				} else {
 					// kshirotGrade(kshirot,ksirotGradeParams)
-					console.log(pak);
+					// console.log(pak);
 					kshirotRel.grade = grade;
+					console.log(grade);
+					console.log(kshirotRel);
 					axios
 						.post(`http://localhost:8000/kshirot/create`, kshirotRel)
 						.then((res) => {
@@ -613,15 +641,15 @@ function KshirotPage(props) {
 					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
 					true
 				).grade;
-				const hasError = kshirotGrade(
-					kshirot,
-					params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
-					true
-				).approved;
+				// const hasError = kshirotGrade(
+				// 	kshirot,
+				// 	params(0.25, 0.15, 0.15, 0.2, 0.15, 0.1),
+				// 	true
+				// ).approved;
 				// kshirotGrade(kshirot,ksirotGradeParams)
 				// console.log(pak);
-				if (hasError) {
-					toast.error("לא כל השדות מלאים כמו שצריך");
+				if (grade === Infinity) {
+					toast.error("הוזן יחס שאינו תקין");
 				} else {
 					setKshirot({ ...kshirot, grade: grade });
 					axios
@@ -629,7 +657,7 @@ function KshirotPage(props) {
 						.then((res) => {
 							// console.log(res);
 							console.groupCollapsed("Axios then");
-							console.log(res);
+							console.log(res.data);
 							toast.success("דוח כשירות נשלח בהצלחה");
 						})
 						.catch((err) => {
@@ -677,7 +705,7 @@ function KshirotPage(props) {
 		/* NOTE - kshirot package break down by index:
 		 * look at log info
 		 */
-		console.table(info);
+		// console.table(info);
 		// console.log(k.indexOf("specialkey"));
 		// console.log(k.length);
 		// send();
@@ -685,7 +713,9 @@ function KshirotPage(props) {
 
 	useEffect(() => {
 		getop();
-		// console.log(location);
+		// console.log(location.pathname.split("/")[2]);
+		setKshirot({ ...kshirot, gdod: location.pathname.split("/")[2] });
+		getGdod(location.pathname.split("/")[2]);
 		// console.log(Options);
 		// console.log(revOptions);
 	}, []);
@@ -713,7 +743,7 @@ function KshirotPage(props) {
 					paddingBottom: "10px",
 				}}
 			>
-				placeholder {/*//!{gdod.name}*/}
+				{gdod.name}
 			</div>
 			<div
 				style={{
@@ -735,7 +765,7 @@ function KshirotPage(props) {
 									textLoc="center"
 								>
 									<UniversalInput
-										{...uni("number", "זמן בתפקיד", "date")}
+										{...uni("number", "זמן בתפקיד", "timeinrole")}
 										textLoc="center"
 										chained={true}
 										costume={{ min: 0 }}
@@ -781,31 +811,42 @@ function KshirotPage(props) {
 								<div style={TopTitle}> כוח אדם (25%)</div>
 								<Minimize relevantField={{ HR: true }}>
 									{/*//! {gdod.sadir == true ? null : ()} */}
+									<Suspense
+										fallback={
+											<div style={{ width: "50%", margintop: "30%" }}>
+												<propagateloader
+													color={"#ff4650"}
+													loading={true}
+													size={25}
+												/>
+											</div>
+										}
+									>
+										<ArrayAdder
+											{...arrAdd(
+												"בעלי תפקיד(קצינים,מנהלי עבודה,מחטפים)",
+												"specialkeytwo",
+												"הוסף בעל תפקיד",
+												tafkid,
+												tafkidFields,
+												[Operative_options]
+											)}
+											costume={(type) => {
+												switch (true) {
+													case type == "number":
+														// console.log(type);
 
-									<ArrayAdder
-										{...arrAdd(
-											"בעלי תפקיד(קצינים,מנהלי עבודה,מחטפים)",
-											"specialkeytwo",
-											"הוסף בעל תפקיד",
-											tafkid,
-											tafkidFields,
-											[Operative_options]
-										)}
-										costume={(type) => {
-											switch (true) {
-												case type == "number":
-													// console.log(type);
-
-													return { min: 0 };
-												default:
-													console
-														.error
-														// `this type: ${type} does have costume settings (just for you to know)`
-														();
-													break;
-											}
-										}}
-									/>
+														return { min: 0 };
+													default:
+														console
+															.error
+															// `this type: ${type} does have costume settings (just for you to know)`
+															();
+														break;
+												}
+											}}
+										/>
+									</Suspense>
 
 									<UniversalInput
 										{...uni("number", "תקינה", "kzinim", 12, 4)}
@@ -829,40 +870,52 @@ function KshirotPage(props) {
 											value={kshirot.kzinimActivemax}
 										/>
 									</UniversalInput>
-									<ArrayAdder
-										{...arrAdd(
-											"בעלי מקצוע",
-											"specialkey",
-											"הוסף בעל מקצוע",
-											job,
-											jobFields,
-											[
-												Options,
-												revOptions,
-												Operative_options,
-												jobFields_options,
-											]
-										)}
-										costumeSize={{
-											"מספר מקצוע": "col-12 col-md-6",
-											"שם מקצוע": "col-12 col-md-6",
-										}}
-										costume={(type, name) => {
-											// console.log(name);
-											switch (true) {
-												case name == "רמת מקצועיות" && type == "number":
-													return { max: 10, min: 0 };
-												case type == "number":
-													return { min: 0 };
+									<Suspense
+										fallback={
+											<div style={{ width: "50%", margintop: "30%" }}>
+												<propagateloader
+													color={"#ff4650"}
+													loading={true}
+													size={25}
+												/>
+											</div>
+										}
+									>
+										<ArrayAdder
+											{...arrAdd(
+												"בעלי מקצוע",
+												"specialkey",
+												"הוסף בעל מקצוע",
+												job,
+												jobFields,
+												[
+													Options,
+													revOptions,
+													Operative_options,
+													jobFields_options,
+												]
+											)}
+											costumeSize={{
+												"מספר מקצוע": "col-12 col-md-6",
+												"שם מקצוע": "col-12 col-md-6",
+											}}
+											costume={(type, name) => {
+												// console.log(name);
+												switch (true) {
+													case name == "רמת מקצועיות" && type == "number":
+														return { max: 10, min: 0 };
+													case type == "number":
+														return { min: 0 };
 
-												default:
-													console
-														.error
-														// `this type: ${type} does have costume settings (just for you to know)`
-														();
-											}
-										}}
-									/>
+													default:
+														console
+															.error
+															// `this type: ${type} does have costume settings (just for you to know)`
+															();
+												}
+											}}
+										/>
+									</Suspense>
 									<UniversalInput
 										{...uni("number", "תקינה", "officers", 12, 4)}
 										header='סה"כ בעלי מקצוע'
@@ -945,32 +998,43 @@ function KshirotPage(props) {
 						<CardBody className={style.CardBody}>
 							<Container>
 								<div style={TopTitle}>מלאי (15%)</div>
-								<Minimize relevantField={{ Supply: true }}>
-									<UniversalInput
-										{...uni("number", "תקן", "teken")}
-										header={"אמצעי אחזקה"}
-										costume={{ min: 0 }}
-										hascomment={true}
-									>
+								<Suspense
+									fallback={
+										<div style={{ width: "50%", margintop: "30%" }}>
+											<propagateloader
+												color={"#ff4650"}
+												loading={true}
+												size={25}
+											/>
+										</div>
+									}
+								>
+									<Minimize1 relevantField={{ Supply: true }}>
 										<UniversalInput
-											{...uni("number", "מצבה", "tekenmax")}
-											chained={true}
+											{...uni("number", "תקן", "teken")}
+											header={"אמצעי אחזקה"}
 											costume={{ min: 0 }}
-										/>
-									</UniversalInput>
-									<UniversalInput
-										{...uni("number", "תקן", "toolsbox")}
-										header={"ארגז כלים לכל בעל מקצוע"}
-										costume={{ min: 0 }}
-										hascomment={true}
-									>
+											hascomment={true}
+										>
+											<UniversalInput
+												{...uni("number", "מצבה", "tekenmax")}
+												chained={true}
+												costume={{ min: 0 }}
+											/>
+										</UniversalInput>
 										<UniversalInput
-											{...uni("number", "מצבה", "toolsboxmax")}
-											chained={true}
+											{...uni("number", "תקן", "toolsbox")}
+											header={"ארגז כלים לכל בעל מקצוע"}
 											costume={{ min: 0 }}
-										/>
-									</UniversalInput>
-									{/* <SelectOne
+											hascomment={true}
+										>
+											<UniversalInput
+												{...uni("number", "מצבה", "toolsboxmax")}
+												chained={true}
+												costume={{ min: 0 }}
+											/>
+										</UniversalInput>
+										{/* <SelectOne
 										{...selectOneFO(
 											"match",
 											'התאמת כ"ע לסוג הצל"ם',
@@ -980,25 +1044,25 @@ function KshirotPage(props) {
 											true
 										)}
 									/> */}
-									{dup(kshirotPackage, "lift", "stash").map((fl, index) => {
-										const names = [
-											"אמצעי הרמה,חילוץ וגרירה",
-											'התאמת כ"ע לסוג הצל"ם',
-											"יכולת העמסה",
-											"הילום המלאי",
-											'חט"כ',
-										];
+										{dup(kshirotPackage, "lift", "stash").map((fl, index) => {
+											const names = [
+												"אמצעי הרמה,חילוץ וגרירה",
+												'התאמת כ"ע לסוג הצל"ם',
+												"יכולת העמסה",
+												"הילום המלאי",
+												'חט"כ',
+											];
 
-										{
-											/* console.log(fl); */
-										}
+											{
+												/* console.log(fl); */
+											}
 
-										return (
-											//todo check if to add tkinot to lift
-											<>
-												{index >= 2 ? (
-													<>
-														{/* {index === 2 ? (
+											return (
+												//todo check if to add tkinot to lift
+												<>
+													{index >= 2 ? (
+														<>
+															{/* {index === 2 ? (
 															<Row>
 																<Col
 																	xs={12}
@@ -1014,6 +1078,27 @@ function KshirotPage(props) {
 															</Row>
 														) : null} */}
 
+															<SelectOne
+																{...selectOneFO(
+																	fl,
+																	names[index],
+																	false,
+																	index >= 0 && index <= 2
+																		? spareParts_exist_not_partially
+																		: index === 3
+																		? spareParts_done
+																		: index === 4
+																		? spareParts_exist_not
+																		: null,
+																	kshirot[fl],
+																	true
+																)}
+																title={index === 2 ? "חלפים" : undefined}
+																IsRelevant={true}
+																handleCallBack4={CallBack4}
+															/>
+														</>
+													) : (
 														<SelectOne
 															{...selectOneFO(
 																fl,
@@ -1030,114 +1115,94 @@ function KshirotPage(props) {
 																true
 															)}
 															title={index === 2 ? "חלפים" : undefined}
-															IsRelevant={true}
-															handleCallBack4={CallBack4}
 														/>
-													</>
-												) : (
+													)}
+												</>
+											);
+										})}
+										<UniversalInput
+											{...uni("number", "תקן", "hatak")}
+											header='חט"כ'
+											costume={{ min: 0 }}
+											IsRelevant={true}
+											handleCallBack4={CallBack4}
+										>
+											<UniversalInput
+												{...uni("number", "מצבה", "hatakmax")}
+												chained={true}
+												costume={{ min: 0 }}
+											/>
+										</UniversalInput>
+										<UniversalInput
+											{...uni("number", "תקן", "bakash")}
+											IsRelevant={true}
+											handleCallBack4={CallBack4}
+											header='בק"ש'
+											costume={{ min: 0 }}
+										>
+											<UniversalInput
+												{...uni("number", "מצבה", "bakashmax")}
+												chained={true}
+												costume={{ min: 0 }}
+											/>
+										</UniversalInput>
+
+										<div style={{ marginTop: "6px" }}>
+											<DateInput
+												{...date(
+													"תאריך רענון אחרון (תוקף 8 שנים)",
+													"lastrefreshdate",
+													12,
+													12
+												)}
+												hascomment={true}
+												IsRelevant={true}
+												handleCallBack4={CallBack4}
+												styleName={style.Comment}
+											/>
+										</div>
+
+										<UniversalInput
+											{...uni("number", "תקן", "halfimtzelem")}
+											IsRelevant={true}
+											handleCallBack4={CallBack4}
+											costume={{ min: 0 }}
+											header='מצאי ערכות חלפים לצל"ם'
+											styleName={style.Comment}
+											hascomment={true}
+										>
+											<UniversalInput
+												{...uni("number", "מצבה", "halfimtzelemmax")}
+												chained={true}
+												costume={{ min: 0 }}
+											/>
+										</UniversalInput>
+										{dup(kshirotPackage, "matchswap", "catalogs").map(
+											(fl, index) => {
+												const names = ['התאמת ערכות חלפים לצל"ם', "קטלוגים"];
+
+												{
+													/* console.log(fl); */
+												}
+
+												return (
 													<SelectOne
 														{...selectOneFO(
 															fl,
 															names[index],
 															false,
-															index >= 0 && index <= 2
-																? spareParts_exist_not_partially
-																: index === 3
-																? spareParts_done
-																: index === 4
-																? spareParts_exist_not
-																: null,
+															spareParts_exist_not_partially,
 															kshirot[fl],
 															true
 														)}
-														title={index === 2 ? "חלפים" : undefined}
+														IsRelevant={true}
+														handleCallBack4={CallBack4}
 													/>
-												)}
-											</>
-										);
-									})}
-									<UniversalInput
-										{...uni("number", "תקן", "hatak")}
-										header='חט"כ'
-										costume={{ min: 0 }}
-										IsRelevant={true}
-										handleCallBack4={CallBack4}
-									>
-										<UniversalInput
-											{...uni("number", "מצבה", "hatakmax")}
-											chained={true}
-											costume={{ min: 0 }}
-										/>
-									</UniversalInput>
-									<UniversalInput
-										{...uni("number", "תקן", "bakash")}
-										IsRelevant={true}
-										handleCallBack4={CallBack4}
-										header='בק"ש'
-										costume={{ min: 0 }}
-									>
-										<UniversalInput
-											{...uni("number", "מצבה", "bakashmax")}
-											chained={true}
-											costume={{ min: 0 }}
-										/>
-									</UniversalInput>
-
-									<div style={{ marginTop: "6px" }}>
-										<DateInput
-											{...date(
-												"תאריך רענון אחרון (תוקף 8 שנים)",
-												"lastrefreshdate",
-												12,
-												12
-											)}
-											hascomment={true}
-											IsRelevant={true}
-											handleCallBack4={CallBack4}
-											styleName={style.Comment}
-										/>
-									</div>
-
-									<UniversalInput
-										{...uni("number", "תקן", "halfimtzelem")}
-										IsRelevant={true}
-										handleCallBack4={CallBack4}
-										costume={{ min: 0 }}
-										header='מצאי ערכות חלפים לצל"ם'
-										styleName={style.Comment}
-										hascomment={true}
-									>
-										<UniversalInput
-											{...uni("number", "מצבה", "halfimtzelemmax")}
-											chained={true}
-											costume={{ min: 0 }}
-										/>
-									</UniversalInput>
-									{dup(kshirotPackage, "matchswap", "catalogs").map(
-										(fl, index) => {
-											const names = ['התאמת ערכות חלפים לצל"ם', "קטלוגים"];
-
-											{
-												/* console.log(fl); */
+												);
 											}
-
-											return (
-												<SelectOne
-													{...selectOneFO(
-														fl,
-														names[index],
-														false,
-														spareParts_exist_not_partially,
-														kshirot[fl],
-														true
-													)}
-													IsRelevant={true}
-													handleCallBack4={CallBack4}
-												/>
-											);
-										}
-									)}
-								</Minimize>
+										)}
+									</Minimize1>
+								</Suspense>
 							</Container>
 						</CardBody>
 					</Card>
@@ -1347,123 +1412,165 @@ function KshirotPage(props) {
 						<CardBody>
 							<Container>
 								<div style={TopTitle}>דו"ח אימון פלגת טנ"א גדודית </div>
-								<Minimize relevantField={{ training: true }}>
-									<UniversalInput
-										{...uni("textarea", "ציין פרטים כללי", "TRdetails", 12, 12)}
-									/>
-									<UniversalInput
-										{...uni(
-											"textarea",
-											"ציין את מטרות האימון",
-											"TRgoals",
-											12,
-											12
-										)}
-									/>
-									<ArrayAdder
-										{...arrAdd(
-											"פרטי הסגל המתאמן",
-											"TRtraining",
-											"הוסף",
-											trainperson,
-											trainpersonFields
-										)}
-										costume={(type) => {
-											switch (true) {
-												case type == "number":
-													return { min: 0 };
-												default:
-													console
-														.error
-														// `this type: ${type} does have costume settings (just for you to know)`
-														();
-											}
-										}}
-									/>
-									{dup(kshirotPackage, "TRmaflag", "TRbkiotbashob").map(
-										(fl, index) => {
-											const names = [
-												'התייצבות מפל"ג/קט"א',
-												'התייצבות קט"א/מנהל עבודה',
-												"התייצבות מפקד כיתת חלפים",
-												'התייצבות מפקד כיתת נאו"ת',
-												"התייצבות מפקד כיתה קלה (רכב)",
-												"19/19 א'",
-												"19 ב'",
-												"19 ד'",
-												'כתיבת נספח טנ"א',
-												'הכנת תלקון נוה"ק',
-												'הכנת תלקון ניהו"ק',
-												'הכנת עזרים (שוב"ך)',
-												'הזנת פקודות טנ"א במשואה',
-												'הזנת סד"כ כלים וכשירות',
-												'ביצוע תדריך מפל"ג',
-												'קבלת פקודת טנ"א מרמה ממונה',
-												"רמת בקיאות בגזרת הלחימה",
-												'רמת בקיאות בסד"כ, משימות ויכולות',
-												'רמת כתיבת נספח טנ"א',
-												'תיאום תוכניות הטנ"א ע"י קט"א חטיבה',
-												"איכות הכנת עזרים",
-												'אישור תוכניות ע"י המג"ד',
-												'רמת השליטה בנתוני צל"ם לטנ"א',
-												"רמת ביצוע חישובי שחיקה",
-												"רמת הבקיאות במיקום כוחות שכנים",
-												'רמת הבקיאות ביכולות מערך הטנ"א בגדוד, בחטיבה ובכוחות הטנ"א המרחביים',
-												'שימוש במערכת השו"ב',
-												'רמת הבקיאות והשליטה במערכת השו"ב',
-											];
-											const Top = ["מדדי סף לאימון", "נוהל הקרב"];
-											const titles = {
-												TRmaflag: 'התייצבות בע"ת',
-												TRa: 'יציאת כלי טנ"א לתרגיל',
-												TRnispach: 'ביצוע נוה"ק סדור הכולל',
-												TRpkodotmasoa: 'נוה"ק ע"ג משואה',
-												TRtadrich: "ביצוע תדריך לקרב",
-												TRpkodotahzaka: "ביצוע הערכת מצב",
-												TRramatnispach: "תהליך ביצוע נוהל קרב",
-												TRzlm: "תכנון מענה אחזקתי",
-												TRshimosbashob: 'צי"ד בנוה"ק - משואה',
-											};
-
-											{
-												/* console.log(`${index}=> ${fl} : ${kshirot[fl]}`); */
-											}
-
-											return (
-												<>
-													<h4 style={h4Title}>
-														{" "}
-														{index == 0
-															? Top[0]
-															: fl == "TRpkodotahzaka"
-															? Top[1]
-															: null}
-													</h4>
-													<SelectOne
-														{...selectOneFO(
-															fl,
-															names[index],
-															false,
-															arrayObjectOptions_Checker(
-																spareParts_done,
-																"name"
-															).includes(kshirot[fl])
-																? spareParts_done
-																: oneToFive_Rate,
-															kshirot[fl],
-															false
-														)}
-														title={
-															typeof titles[fl] == "string"
-																? titles[fl]
-																: undefined
-														}
+								<Suspense
+									fallback={
+										<div style={{ width: "50%", margintop: "30%" }}>
+											<propagateloader
+												color={"#ff4650"}
+												loading={true}
+												size={25}
+											/>
+										</div>
+									}
+								>
+									<Minimize1 relevantField={{ training: true }}>
+										<UniversalInput
+											{...uni(
+												"textarea",
+												"ציין פרטים כללי",
+												"TRdetails",
+												12,
+												12
+											)}
+										/>
+										<UniversalInput
+											{...uni(
+												"textarea",
+												"ציין את מטרות האימון",
+												"TRgoals",
+												12,
+												12
+											)}
+										/>
+										<Suspense
+											fallback={
+												<div style={{ width: "50%", margintop: "30%" }}>
+													<propagateloader
+														color={"#ff4650"}
+														loading={true}
+														size={25}
 													/>
-												</>
-											);
-										}
-									)}
-								</Minimize>
+												</div>
+											}
+										>
+											<ArrayAdder
+												{...arrAdd(
+													"פרטי הסגל המתאמן",
+													"TRtraining",
+													"הוסף",
+													trainperson,
+													trainpersonFields
+												)}
+												costume={(type) => {
+													switch (true) {
+														case type == "number":
+															return { min: 0 };
+														default:
+															console
+																.error
+																// `this type: ${type} does have costume settings (just for you to know)`
+																();
+													}
+												}}
+											/>
+										</Suspense>
+										{dup(kshirotPackage, "TRmaflag", "TRbkiotbashob").map(
+											(fl, index) => {
+												const names = [
+													'התייצבות מפל"ג/קט"א',
+													'התייצבות קט"א/מנהל עבודה',
+													"התייצבות מפקד כיתת חלפים",
+													'התייצבות מפקד כיתת נאו"ת',
+													"התייצבות מפקד כיתה קלה (רכב)",
+													"19/19 א'",
+													"19 ב'",
+													"19 ד'",
+													'כתיבת נספח טנ"א',
+													'הכנת תלקון נוה"ק',
+													'הכנת תלקון ניהו"ק',
+													'הכנת עזרים (שוב"ך)',
+													'הזנת פקודות טנ"א במשואה',
+													'הזנת סד"כ כלים וכשירות',
+													'ביצוע תדריך מפל"ג',
+													'קבלת פקודת טנ"א מרמה ממונה',
+													"רמת בקיאות בגזרת הלחימה",
+													'רמת בקיאות בסד"כ, משימות ויכולות',
+													'רמת כתיבת נספח טנ"א',
+													'תיאום תוכניות הטנ"א ע"י קט"א חטיבה',
+													"איכות הכנת עזרים",
+													'אישור תוכניות ע"י המג"ד',
+													'רמת השליטה בנתוני צל"ם לטנ"א',
+													"רמת ביצוע חישובי שחיקה",
+													"רמת הבקיאות במיקום כוחות שכנים",
+													'רמת הבקיאות ביכולות מערך הטנ"א בגדוד, בחטיבה ובכוחות הטנ"א המרחביים',
+													'שימוש במערכת השו"ב',
+													'רמת הבקיאות והשליטה במערכת השו"ב',
+												];
+												const Top = ["מדדי סף לאימון", "נוהל הקרב"];
+												const titles = {
+													TRmaflag: 'התייצבות בע"ת',
+													TRa: 'יציאת כלי טנ"א לתרגיל',
+													TRnispach: 'ביצוע נוה"ק סדור הכולל',
+													TRpkodotmasoa: 'נוה"ק ע"ג משואה',
+													TRtadrich: "ביצוע תדריך לקרב",
+													TRpkodotahzaka: "ביצוע הערכת מצב",
+													TRramatnispach: "תהליך ביצוע נוהל קרב",
+													TRzlm: "תכנון מענה אחזקתי",
+													TRshimosbashob: 'צי"ד בנוה"ק - משואה',
+												};
+
+												{
+													/* console.log(`${index}=> ${fl} : ${kshirot[fl]}`); */
+												}
+
+												return (
+													<>
+														<h4 style={h4Title}>
+															{" "}
+															{index == 0
+																? Top[0]
+																: fl == "TRpkodotahzaka"
+																? Top[1]
+																: null}
+														</h4>
+														<Suspense
+															fallback={
+																<div style={{ width: "50%", margintop: "30%" }}>
+																	<propagateloader
+																		color={"#ff4650"}
+																		loading={true}
+																		size={25}
+																	/>
+																</div>
+															}
+														>
+															<SelectOne1
+																{...selectOneFO(
+																	fl,
+																	names[index],
+																	false,
+																	arrayObjectOptions_Checker(
+																		spareParts_done,
+																		"name"
+																	).includes(kshirot[fl])
+																		? spareParts_done
+																		: oneToFive_Rate,
+																	kshirot[fl],
+																	false
+																)}
+																title={
+																	typeof titles[fl] == "string"
+																		? titles[fl]
+																		: undefined
+																}
+															/>
+														</Suspense>
+													</>
+												);
+											}
+										)}
+									</Minimize1>
+								</Suspense>
 							</Container>
 						</CardBody>
 					</Card>
@@ -1472,116 +1579,140 @@ function KshirotPage(props) {
 					<Card>
 						<CardBody>
 							<Container>
-								<Minimize relevantField={{ tr: true }}>
-									{dup(kshirotPackage, "TRramatshlita", "TRimonhiloz").map(
-										(fl, index) => {
-											const names = [
-												"רמת השליטה בכוחות קטנים",
-												"מידת הרציפות במענה האחזקתי",
-												'רמת התיאום והשליטה בתנועה ובמיקום כוחות אג"ם טנ"א',
-												"רמת השליטה בתמונת המצב",
-												'מידת התאמת מאמץ הטנ"א לתמונת המצב',
-												"ניהול העזרים",
-												"מידת קבלה ומסירה של דוחות עיתיים",
-												"הפקת משמעויות מהערכת מצב מתמשכת",
-												'איכות יחסי הגומלין בתוך מערכי הטנ"א',
-												"איכות יחסי הגומלין עם הפלגות",
-												"איכות יחסי הגומלין עם מפקדת הגדוד",
-												'שימוש במערכת שו"ב בניהול הקרב',
-												'רמת השימוש במערכת השו"ב במכלול המנהלה תוך כדי ניהול הקרב',
-												"רמת בניית עקומת למידה",
-												"רמת ביצוע סיכומי ביניים",
-												"ביצוע מבחני רמה למפקדים",
-												"ביצוע סיכום האימון בסיום האימון",
-												"ביצוע אימון משטח חילוץ",
-											];
-											const titles = {
-												TRramatshlita: "מענה אחזקתי לרציפות הלחימה",
-												TRshlitabmazav: 'בניית תמ"צ וביצוע הערכת מצב מתמשכת',
-												TRehot: "יחסי גומלין",
-												TRshimosbashob2: 'צי"ד בניהו"ק - משואה',
-												TRlamida: "למידה והפקת לקחים",
-											};
+								<Suspense
+									fallback={
+										<div style={{ width: "50%", margintop: "30%" }}>
+											<propagateloader
+												color={"#ff4650"}
+												loading={true}
+												size={25}
+											/>
+										</div>
+									}
+								>
+									<Minimize1 relevantField={{ tr: true }}>
+										{dup(kshirotPackage, "TRramatshlita", "TRimonhiloz").map(
+											(fl, index) => {
+												const names = [
+													"רמת השליטה בכוחות קטנים",
+													"מידת הרציפות במענה האחזקתי",
+													'רמת התיאום והשליטה בתנועה ובמיקום כוחות אג"ם טנ"א',
+													"רמת השליטה בתמונת המצב",
+													'מידת התאמת מאמץ הטנ"א לתמונת המצב',
+													"ניהול העזרים",
+													"מידת קבלה ומסירה של דוחות עיתיים",
+													"הפקת משמעויות מהערכת מצב מתמשכת",
+													'איכות יחסי הגומלין בתוך מערכי הטנ"א',
+													"איכות יחסי הגומלין עם הפלגות",
+													"איכות יחסי הגומלין עם מפקדת הגדוד",
+													'שימוש במערכת שו"ב בניהול הקרב',
+													'רמת השימוש במערכת השו"ב במכלול המנהלה תוך כדי ניהול הקרב',
+													"רמת בניית עקומת למידה",
+													"רמת ביצוע סיכומי ביניים",
+													"ביצוע מבחני רמה למפקדים",
+													"ביצוע סיכום האימון בסיום האימון",
+													"ביצוע אימון משטח חילוץ",
+												];
+												const titles = {
+													TRramatshlita: "מענה אחזקתי לרציפות הלחימה",
+													TRshlitabmazav: 'בניית תמ"צ וביצוע הערכת מצב מתמשכת',
+													TRehot: "יחסי גומלין",
+													TRshimosbashob2: 'צי"ד בניהו"ק - משואה',
+													TRlamida: "למידה והפקת לקחים",
+												};
 
-											const Top = ["ניהול הקרב", "סיכום"];
-											return (
-												<>
-													<h4 style={h4Title}>
-														{" "}
-														{index == 0
-															? Top[0]
-															: fl == "TRlamida"
-															? Top[1]
-															: null}
-													</h4>
-													<SelectOne
-														{...selectOneFO(
-															fl,
-															names[index],
-															false,
-															arrayObjectOptions_Checker(
-																spareParts_done,
-																"name"
-															).includes(kshirot[fl])
-																? spareParts_done
-																: oneToFive_Rate,
-															kshirot[fl],
-															false
-														)}
-														title={
-															typeof titles[fl] == "string"
-																? titles[fl]
+												const Top = ["ניהול הקרב", "סיכום"];
+												return (
+													<>
+														<h4 style={h4Title}>
+															{" "}
+															{index == 0
+																? Top[0]
+																: fl == "TRlamida"
+																? Top[1]
+																: null}
+														</h4>
+														<Suspense
+															fallback={
+																<div style={{ width: "50%", margintop: "30%" }}>
+																	<propagateloader
+																		color={"#ff4650"}
+																		loading={true}
+																		size={25}
+																	/>
+																</div>
+															}
+														>
+															<SelectOne1
+																{...selectOneFO(
+																	fl,
+																	names[index],
+																	false,
+																	arrayObjectOptions_Checker(
+																		spareParts_done,
+																		"name"
+																	).includes(kshirot[fl])
+																		? spareParts_done
+																		: oneToFive_Rate,
+																	kshirot[fl],
+																	false
+																)}
+																title={
+																	typeof titles[fl] == "string"
+																		? titles[fl]
+																		: undefined
+																}
+															/>
+														</Suspense>
+													</>
+												);
+											}
+										)}
+										{dup(kshirotPackage, "TRlkhaimtene", "TRsicomhmitaman").map(
+											(fl, index) => {
+												const names = [
+													'לקחים לתורה, טנ"ה ואופרטיבי',
+													'לקחים לאמצעים ואמל"ח',
+													"לקחים לכוח אדם",
+													"לקחים לאימונים והכשרות",
+													"לקחים לארגון ותקינה",
+													"נקודות לשיפור",
+													"נקודות לשימור",
+													'סיכום חונך טנ"א',
+													"סיכום המתאמן",
+												];
+												const headers = {
+													TRlkhaimtene: 'לקחים ע"פ מרכיבי בניין הכוח',
+													TRshipor: "נקודות לשימור ושיפור",
+													TRsicomhonach: "סיכום",
+												};
+												return (
+													<UniversalInput
+														{...uni("textarea", names[index], fl, 12, 12)}
+														header={
+															typeof headers[fl] == "string"
+																? headers[fl]
 																: undefined
 														}
 													/>
-												</>
-											);
-										}
-									)}
-									{dup(kshirotPackage, "TRlkhaimtene", "TRsicomhmitaman").map(
-										(fl, index) => {
-											const names = [
-												'לקחים לתורה, טנ"ה ואופרטיבי',
-												'לקחים לאמצעים ואמל"ח',
-												"לקחים לכוח אדם",
-												"לקחים לאימונים והכשרות",
-												"לקחים לארגון ותקינה",
-												"נקודות לשיפור",
-												"נקודות לשימור",
-												'סיכום חונך טנ"א',
-												"סיכום המתאמן",
-											];
-											const headers = {
-												TRlkhaimtene: 'לקחים ע"פ מרכיבי בניין הכוח',
-												TRshipor: "נקודות לשימור ושיפור",
-												TRsicomhonach: "סיכום",
-											};
-											return (
-												<UniversalInput
-													{...uni("textarea", names[index], fl, 12, 12)}
-													header={
-														typeof headers[fl] == "string"
-															? headers[fl]
-															: undefined
-													}
-												/>
-											);
-										}
-									)}
-									<UniversalInput
-										{...uni("text", "שם מלא", "TRnamehonach", 12, 4)}
-										header="פרטי החונך"
-									>
+												);
+											}
+										)}
 										<UniversalInput
-											{...uni("text", "תפקיד", "TRtafkidhonach", 12, 4)}
-											chained={true}
-										/>
-										<UniversalInput
-											{...uni("text", "מאשר", "TRmasherhonach", 12, 4)}
-											chained={true}
-										/>
-									</UniversalInput>
-								</Minimize>
+											{...uni("text", "שם מלא", "TRnamehonach", 12, 4)}
+											header="פרטי החונך"
+										>
+											<UniversalInput
+												{...uni("text", "תפקיד", "TRtafkidhonach", 12, 4)}
+												chained={true}
+											/>
+											<UniversalInput
+												{...uni("text", "מאשר", "TRmasherhonach", 12, 4)}
+												chained={true}
+											/>
+										</UniversalInput>
+									</Minimize1>
+								</Suspense>
 							</Container>
 						</CardBody>
 					</Card>
@@ -1589,145 +1720,157 @@ function KshirotPage(props) {
 						<CardBody>
 							<Container>
 								<div style={TopTitle}>אופרטיבי (20%)</div>
-								<Minimize relevantField={{ opertive: true }}>
-									<h4 style={h4Title}>שבצ"ק</h4>
-									<UniversalInput
-										{...uni("number", "תקן", "shiboz")}
-										header="התאמת שיבוץ קרבי"
-										costume={{ min: 0 }}
-										IsRelevant={true}
-										handleCallBack4={CallBack4}
-									>
+								<Suspense
+									fallback={
+										<div style={{ width: "50%", margintop: "30%" }}>
+											<propagateloader
+												color={"#ff4650"}
+												loading={true}
+												size={25}
+											/>
+										</div>
+									}
+								>
+									<Minimize1 relevantField={{ opertive: true }}>
+										<h4 style={h4Title}>שבצ"ק</h4>
 										<UniversalInput
-											{...uni("number", "מצבה", "shibozmax")}
-											chained={true}
+											{...uni("number", "תקן", "shiboz")}
+											header="התאמת שיבוץ קרבי"
 											costume={{ min: 0 }}
-										/>
-									</UniversalInput>
-									<UniversalInput
-										{...uni("number", "תקן", "drivers")}
-										header="נהגים לכל פלטפורמת ניוד"
-										costume={{ min: 0 }}
-										IsRelevant={true}
-										handleCallBack4={CallBack4}
-									>
+											IsRelevant={true}
+											handleCallBack4={CallBack4}
+										>
+											<UniversalInput
+												{...uni("number", "מצבה", "shibozmax")}
+												chained={true}
+												costume={{ min: 0 }}
+											/>
+										</UniversalInput>
 										<UniversalInput
-											{...uni("number", "מצבה", "driversmax")}
-											chained={true}
+											{...uni("number", "תקן", "drivers")}
+											header="נהגים לכל פלטפורמת ניוד"
 											costume={{ min: 0 }}
-										/>
-									</UniversalInput>
-									{dup(kshirotPackage, "pkodotopara", "mefakedAPP_pkpCp").map(
-										(fl, index) => {
-											{
-												/* console.log(fl); */
-											}
-											let names = [
-												"המצאות פקודות",
-												"תיאום רמת ממונה",
-												"אישור מפקד",
-												"המצאות פקודות ונספחים",
-												"תיאום רמת ממונה",
-												"אישור מפקד",
-												"המצאות פקודות",
-												"תיאום רמת ממונה",
-												"אישור מפקד",
-											];
-											let header = undefined;
-											let title = "";
+											IsRelevant={true}
+											handleCallBack4={CallBack4}
+										>
+											<UniversalInput
+												{...uni("number", "מצבה", "driversmax")}
+												chained={true}
+												costume={{ min: 0 }}
+											/>
+										</UniversalInput>
+										{dup(kshirotPackage, "pkodotopara", "mefakedAPP_pkpCp").map(
+											(fl, index) => {
+												{
+													/* console.log(fl); */
+												}
+												let names = [
+													"המצאות פקודות",
+													"תיאום רמת ממונה",
+													"אישור מפקד",
+													"המצאות פקודות ונספחים",
+													"תיאום רמת ממונה",
+													"אישור מפקד",
+													"המצאות פקודות",
+													"תיאום רמת ממונה",
+													"אישור מפקד",
+												];
+												let header = undefined;
+												let title = "";
 
-											switch (index) {
-												case 0:
-													title = "פקודת מבצע";
-													break;
-												case 3:
-													title = "נספחי אחזקה לפקודות אופרטביות";
-													break;
-												case 6:
-													title = 'פקל"י אחזקה משלימים';
-													break;
+												switch (index) {
+													case 0:
+														title = "פקודת מבצע";
+														break;
+													case 3:
+														title = "נספחי אחזקה לפקודות אופרטביות";
+														break;
+													case 6:
+														title = 'פקל"י אחזקה משלימים';
+														break;
 
-												default:
-													title = "";
+													default:
+														title = "";
+												}
+												return (
+													<SelectOne
+														{...selectOneFO(
+															fl,
+															names[index],
+															false,
+															spareParts_exist_not,
+															kshirot[fl],
+															true
+														)}
+														title={title}
+														hascomment={true}
+													/>
+												);
 											}
-											return (
-												<SelectOne
-													{...selectOneFO(
-														fl,
-														names[index],
-														false,
-														spareParts_exist_not,
-														kshirot[fl],
-														true
-													)}
-													title={title}
-													hascomment={true}
-												/>
-											);
-										}
-									)}
-									<h4
-										style={{
-											textAlign: "center",
-											paddingTop: "10px",
-											fontWeight: "bold",
-											marginBottom: "5px",
-											marginTop: "10px",
-											// textDecoration: "underline",
-										}}
-									>
-										מערכות שו"ב ממוחשבות{" "}
-									</h4>
-									<UniversalInput
-										{...uni("number", "תקן", "tkinot")}
-										header='מצאי עמדות שו"ב תקינות'
-										costume={{ min: 0 }}
-										IsRelevant={true}
-										handleCallBack4={CallBack4}
-									>
-										<UniversalInput
-											{...uni("number", "מצבה", "tkinotmax")}
-											chained={true}
-											costume={{ min: 0 }}
-										/>
-									</UniversalInput>
-									<SelectOne
-										{...selectOneFO(
-											"tikim",
-											"הזנת תיק נתוני יחידות פקודות ומפות במשואה",
-											false,
-											spareParts_done,
-											kshirot.tikim,
-											true
 										)}
-									/>
-									<UniversalInput
-										{...uni("number", "תקן", "roleholders")}
-										header="בעלי תפקידים מוכשרים"
-										costume={{ min: 0 }}
-										IsRelevant={true}
-										handleCallBack4={CallBack4}
-									>
+										<h4
+											style={{
+												textAlign: "center",
+												paddingTop: "10px",
+												fontWeight: "bold",
+												marginBottom: "5px",
+												marginTop: "10px",
+												// textDecoration: "underline",
+											}}
+										>
+											מערכות שו"ב ממוחשבות{" "}
+										</h4>
 										<UniversalInput
-											{...uni("number", "מצבה", "roleholdersmax")}
-											chained={true}
+											{...uni("number", "תקן", "tkinot")}
+											header='מצאי עמדות שו"ב תקינות'
 											costume={{ min: 0 }}
+											IsRelevant={true}
+											handleCallBack4={CallBack4}
+										>
+											<UniversalInput
+												{...uni("number", "מצבה", "tkinotmax")}
+												chained={true}
+												costume={{ min: 0 }}
+											/>
+										</UniversalInput>
+										<SelectOne
+											{...selectOneFO(
+												"tikim",
+												"הזנת תיק נתוני יחידות פקודות ומפות במשואה",
+												false,
+												spareParts_done,
+												kshirot.tikim,
+												true
+											)}
 										/>
-									</UniversalInput>
-									<SelectOne
-										{...selectOneFO(
-											"boxcontent",
-											'תכולת ארגזי חירום ע"פ טנ"ה 1',
-											false,
-											spareParts_exist_not_partially,
-											kshirot.boxcontent,
-											true
-										)}
-										title='דחווח שליטה ארגז מפל"ג טנ"א'
-										IsRelevant={true}
-										handleCallBack4={CallBack4}
-									/>
-								</Minimize>
+										<UniversalInput
+											{...uni("number", "תקן", "roleholders")}
+											header="בעלי תפקידים מוכשרים"
+											costume={{ min: 0 }}
+											IsRelevant={true}
+											handleCallBack4={CallBack4}
+										>
+											<UniversalInput
+												{...uni("number", "מצבה", "roleholdersmax")}
+												chained={true}
+												costume={{ min: 0 }}
+											/>
+										</UniversalInput>
+										<SelectOne
+											{...selectOneFO(
+												"boxcontent",
+												'תכולת ארגזי חירום ע"פ טנ"ה 1',
+												false,
+												spareParts_exist_not_partially,
+												kshirot.boxcontent,
+												true
+											)}
+											title='דחווח שליטה ארגז מפל"ג טנ"א'
+											IsRelevant={true}
+											handleCallBack4={CallBack4}
+										/>
+									</Minimize1>
+								</Suspense>
 							</Container>
 						</CardBody>
 					</Card>

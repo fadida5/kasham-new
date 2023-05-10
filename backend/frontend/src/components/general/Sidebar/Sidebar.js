@@ -97,10 +97,7 @@ function Sidebar() {
 					borderLeft: "1px solid lightgray",
 				}}
 			>
-				<div
-					className="sidebar-wrapper"
-					style={{ overflow: "hidden" }}
-				>
+				<div className="sidebar-wrapper" style={{ overflow: "hidden" }}>
 					{user.role === "0" ? (
 						<SidebarAdmin theme={color} />
 					) : user.role === "1" ? (
@@ -118,7 +115,7 @@ function Sidebar() {
 						<Nav style={{ textAlign: "right" }}>
 							<li>
 								<NavLink
-									to="/kshirot"
+									to={`/kshirot/${null}`}
 									style={{ margin: "0px" }}
 									activeClassName="sidebar_active_link"
 								>
@@ -133,22 +130,12 @@ function Sidebar() {
 											}}
 										>
 											{color == "white" ? (
-												<img
-													src={table}
-													style={{ height: "20px" }}
-												></img>
+												<img src={table} style={{ height: "20px" }}></img>
 											) : (
-												<img
-													src={table_white}
-													style={{ height: "20px" }}
-												></img>
+												<img src={table_white} style={{ height: "20px" }}></img>
 											)}
 										</Col>
-										<Col
-											xs={12}
-											md={9}
-											style={{ paddingRight: "0px" }}
-										>
+										<Col xs={12} md={9} style={{ paddingRight: "0px" }}>
 											<h4
 												style={{
 													margin: "0px",
@@ -164,7 +151,7 @@ function Sidebar() {
 							</li>
 							<li>
 								<NavLink
-									to="/useradmineditpage"
+									to={`/useradmineditpage/${undefined}`}
 									style={{ margin: "0px" }}
 									activeClassName="sidebar_active_link"
 								>
@@ -179,22 +166,12 @@ function Sidebar() {
 											}}
 										>
 											{color == "white" ? (
-												<img
-													src={table}
-													style={{ height: "20px" }}
-												></img>
+												<img src={table} style={{ height: "20px" }}></img>
 											) : (
-												<img
-													src={table_white}
-													style={{ height: "20px" }}
-												></img>
+												<img src={table_white} style={{ height: "20px" }}></img>
 											)}
 										</Col>
-										<Col
-											xs={12}
-											md={9}
-											style={{ paddingRight: "0px" }}
-										>
+										<Col xs={12} md={9} style={{ paddingRight: "0px" }}>
 											<h4
 												style={{
 													margin: "0px",
@@ -221,15 +198,9 @@ function Sidebar() {
 						}}
 					>
 						{color == "white" ? (
-							<img
-								src={Logo100}
-								style={{ height: "100px" }}
-							></img>
+							<img src={Logo100} style={{ height: "100px" }}></img>
 						) : (
-							<img
-								src={Logo100_white}
-								style={{ height: "100px" }}
-							></img>
+							<img src={Logo100_white} style={{ height: "100px" }}></img>
 						)}
 						{user.role === "0" ? (
 							<button

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 const kshirotSchema = new mongoose.Schema({
 	// _id: { type: ObjectId },
-	grade: { type: Number },
+	grade: { type: Number, required: true },
 	// פרטי מפקד
 	commandername: { type: String }, //שם מפקד
 	timeinrole: { type: String }, // זמן בתפקיד
@@ -209,6 +209,7 @@ const kshirotSchema = new mongoose.Schema({
 	TRnamehonach: { type: String }, // שם החונך
 	TRtafkidhonach: { type: String }, // תפקיד החונך
 	TRmasherhonach: { type: String }, // מאשר החונך
+	gdod: { type: String }, // מזהה גדוד
 });
 
 const kshirot = mongoose.model("Kshirot", kshirotSchema);

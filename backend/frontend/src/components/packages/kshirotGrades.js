@@ -20,15 +20,12 @@ function options_exist_not_partially(kshir, father, val, params) {
 	switch (kshir[val]) {
 		case "קיים":
 			return params[father][val];
-			break;
 
 		case "חלקי":
 			return params[father][val] / 2;
-			break;
 
 		case "לא קיים":
 			return 0;
-			break;
 
 		default:
 			break;
@@ -39,11 +36,9 @@ function options_done(kshir, father, val, params) {
 	switch (kshir[val]) {
 		case "בוצע":
 			return params[father][val];
-			break;
 
 		case "לא בוצע":
 			return 0;
-			break;
 
 		default:
 			break;
@@ -54,11 +49,9 @@ function options_exist_not(kshir, father, val, params) {
 	switch (kshir[val]) {
 		case "קיים":
 			return params[father][val];
-			break;
 
 		case "לא קיים":
 			return 0;
-			break;
 
 		default:
 			break;
@@ -69,11 +62,9 @@ function options_Operative_options(kshir, father, val, params) {
 	switch (kshir[val]) {
 		case "כן":
 			return params[father][val];
-			break;
 
 		case "לא":
 			return 0;
-			break;
 
 		default:
 			break;
@@ -84,21 +75,16 @@ function options_oneToFive_Rate(kshir, father, val, params) {
 	switch (kshir[val]) {
 		case 1:
 			return params[father][val] / 5;
-			break;
 
 		case 2:
 			return params[father][val] / 4;
-			break;
 
 		case 3:
 			return params[father][val] / 3;
-			break;
 		case 4:
 			return params[father][val] / 2;
-			break;
 		case 5:
 			return params[father][val];
-			break;
 
 		default:
 			break;
@@ -127,11 +113,9 @@ export function kshirotGrade(kshir, params, isTest, ishandasa) {
 				nullList.push(paramVal);
 				//!
 				return null;
-				break;
 
 			default:
 				return calc;
-				break;
 		}
 	}
 	//* error handling indicator
@@ -666,16 +650,26 @@ export function kshirotGrade(kshir, params, isTest, ishandasa) {
 	// console.log(nullList.reduce((acc, v) => acc + v, 0));
 
 	if (nullList.length > 0) {
-		opartor = nullList.reduce((acc, v) => acc + v, 0) * 0.01;
+		// console.log(nullList);
+		opartor =
+			nullList.reduce((acc, v) => (acc + !isNaN(v) ? Number(v) : 0), 0) * 0.1;
 	}
 
-	// console.log(hrv + "HR - 0.25 max");
-	// console.log(sgv + "SG - 0.15 max");
-	// console.log(oiv + "Oi - 0.15 max");
-	// console.log(opv + "OP - 0.2 max");
-	// console.log(tntv + "TNT - 0.15 max");
-	// console.log(sumv + "sum - 0.1 max");
-
+	console.log(hrv + "HR - 0.25 max");
+	console.log(sgv + "SG - 0.15 max");
+	console.log(oiv + "Oi - 0.15 max");
+	console.log(opv + "OP - 0.2 max");
+	console.log(tntv + "TNT - 0.15 max");
+	console.log(sumv + "sum - 0.1 max");
+	console.log(
+		Number(hrv) +
+			Number(sgv) +
+			Number(oiv) +
+			Number(opv) +
+			Number(tntv) +
+			Number(sumv)
+	);
+	// console.log(opartor);
 	// console.log(send());
 	return { grade: send(), approved: hasError };
 }

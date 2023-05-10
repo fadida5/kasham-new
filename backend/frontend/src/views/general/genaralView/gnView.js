@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, Link, withRouter, Redirect } from "react-router-dom";
+import {
+	useParams,
+	Link,
+	withRouter,
+	Redirect,
+	useLocation,
+} from "react-router-dom";
 import {
 	Grid,
 	Input,
@@ -17,9 +23,9 @@ import {
 	AppBar,
 	Toolbar,
 	IconButton,
+	CardContent,
 } from "@mui/material";
 import axios from "axios";
-import { CardBody } from "reactstrap";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { Dg } from "components/general/charts/Doughunt_pie";
 import Minimize from "components/general/CollapseComponents/Minimize/Minimize";
@@ -41,10 +47,12 @@ import { loadHativas } from "assets/unitFunctions/hativas";
 import { loadGdods } from "assets/unitFunctions/gdods";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { GoBack } from "components/general/Buttons/GoBack";
+import history from "../../../history";
 
 function Generalview(props) {
 	//* global ----------------------------------------------------------------
 	const { user } = isAuthenticated();
+	const location = useLocation();
 
 	//* states ----------------------------------------------------------------
 	const [data, setData] = useState({});
@@ -59,37 +67,85 @@ function Generalview(props) {
 		});
 	};
 
-	//* change function --------------------------------------------------------
-	async function handleChange(evt) {
-		console.log(data.units);
-		console.log(evt.target.name);
-		const L_id = evt.target.name;
-		// setId(L_id)
-		const operator = L_id.split("")[0];
-		console.log(operator);
+	async function switch_fn(operator, _id, starter) {
 		switch (operator) {
 			case "P":
 				// console.log(await loadOgdas(L_id));
-				setData({ ...data, units: await loadOgdas(L_id) });
-				setId({ ...id, pikod: L_id });
-				// console.log(L_id);
+				setData({ ...data, units: await loadOgdas(_id) });
+				setId({ ...id, pikod: _id });
+				// console.log(value);
 				break;
 
 			case "U":
 				// console.log(await loadHativas(L_id));
-				setData({ ...data, units: await loadHativas(L_id) });
-				setId({ ...id, ogda: L_id });
+				setData({ ...data, units: await loadHativas(_id) });
+				// console.log(value);
+				setId({ ...id, ogda: _id });
 
 				break;
 			case "H":
 				// console.log(await loadGdods(L_id));
-				setData({ ...data, units: await loadGdods(L_id) });
-				setId({ ...id, hativa: L_id });
+				setData({ ...data, units: await loadGdods(_id) });
+				setId({ ...id, hativa: _id });
+				break;
+
+			default:
+				if (!isNaN(operator)) {
+					history.push(`/gdodpage/${_id}`);
+
+					// console.log(_id);
+				} else {
+					// console.log(operator);
+				}
+				break;
+		}
+		if (starter) {
+			setId({ ...id, pikod: "p" });
+		}
+	}
+
+	//* change function --------------------------------------------------------
+	function handleChange(evt) {
+		// console.log(data.units);
+		const L_id = evt.target.name;
+		// setId(L_id)
+		const operator = L_id.split("")[0];
+		// console.log(operator);
+		switch_fn(operator, L_id);
+	}
+
+	//* for going back
+	async function handleChange2(evt) {
+		// console.log(evt.target.name);
+		const L_id = evt.target.name;
+		// console.log(L_id);
+		const operator = L_id.split("")[0];
+		// console.log(operator);
+
+		switch (operator) {
+			case "P":
+				// console.log(await loadOgdas(L_id));
+				getpikod(); // console.log(L_id);
+				setId({});
+				break;
+
+			case "U":
+				// console.log(await loadHativas(L_id));
+				setData({ ...data, units: await loadOgdas(id.pikod) });
+				setId({ pikod: id.pikod });
+
+				break;
+			case "H":
+				// console.log(await loadGdods(L_id));
+				setData({ ...data, units: await loadHativas(id.ogda) });
+				setId({ pikod: id.pikod, ogda: id.ogda });
 
 				break;
 
 			default:
-				console.log(id);
+				// console.log(id);
+				getpikod();
+				setId({});
 				break;
 		}
 	}
@@ -98,6 +154,11 @@ function Generalview(props) {
 	useEffect(() => {
 		setLoading(true);
 		getpikod();
+		const inherit = location.pathname.split("/")[2];
+		const operator = location.pathname.split("/")[2].split("")[0];
+		if (inherit !== "undefined") {
+			switch_fn(operator, inherit, true);
+		}
 	}, []);
 
 	useEffect(() => {
@@ -123,7 +184,7 @@ function Generalview(props) {
 							marginRight: "50px",
 						}}
 					>
-						<CardBody>
+						<CardContent>
 							{Testuser.includes(user.personalnumber) ? (
 								<>
 									<Typography variant="h2">
@@ -134,11 +195,48 @@ function Generalview(props) {
 							) : (
 								<Typography>כשירות מסגאות הטנ"א - תמונת מצב</Typography>
 							)}
-						</CardBody>
+						</CardContent>
 					</Card>
-					<div style={{ textAlign: "center", marginTop: "2%" }}>
-						{id.pikod? <GoBack text="חזור לפיקוד" />: null}
-					</div>
+					<Grid
+						container
+						spacing={{ xs: 3, md: 3 }}
+						columns={{ xs: 4, sm: 8, md: 12 }}
+						style={{ marginTop: "3%" }}
+					>
+						<Grid item xs={2} sm={4} md={4}>
+							<div style={{ textAlign: "center", marginTop: "2%" }}>
+								{id.pikod ? (
+									<GoBack
+										name={id.pikod}
+										text="חזור לפיקוד"
+										onClick={handleChange2}
+									/>
+								) : null}
+							</div>
+						</Grid>
+						<Grid item xs={2} sm={4} md={4}>
+							<div style={{ textAlign: "center", marginTop: "2%" }}>
+								{id.ogda ? (
+									<GoBack
+										name={id.ogda}
+										text="חזור לאוגדה"
+										onClick={handleChange2}
+									/>
+								) : null}
+							</div>
+						</Grid>
+						<Grid item xs={2} sm={4} md={4}>
+							<div style={{ textAlign: "center", marginTop: "2%" }}>
+								{id.hativa ? (
+									<GoBack
+										name={id.hativa}
+										text="חזור לחטיבה"
+										onClick={handleChange2}
+									/>
+								) : null}
+							</div>
+						</Grid>
+					</Grid>
 					<Grid
 						container
 						spacing={{ xs: 2, md: 3 }}
@@ -155,6 +253,7 @@ function Generalview(props) {
 										<Button
 											// endIcon
 											name={ut._id}
+											value={ut.name}
 											variant="text"
 											style={{
 												marginRight: "3rem",
@@ -165,7 +264,7 @@ function Generalview(props) {
 											{ut.name}
 										</Button>
 									</div>
-									<CardBody>
+									<CardContent>
 										{/*//TODO - get real data change to progress bar */}
 										<div
 											style={{
@@ -191,7 +290,7 @@ function Generalview(props) {
 												{/* <Typography>placeholder</Typography> */}
 											</Minimize>
 										</div>
-									</CardBody>
+									</CardContent>
 								</Card>
 							</Grid>
 						))}
