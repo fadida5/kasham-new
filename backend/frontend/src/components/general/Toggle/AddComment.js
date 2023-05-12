@@ -82,4 +82,4 @@ const AddComment = (props) => {
 		</Row>
 	);
 };
-export default AddComment;
+export default React.memo(AddComment);

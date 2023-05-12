@@ -78,4 +78,4 @@ const IsRelevant = (props) => {
 		</>
 	);
 };
-export default IsRelevant;
+export default React.memo(IsRelevant);

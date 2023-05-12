@@ -5,6 +5,8 @@ import React, {
 	useRef,
 	useReducer,
 	Suspense,
+	memo,
+	useMemo,
 } from "react";
 
 import {
@@ -37,7 +39,7 @@ import axios from "axios";
 import { signin, authenticate, isAuthenticated } from "auth/index";
 import PropagateLoader from "react-spinners/PropagateLoader";
 // import Select from "../../../components/general/Select/AnimatedSelect";
-import { UniversalInput } from "components/general/inputs/FreeTextInputs/UniversalInput";
+import UniversalInput from "components/general/inputs/FreeTextInputs/UniversalInput";
 import { DateInput } from "components/general/inputs/dateInput/DateInput";
 // import ArrayAdder from "components/general/inputs/ArrayInputs/ArrayAdder";
 import AnimatedSelect from "components/general/Select/AnimatedSelect";
@@ -70,6 +72,7 @@ function KshirotPage(props) {
 	const { user } = isAuthenticated();
 	//* states ----------------------------------------------------------------
 	//* main data
+	
 	const [kshirot, setKshirot] = useState(kshirotPackage);
 	//* details field
 	const [details, setDetails] = useState([]);
@@ -448,6 +451,7 @@ function KshirotPage(props) {
 			hascomment: hascomment,
 			barWidth: barWidth ? barWidth : 120,
 			size: size ? size : "small",
+			// key: Object.keys(kshirot).indexOf([name])
 		};
 	};
 
@@ -715,7 +719,10 @@ function KshirotPage(props) {
 		getop();
 		// console.log(location.pathname.split("/")[2]);
 		setKshirot({ ...kshirot, gdod: location.pathname.split("/")[2] });
-		getGdod(location.pathname.split("/")[2]);
+		if (location.pathname.split("/")[2] != "null") {
+			console.log(location.pathname.split("/")[2]);
+			getGdod(location.pathname.split("/")[2]);
+		}
 		// console.log(Options);
 		// console.log(revOptions);
 	}, []);

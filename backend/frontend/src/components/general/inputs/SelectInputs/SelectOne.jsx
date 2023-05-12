@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Col, Row } from "reactstrap";
 // import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { ThemeContext } from "contexts/ThemeContext";
-import AddComment from "components/general/Toggle/AddComment";
+// import AddComment from "components/general/Toggle/AddComment";
 import IsRelevant from "components/general/CollapseComponents/IsRelevant/IsRelevant";
 import {
 	Grid,
@@ -14,6 +14,7 @@ import {
 	FormControl,
 } from "@mui/material";
 import RTL from "components/general/ThemeWrapper/RtlWrapper";
+const AddComment = lazy(() => import("components/general/Toggle/AddComment"));
 
 //TODO - grid
 
@@ -400,15 +401,27 @@ const SelectOne = (props) => {
 						)}
 
 						{props.hascomment ? (
-							<div className={props.styleName}>
-								<AddComment
-									btnName="הוסף הערות"
-									name={detailVal}
-									value={props.detailVal}
-									handleChange={handleChange2}
-									isDisabeld={props.isDisabeld}
-								/>
-							</div>
+							<Suspense
+								fallback={
+									<div style={{ width: "50%", margintop: "30%" }}>
+										<propagateloader
+											color={"#ff4650"}
+											loading={true}
+											size={25}
+										/>
+									</div>
+								}
+							>
+								<div className={props.styleName}>
+									<AddComment
+										btnName="הוסף הערות"
+										name={detailVal}
+										value={props.detailVal}
+										handleChange={handleChange2}
+										isDisabeld={props.isDisabeld}
+									/>
+								</div>
+							</Suspense>
 						) : null}
 					</>
 				)}
@@ -417,4 +430,4 @@ const SelectOne = (props) => {
 	);
 };
 
-export default SelectOne;
+export default React.memo(SelectOne);

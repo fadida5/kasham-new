@@ -42,11 +42,12 @@ const ArrayAdder = (props) => {
 	//TODO - make it work better - maybe add extra function for value
 	function change(v, i, name, curr) {
 		const pack = props.freeOptions;
+		// console.log(pack);
 		let temp = "";
 		let res = "";
 		// console.log(v);
 		if (v == "בחר") {
-			console.log("aaaaa");
+			// console.log("aaaaa");
 			return curr;
 		} else {
 			switch (name) {
@@ -57,7 +58,7 @@ const ArrayAdder = (props) => {
 					temp = pack.name.filter(
 						(item) => item.value == finalspecialkeytwo[i].name
 					);
-					console.log(temp);
+					// console.log(temp);
 					try {
 						if (finalspecialkeytwo[i].name == "" || temp == []) {
 							return curr;
@@ -76,17 +77,17 @@ const ArrayAdder = (props) => {
 				case "שם מקצוע":
 					// console.log(v);
 					// temp = pack.name.filter((item) => item.name == v);
-					console.log(pack.name);
+					// console.log(pack.name);
 					temp = pack.numbermikzoa.filter(
 						(item) => item.value == finalspecialkeytwo[i].numbermikzoa
 					);
-					console.log(temp);
+					// console.log(temp);
 					try {
 						if (finalspecialkeytwo[i].numbermikzoa == "" || temp == []) {
 							return curr;
 						} else {
 							res = [{ name: temp[0].value, value: temp[0].name }];
-							console.log(res);
+							// console.log(res);
 
 							return res;
 						}
@@ -136,8 +137,8 @@ const ArrayAdder = (props) => {
 				break;
 
 			case fieldAraay.length != props.inputArray.length + 1:
-				console.log(fieldAraay.slice(1).length);
-				console.log(props.inputArray.length);
+				// console.log(fieldAraay.slice(1).length);
+				// console.log(props.inputArray.length);
 				alert("you will not have enough input fields");
 			case typeof props.costume != "function":
 				alert("you must enter a function in costume");
@@ -364,4 +365,4 @@ const ArrayAdder = (props) => {
 		</>
 	);
 };
-export default ArrayAdder;
+export default React.memo(ArrayAdder);

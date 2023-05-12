@@ -74,4 +74,4 @@ const Minimize = (props) => {
 		</div>
 	);
 };
-export default Minimize;
+export default React.memo(Minimize);

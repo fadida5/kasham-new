@@ -1,6 +1,6 @@
 import IsRelevant from "components/general/CollapseComponents/IsRelevant/IsRelevant";
 import style from "./UniversalInput.module.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
 import {
 	Button,
 	Card,
@@ -22,12 +22,14 @@ import {
 } from "reactstrap";
 import { Input, FormControl, Grid, InputLabel } from "@mui/material";
 
+
 //TODO - switch the input in Input (including the header footer and so on)
 //todo grid
+const AddComment = lazy(() => import("components/general/Toggle/AddComment"));
 
-import AddComment from "../../Toggle/AddComment";
+// import AddComment from "../../Toggle/AddComment";
 
-export const UniversalInput = (props) => {
+ const UniversalInput = (props) => {
 	//* functions ----------------------------------------------------------------
 	function handleChange(evt) {
 		const val = evt.target.value;
@@ -55,10 +57,7 @@ export const UniversalInput = (props) => {
 			{props.chained ? (
 				<>
 					{!props.disableCol ? (
-						<Col
-							xs={props.smSize}
-							md={props.mdSize}
-						>
+						<Col xs={props.smSize} md={props.mdSize}>
 							<div
 								style={{ textAlign: `${props.textLoc}`, paddingTop: "10px" }}
 							>
@@ -106,15 +105,23 @@ export const UniversalInput = (props) => {
 					)}
 
 					{props.hascomment ? (
-						<div className={props.styleName}>
-							<AddComment
-								btnName="הוסף הערות"
-								name={detailVal}
-								value={props.detailVal}
-								handleChange={handleChange2}
-								isDisabeld={props.isDisabeld}
-							/>
-						</div>
+						<Suspense
+							fallback={
+								<div style={{ width: "50%", margintop: "30%" }}>
+									<propagateloader color={"#ff4650"} loading={true} size={25} />
+								</div>
+							}
+						>
+							<div className={props.styleName}>
+								<AddComment
+									btnName="הוסף הערות"
+									name={detailVal}
+									value={props.detailVal}
+									handleChange={handleChange2}
+									isDisabeld={props.isDisabeld}
+								/>
+							</div>
+						</Suspense>
 					) : null}
 				</>
 			) : (
@@ -141,10 +148,7 @@ export const UniversalInput = (props) => {
 						>
 							{!props.disableCol ? (
 								<Row>
-									<Col
-										xs={props.smSize}
-										md={props.mdSize}
-									>
+									<Col xs={props.smSize} md={props.mdSize}>
 										<div>
 											<InputLabel
 												className={style.MuiInputLabel}
@@ -203,10 +207,7 @@ export const UniversalInput = (props) => {
 						</IsRelevant>
 					) : !props.disableCol ? (
 						<Row>
-							<Col
-								xs={props.smSize}
-								md={props.mdSize}
-							>
+							<Col xs={props.smSize} md={props.mdSize}>
 								<div style={{ textAlign: "right" }}>
 									<InputLabel
 										className={style.MuiInputLabel}
@@ -266,18 +267,27 @@ export const UniversalInput = (props) => {
 					)}
 
 					{props.hascomment ? (
-						<div className={props.styleName}>
-							<AddComment
-								btnName="הוסף הערות"
-								name={detailVal}
-								value={props.detailVal}
-								handleChange={handleChange2}
-								isDisabeld={props.isDisabeld}
-							/>
-						</div>
+						<Suspense
+							fallback={
+								<div style={{ width: "50%", margintop: "30%" }}>
+									<propagateloader color={"#ff4650"} loading={true} size={25} />
+								</div>
+							}
+						>
+							<div className={props.styleName}>
+								<AddComment
+									btnName="הוסף הערות"
+									name={detailVal}
+									value={props.detailVal}
+									handleChange={handleChange2}
+									isDisabeld={props.isDisabeld}
+								/>
+							</div>
+						</Suspense>
 					) : null}
 				</>
 			)}
 		</>
 	);
 };
+export default React.memo(UniversalInput);
