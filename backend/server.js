@@ -16,7 +16,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 
 // Configure Mongo
-const db = "mongodb://127.0.0.1/kasham-New";
+const db = "mongodb://admin:pass@localhost:27016/";
 
 // Connect to Mongo with Mongoose
 mongoose

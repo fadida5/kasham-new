@@ -56,15 +56,41 @@ function Generalview(props) {
 
 	//* states ----------------------------------------------------------------
 	const [data, setData] = useState({});
+	const [grade, setGrade] = useState({});
 	const [loading, setLoading] = useState(true);
 	const [id, setId] = useState({});
 
 	//* base functions ----------------------------------------------------------------
+	//TODO - finish grading system
 	const getpikod = async () => {
 		await axios.get("http://localhost:8000/api/pikod").then((response) => {
 			setData({ ...data, units: response.data });
 			// console.log(response.data);
 		});
+	};
+	const getpikodgrade = async (pikod) => {
+		await axios
+			.get(`http://localhost:8000/kshirot/gradebypikodid/${pikod}`)
+			.then((res) => {
+				console.log(res.data);
+				setGrade(res.data);
+			});
+	};
+	const getogdagrade = async (ogda) => {
+		await axios
+			.get(`http://localhost:8000/kshirot/gradebyogdaid/${ogda}`)
+			.then((res) => {
+				console.log(res.data);
+				setGrade(res.data);
+			});
+	};
+	const gethativagrade = async (hativa) => {
+		await axios
+			.get(`http://localhost:8000/kshirot/gradebyhativaid/${hativa}`)
+			.then((res) => {
+				console.log(res.data);
+				setGrade(res.data);
+			});
 	};
 
 	async function switch_fn(operator, _id, starter) {

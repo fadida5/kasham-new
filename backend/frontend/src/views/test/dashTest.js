@@ -100,23 +100,36 @@ function DashboardTest({ match, theme }) {
 	//* array output [{key : val, key2 : val2, ...}, ...]
 	function callBack2(inputData2) {
 		// setChildData(chiData);
-		console.log(inputData2);
+		// console.log(inputData2);
 		tipuldata.specialkeytwo = inputData2;
 	}
 	//* geting details as an object {name : value, name : value } (name = inputName + detail) --------------------------------
 	function CallBack3(inputData3) {
-		console.log(inputData3);
-		console.log(details);
+		// console.log(inputData3);
+		// console.log(details);
 		setDetails({ ...details, [inputData3.name]: inputData3.value });
 		setTipulData({ ...tipuldata, details: details });
 	}
+	const a = ["P04", "P06"];
+
+	const load = async () => {
+		await axios
+			.get(
+				`http://localhost:8000/kshirot/gradebypikodid/${pikods.map(
+					(pk) => pk._id
+				)}`
+			)
+			.then((res) => {
+				console.log(res.data);
+			});
+	};
 
 	const loadPikods = async () => {
 		await axios
 			.get("http://localhost:8000/api/pikod")
 			.then((response) => {
 				setPikods(response.data);
-				console.log(response.data);
+				// console.log(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -146,6 +159,7 @@ function DashboardTest({ match, theme }) {
 	useEffect(() => {
 		setPikods([]);
 		loadPikods();
+		load();
 	}, []);
 
 	const handleChange = (event) => {
@@ -181,37 +195,23 @@ function DashboardTest({ match, theme }) {
 
 	useEffect(() => {
 		freeOptions(spareParts_done);
-		console.log(options);
+		// console.log(options);
 	}, []);
 
 	return !isdataloaded ? (
 		<div style={{ width: "50%", marginTop: "30%" }}>
-			<PropagateLoader
-				color={"#ff4650"}
-				loading={true}
-				size={25}
-			/>
+			<PropagateLoader color={"#ff4650"} loading={true} size={25} />
 		</div>
 	) : (
 		<div>
-			<Grid
-				container
-				rowSpacing={1}
-				columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-			>
-				<Grid
-					item
-					md={6}
-				>
+			<Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+				<Grid item md={6}>
 					<Input />
 				</Grid>
 				<Grid item>
 					<Input md={6} />
 				</Grid>
-				<Grid
-					item
-					md={6}
-				>
+				<Grid item md={6}>
 					<Input />
 				</Grid>
 				<Grid item>
@@ -226,10 +226,7 @@ function DashboardTest({ match, theme }) {
 					</FormControl>
 				</Grid>
 			</Grid>
-			<FormControl
-				sx={{ m: 1, minWidth: 120 }}
-				size="medium"
-			>
+			<FormControl sx={{ m: 1, minWidth: 120 }} size="medium">
 				<InputLabel id="header">Age</InputLabel>
 				<Select
 					name="age"
